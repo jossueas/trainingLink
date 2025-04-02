@@ -1,0 +1,54 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# Web config transforms
+*.config.transform
+
+# IIS Express
+.vscode/
+.vs/
+
+# NuGet
+packages/
+*.nupkg
+
+# Others
+*.log
+*.cache
+*.dbmdl
+*.pdb
+*.exe
+*.dll
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# Web config transforms
+*.config.transform
+
+# IIS Express
+.vscode/
+.vs/
+
+# NuGet
+packages/
+*.nupkg
+
+# Others
+*.log
+*.cache
+*.dbmdl
+*.pdb
+*.exe
+*.dll
