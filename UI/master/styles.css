@@ -1,0 +1,107 @@
+﻿/* Estilos globales */
+body {
+    margin: 0;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Header */
+.custom-header {
+    background-color: #c7e5ed;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+}
+
+    .custom-header img {
+        height: 40px; /* ligeramente más grande */
+    }
+
+/* Círculos y posicionamiento */
+.background-circles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none; /* evitar interacciones con los círculos */
+}
+
+.circle {  /*circulo gris*/
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+.circle1 {
+    width: 200px;
+    height: 200px;
+    background-color: #cfcfcf;
+    top: 40%;
+    left: calc(50% - 270px); /* más a la izquierda cerca del login box */
+    transform: translateY(-50%);
+}
+
+.circle2 {
+    width: 280px;
+    height: 280px;
+    background-color: #3bc0c3;
+    top: 35%;
+    right: calc(50% - 40px); /* más a la derecha aún */
+    transform: translateY(-50%);
+}
+
+.circle3 {
+    width: 260px;
+    height: 260px;
+    background-color: #9dd6e4;
+    bottom: 25%;
+    left: calc(50% - 130px); /* posición original */
+}
+
+/* Login Box */
+.login-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px); /* deja espacio para el header y footer */
+    padding: 2rem;
+}
+
+.login-box {
+    background-color: #1a2b63;
+    color: white;
+    padding: 2rem;
+    border-radius: 2rem;
+    width: 300px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Botón */
+.btn-login {
+    background-color: #bde2e7;
+    color: #1a2b63;
+    border: none;
+}
+
+    .btn-login:hover {
+        background-color: #a5d7e0;
+    }
+
+/* Footer */
+.custom-footer {
+    background-color: #c7e5ed;
+    text-align: right;
+    padding: 1.5rem 2rem;
+    font-size: 1rem;
+    color: #1a2b63;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
