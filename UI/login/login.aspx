@@ -27,18 +27,27 @@
         </div>
 
         <!-- Contenedor del login -->
-        <div class="login-container">
-            <div class="login-box">
-                <h5 class="text-center mb-4">Loggin</h5>
-                <div class="mb-3">
-                    <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" placeholder="Código" />
-                </div>
-                <div class="mb-3">
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Contraseña" />
-                </div>
-                <asp:Button ID="btnLogin" runat="server" Text="Ingresar" CssClass="btn btn-login w-100" OnClick="btnLogin_Click" />
-            </div>
+<!-- Contenedor del login -->
+<div class="login-container">
+    <div class="login-box">
+        <h5 class="text-left mb-4">Loggin</h5>
+        
+        <div class="mb-3">
+            <label for="Code1">Code1:</label>
+            <asp:TextBox ID="txtCode1" runat="server" CssClass="form-control" placeholder="Code1" />
         </div>
+        
+        <div class="mb-3">
+            <label for="Password">Password:</label>
+            <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Password" />
+        </div>
+        
+        <div class="mt-6">
+            <asp:Button ID="btnLogin" runat="server" Text="Ingresar" CssClass="btn btn-login w-100" OnClick="btnLogin_Click" />
+        </div>
+    </div>
+</div>
+
 
         <!-- Footer -->
         <div class="custom-footer">

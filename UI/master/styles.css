@@ -1,11 +1,16 @@
-﻿/* Estilos globales */
+﻿/* Importar fuente Central Sans */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap');
+
+/* Estilos globales */
 body {
     margin: 0;
     background-color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'Work Sans', Arial, sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header */
@@ -17,7 +22,7 @@ body {
 }
 
     .custom-header img {
-        height: 40px; /* ligeramente más grande */
+        height: 80px; /* ligeramente más grande */
     }
 
 /* Círculos y posicionamiento */
@@ -29,7 +34,7 @@ body {
     pointer-events: none; /* evitar interacciones con los círculos */
 }
 
-.circle {  /*circulo gris*/
+.circle {
     position: absolute;
     border-radius: 50%;
     opacity: 0.3;
@@ -39,27 +44,29 @@ body {
     width: 200px;
     height: 200px;
     background-color: #cfcfcf;
-    top: 40%;
-    left: calc(50% - 270px); /* más a la izquierda cerca del login box */
-    transform: translateY(-50%);
+    top: 20%;
+    left: calc(50% - 210px);
+    transform: translate(-50%, -50%);
 }
 
 .circle2 {
     width: 280px;
     height: 280px;
     background-color: #3bc0c3;
-    top: 35%;
-    right: calc(50% - 40px); /* más a la derecha aún */
-    transform: translateY(-50%);
+    top: 18%;
+    left: calc(50% + 60px);
+    transform: translate(-50%, -50%);
 }
 
 .circle3 {
     width: 260px;
     height: 260px;
     background-color: #9dd6e4;
-    bottom: 25%;
-    left: calc(50% - 130px); /* posición original */
+    bottom: 20%;
+    left: calc(50% - 90px);
+    transform: translateX(-50%);
 }
+
 
 /* Login Box */
 .login-container {
@@ -68,18 +75,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 140px); /* deja espacio para el header y footer */
+    min-height: calc(100vh - 140px);
     padding: 2rem;
+    flex: 1;
+    padding-bottom: 5rem; /* espacio para que no se solape con el footer */
 }
 
 .login-box {
     background-color: #1a2b63;
     color: white;
-    padding: 2rem;
+    padding: 3.5rem 2rem;
     border-radius: 2rem;
     width: 300px;
     position: relative;
     z-index: 2;
+    margin-top: 0;
+}
+
+/* Etiquetas de formulario */
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: white;
 }
 
 /* Botón */
@@ -87,13 +105,14 @@ body {
     background-color: #bde2e7;
     color: #1a2b63;
     border: none;
+ 
+    margin-bottom: 2rem;
 }
 
     .btn-login:hover {
         background-color: #a5d7e0;
     }
 
-/* Footer */
 .custom-footer {
     background-color: #c7e5ed;
     text-align: right;
@@ -101,7 +120,14 @@ body {
     font-size: 1rem;
     color: #1a2b63;
     width: 100%;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 999; /* opcional, para que se mantenga encima de otros elementos */
+}
+
+
+/* Espaciado personalizado adicional */
+.mt-6 {
+    margin-top: 5.5rem;
 }
