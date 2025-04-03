@@ -34,7 +34,7 @@
         
         <div class="mb-3">
             <label for="Code1">Code1:</label>
-            <asp:TextBox ID="txtCode1" runat="server" CssClass="form-control" placeholder="Code1" />
+           <asp:TextBox ID="txtCode1" runat="server" CssClass="form-control" placeholder="Code1" />
         </div>
         
         <div class="mb-3">

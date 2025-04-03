@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data.SqlClient;
+using System.Configuration;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-
 
 namespace trainingLink.UI.login
 {
@@ -16,7 +13,46 @@ namespace trainingLink.UI.login
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            // Aquí va tu lógica para validar el usuario
+            string code1 = txtCode1.Text.Trim();
+
+            if (string.IsNullOrEmpty(code1))
+            {
+                // Muestra un mensaje si está vacío
+                Response.Write("<script>alert('Por favor ingrese el código.');</script>");
+                return;
+            }
+
+            // Obtiene la cadena de conexión desde Web.config
+            string connString = ConfigurationManager.ConnectionStrings["GeneralDataConnection"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string query = "SELECT COUNT(*) FROM [User] WHERE Code1 = @Code1";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Code1", code1);
+
+                try
+                {
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+
+                    if (count > 0)
+                    {
+                        // Usuario encontrado: redireccionar o hacer login
+                        Response.Redirect("~/UI/dashboard/index.aspx");
+                    }
+                    else
+                    {
+                        // Usuario no encontrado
+                        Response.Write("<script>alert('Código no válido.');</script>");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de errores (log opcional)
+                    Response.Write($"<script>alert('Error al conectar: {ex.Message}');</script>");
+                }
+            }
         }
     }
 }
