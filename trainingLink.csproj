@@ -67,18 +67,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UI\Home\home.aspx" />
     <Content Include="UI\login\login.aspx" />
     <Content Include="UI\master\styles.css" />
+    <Content Include="UI\TestConnection.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Home\home.aspx.cs">
+      <DependentUpon>home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Home\home.aspx.designer.cs">
+      <DependentUpon>home.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UI\login\login.aspx.cs">
       <DependentUpon>login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\login\login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TestConnection.aspx.cs">
+      <DependentUpon>TestConnection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\TestConnection.aspx.designer.cs">
+      <DependentUpon>TestConnection.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

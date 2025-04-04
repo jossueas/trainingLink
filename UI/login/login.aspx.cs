@@ -39,7 +39,7 @@ namespace trainingLink.UI.login
                     if (count > 0)
                     {
                         // Usuario encontrado: redireccionar o hacer login
-                        Response.Redirect("~/UI/dashboard/index.aspx");
+                        Response.Redirect("~/UI/Home/home.aspx");
                     }
                     else
                     {
