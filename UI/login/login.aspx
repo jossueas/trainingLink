@@ -34,7 +34,7 @@
         
         <div class="mb-3">
             <label for="Code1">Code1:</label>
-           <asp:TextBox ID="txtCode1" runat="server" CssClass="form-control" placeholder="Code1" />
+            <asp:TextBox ID="txtCode1" runat="server" CssClass="form-control" placeholder="Code1" />
         </div>
         
         <div class="mb-3">
@@ -45,8 +45,15 @@
         <div class="mt-6">
             <asp:Button ID="btnLogin" runat="server" Text="Ingresar" CssClass="btn btn-login w-100" OnClick="btnLogin_Click" />
         </div>
+
+        <!-- Aquí mostramos los mensajes de error o resultado -->
+       <div class="mt-3">
+    <asp:Label ID="lblResultado" runat="server" CssClass="alert d-block" />
+</div>
+
     </div>
 </div>
+
 
 
         <!-- Footer -->
