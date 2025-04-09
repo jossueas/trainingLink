@@ -1,65 +1,91 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="home.aspx.cs" Inherits="trainingLink.UI.Home.Home" %>
-
-
-
-
-
-
-
-
+﻿<!-- HTML (home.aspx) -->
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+
     <meta charset="utf-8" />
     <title>Inicio - TrainingLink</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../master/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 </head>
 <body>
     <form id="form1" runat="server">
+        <header class="custom-header">
+            <button type="button" class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            <img src="../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
+         <div class="header-icons d-flex gap-3">
+        <a href="#" class="text-decoration-none text-dark">
+            <i class="bi bi-person-circle fs-4"></i>
+        </a>
+        <a href="#" class="text-decoration-none text-dark">
+            <i class="bi bi-gear-fill fs-4"></i>
+        </a>
+        </header>
+
         <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="menu-header">Menú</div>
-            <ul class="nav flex-column">
-                <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Módulos</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Reportes</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Salir</a></li>
-            </ul>
-        </div>
+        <nav class="sidebar collapsed" id="sidebar">
+            <a href="#" class="nav-link">Inicio</a>
+            <a href="#" class="nav-link">Usuarios</a>
+            <a href="#" class="nav-link">Reportes</a>
+            <a href="#" class="nav-link">Configuración</a>
+            <a href="#" class="nav-link">Salir</a>
+        </nav>
 
-        <!-- Contenedor principal -->
-        <div class="main-content">
-            <!-- Header -->
-            <header class="home-header d-flex justify-content-between align-items-center px-4 py-2">
-                <div class="logo-container d-flex align-items-center">
-                    <img src="../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
+        <!-- Main Content -->
+        <div class="main-content collapsed" id="mainContent">
+            <div class="container py-5">
+                <h2 class="mb-4">Bienvenido a <span class="accent">TrainingLink</span></h2>
+                <p>Seleccione una opción del menú para comenzar.</p>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Usuarios</h5>
+                                <p>Administra los usuarios registrados en el sistema.</p>
+                                <a href="#" class="btn btn-primary">Ir</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Reportes</h5>
+                                <p>Genera informes detallados de actividades.</p>
+                                <a href="#" class="btn btn-primary">Ver Reportes</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Configuración</h5>
+                                <p>Ajustes generales de la aplicación.</p>
+                                <a href="#" class="btn btn-primary">Configurar</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
-            </header>
+            </div>
 
-            <!-- Contenido principal -->
-            <main class="home-content container py-5">
-                <h1>Bienvenido a <span class="accent">TrainingLink</span></h1>
-                <p>Seleccione una opción del menú para comenzar</p>
-            </main>
-
-            <!-- Footer -->
-            <footer class="custom-footer text-end px-4 py-3">
-                <div>
-                    <strong>TrainingLink</strong><br />
-                    Sistema de Gestión de Training
-                </div>
+            <footer class="custom-footer">
+                <strong>TrainingLink</strong><br />
+                Sistema de Gestión de Training
             </footer>
         </div>
     </form>
 
     <script>
         function toggleSidebar() {
-            var sidebar = document.getElementById("sidebar");
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("mainContent");
+
             sidebar.classList.toggle("collapsed");
+            mainContent.classList.toggle("collapsed");
         }
     </script>
 </body>

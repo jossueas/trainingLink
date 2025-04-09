@@ -109,7 +109,7 @@
   <ItemGroup>
     <Folder Include="Files\images\" />
     <Folder Include="Models\" />
-    <Folder Include="UI\maintenance\" />
+    <Folder Include="UI\maintenance\maintenanceRol\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

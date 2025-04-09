@@ -8,7 +8,6 @@ body {
     font-family: 'Work Sans', Arial, sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
-    position: relative;
     display: flex;
     flex-direction: column;
 }
@@ -19,57 +18,156 @@ body {
     padding: 0.75rem 2rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    z-index: 1001;
+    position: relative;
 }
 
-    .custom-header img {
-        height: 80px; /* ligeramente más grande */
-    }
+.custom-header img,
+.logo {
+    height: 40px;
+}
 
-/* Sidebar */
+/* Toggle botón dentro del header */
+.toggle-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: #1a2b63;
+    margin-right: 1rem;
+    position: relative;
+    z-index: 1100;
+}
+
+/* Sidebar dinámico */
 .sidebar {
+    width: 220px;
+    background-color: #1a2b63;
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
-    width: 200px;
-    height: 100%;
-    background-color: #1a2b63;
-    padding-top: 4.5rem;
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
+    padding-top: 60px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    color: white;
 }
 
-    .sidebar a {
-        color: white;
-        padding: 1rem 1.5rem;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background 0.3s;
-    }
+.sidebar.collapsed {
+    transform: translateX(-100%);
+}
 
-        .sidebar a:hover {
-            background-color: #2e3c79;
-        }
+.sidebar .nav-link {
+    color: white;
+    padding: 1rem;
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-/* Contenido principal con espacio para sidebar */
+.sidebar .nav-link:hover {
+    background-color: #2c3e75;
+}
+
+/* Main content colapsable */
 .main-content {
-    margin-left: 200px;
+    margin-left: 220px;
     padding: 2rem;
+    flex: 1;
+    transition: margin-left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.sidebar.collapsed + .main-content,
+.main-content.collapsed {
+    margin-left: 0;
+}
+
+/* Footer */
+.custom-footer {
+    background-color: #c7e5ed;
+    font-size: 0.9rem;
+    color: #1a2b63;
+    width: 100%;
+    text-align: right;
+    padding: 1.5rem 2rem;
+    margin-top: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+}
+
+/* Home content */
+.home-content {
+    text-align: center;
+    padding: 5rem 2rem;
     flex: 1;
 }
 
+.home-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1a2b63;
+}
 
+.accent {
+    color: #3bc0c3;
+}
 
+/* Login */
+.login-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px);
+    padding: 2rem;
+    flex: 1;
+    padding-bottom: 5rem;
+}
 
+.login-box {
+    background-color: #1a2b63;
+    color: white;
+    padding: 3.5rem 2rem;
+    border-radius: 2rem;
+    width: 300px;
+    position: relative;
+    z-index: 2;
+}
 
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: white;
+}
 
-/* Círculos y posicionamiento */
+.btn-login {
+    background-color: #bde2e7;
+    color: #1a2b63;
+    border: none;
+    margin-bottom: 2rem;
+}
+
+.btn-login:hover {
+    background-color: #a5d7e0;
+}
+
+/* Círculos decorativos */
 .background-circles {
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: 0;
-    pointer-events: none; /* evitar interacciones con los círculos */
+    pointer-events: none;
 }
 
 .circle {
@@ -105,139 +203,35 @@ body {
     transform: translateX(-50%);
 }
 
-
-/* Login Box */
-.login-container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 140px);
-    padding: 2rem;
-    flex: 1;
-    padding-bottom: 5rem; /* espacio para que no se solape con el footer */
+/* Tarjetas */
+.card-title {
+    font-weight: 600;
 }
 
-.login-box {
-    background-color: #1a2b63;
-    color: white;
-    padding: 3.5rem 2rem;
-    border-radius: 2rem;
-    width: 300px;
-    position: relative;
-    z-index: 2;
-    margin-top: 0;
-}
-
-/* Etiquetas de formulario */
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: white;
-}
-
-/* Botón */
-.btn-login {
-    background-color: #bde2e7;
-    color: #1a2b63;
-    border: none;
- 
-    margin-bottom: 2rem;
-}
-
-    .btn-login:hover {
-        background-color: #a5d7e0;
-    }
-
-/* Footer */
-.custom-footer {
-    background-color: #c7e5ed;
-    text-align: right;
-    padding: 1.5rem 2rem;
-    font-size: 1rem;
-    color: #1a2b63;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 999; /* opcional, para que se mantenga encima de otros elementos */
-}
-
-
-/* Espaciado personalizado adicional */
+/* Espaciado personalizado */
 .mt-6 {
     margin-top: 5.5rem;
 }
 
-
-/*Home*/
-
-/* Header */
-.home-header {
-    background-color: #c7e5ed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    position: relative;
-}
-
-.logo {
-    height: 45px;
-}
-
-.menu-toggle {
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: none;
-}
-
-.main-menu {
-    display: flex;
-    gap: 1.5rem;
-}
-
-    .main-menu a {
-        color: #1a2b63;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-        .main-menu a:hover {
-            text-decoration: underline;
-        }
-
-/* Contenido */
-.home-content {
-    text-align: center;
-    padding: 5rem 2rem;
-    flex: 1;
-}
-
-    .home-content h1 {
-        font-size: 2.5rem;
-        color: #1a2b63;
-    }
-
-    .home-content .accent {
-        color: #3bc0c3;
-    }
-
-/* Footer */
-.custom-footer {
-    background-color: #c7e5ed;
-    text-align: right;
-    padding: 1.5rem 2rem;
-    font-size: 1rem;
-    color: #1a2b63;
-    width: 100%;
-    margin-top: auto;
-}
-
-/* Responsive */
+/* Responsive ajustes */
 @media (max-width: 768px) {
+    .main-content {
+        margin-left: 0 !important;
+        padding: 1rem;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .toggle-btn {
+        display: block;
+    }
+
     .main-menu {
         display: none;
         flex-direction: column;
@@ -249,93 +243,11 @@ label {
         padding: 1rem;
     }
 
-        .main-menu.active {
-            display: flex;
-        }
+    .main-menu.active {
+        display: flex;
+    }
 
     .menu-toggle {
         display: block;
     }
-}
-/* Sidebar */
-.sidebar {
-    width: 220px;
-    background-color: #1a2b63;
-    color: white;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    padding-top: 100px;
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-    .sidebar.collapsed {
-        transform: translateX(-220px);
-    }
-
-    .sidebar .nav-link {
-        color: white;
-        padding: 12px 20px;
-        display: block;
-    }
-
-        .sidebar .nav-link:hover {
-            background-color: #2d3e7a;
-        }
-
-.menu-header {
-    padding: 10px 20px;
-    font-weight: bold;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Main content */
-.main-content {
-    margin-left: 220px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #fff;
-    transition: margin-left 0.3s ease;
-}
-
-.sidebar.collapsed ~ .main-content {
-    margin-left: 0;
-}
-
-/* Header */
-.home-header {
-    background-color: #c7e5ed;
-    height: 70px;
-}
-
-.menu-toggle {
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #1a2b63;
-}
-
-/* Footer */
-.custom-footer {
-    background-color: #c7e5ed;
-    font-size: 0.9rem;
-    color: #1a2b63;
-    width: 100%;
-}
-
-/* Logo */
-.logo {
-    height: 40px;
-}
-
-/* Content styles */
-.home-content h1 {
-    font-weight: bold;
-    color: #1a2b63;
-}
-
-.accent {
-    color: #3bc0c3;
 }
