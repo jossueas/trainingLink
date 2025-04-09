@@ -42,8 +42,7 @@
         Mantenimientos
     </a>
     <div class="collapse ms-3" id="submenuMantenimientos">
-     <a href="..\maintenance\maintenanceRol\rol.aspx" class="nav-link">Role</a>
-
+        <a href="rol.aspx" class="nav-link">Role</a>
         <a href="#" class="nav-link">Bussines Unit</a>
     </div>
 

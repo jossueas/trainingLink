@@ -69,6 +69,7 @@
   <ItemGroup>
     <Content Include="UI\Home\home.aspx" />
     <Content Include="UI\login\login.aspx" />
+    <Content Include="UI\maintenance\maintenanceRol\rol.aspx" />
     <Content Include="UI\master\styles.css" />
     <Content Include="UI\TestConnection.aspx" />
     <Content Include="Web.config" />
@@ -88,6 +89,13 @@
     </Compile>
     <Compile Include="UI\login\login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceRol\rol.aspx.cs">
+      <DependentUpon>rol.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceRol\rol.aspx.designer.cs">
+      <DependentUpon>rol.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\TestConnection.aspx.cs">
       <DependentUpon>TestConnection.aspx</DependentUpon>
@@ -109,7 +117,6 @@
   <ItemGroup>
     <Folder Include="Files\images\" />
     <Folder Include="Models\" />
-    <Folder Include="UI\maintenance\maintenanceRol\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
