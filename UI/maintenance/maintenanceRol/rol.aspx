@@ -118,14 +118,16 @@
         </div>
 
 
-        <!-- Modal para crear rol -->
+<!-- Modal para crear rol -->
 <div class="modal fade" id="modalCrearRol" tabindex="-1" aria-labelledby="modalCrearRolLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalCrearRolLabel">Agregar Nuevo Rol</h5>
+    <div class="modal-content modal-bg-custom"> <!-- <- Añadido este div para controlar css del body footer del modal -->
+
+      <div class="modal-header modal-header-custom">
+        <h5 class="modal-title">Agregar Nuevo Rol</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
+
       <div class="modal-body">
         <div class="mb-3">
           <label for="txtNombreRol" class="form-label">Nombre del Rol</label>
@@ -143,13 +145,16 @@
           </select>
         </div>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-save-custom">Guardar</button>
       </div>
+
     </div>
   </div>
 </div>
+
 
     </form>
 

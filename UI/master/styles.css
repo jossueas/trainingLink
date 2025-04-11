@@ -354,8 +354,12 @@ label {
         color: white;
     }
 
-    /* Modal para agregar modales */
+    /* Modal */
 
+.modal-content {
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+}
 
 .btn-save-custom {
     background-color: #5BBCB7;
@@ -368,3 +372,21 @@ label {
         color: white;
     }
 
+/* Fondo del encabezado del modal */
+.modal-header-custom {
+    background-color: #BFE2EA;
+}
+
+    /* Color del texto del título */
+    .modal-header-custom .modal-title {
+        color: #1F4C82;
+        font-weight: bold;
+    }
+
+.modal-bg-custom {
+    background-color: #cfcfcf;
+}
+.modal-content .form-label {
+    color: #1F4C82;
+    font-weight: bold;
+}
