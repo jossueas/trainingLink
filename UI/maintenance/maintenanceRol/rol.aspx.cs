@@ -7,11 +7,13 @@ using System.Web.UI.WebControls;
 
 namespace trainingLink.UI.maintenance.maintenanceRol
 {
-    public partial class rol : System.Web.UI.Page
+    public partial class rol : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // Aquí puedes escribir lógica de carga
         }
     }
 }
+
+

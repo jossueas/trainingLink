@@ -251,3 +251,103 @@ label {
         display: block;
     }
 }
+
+
+
+/* Mejoras visuales para el contenido principal (main-content) */
+.main-content {
+    padding: 40px;
+    background-color: #f9fafa;
+    min-height: calc(100vh - 70px);
+    margin-top: 70px; /* altura del header */
+    margin-left: 250px; /* coincide con ancho sidebar */
+    transition: margin-left 0.3s ease;
+}
+
+    .main-content.collapsed {
+        margin-left: 0;
+    }
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+    border: none;
+}
+
+.card-header {
+    background-color: #e0e0e0;
+    color: #1a2b63;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.table thead {
+    background-color: #3bc0c3;
+    color: white;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f7ff;
+}
+
+/* Botón flotante (+) en esquina superior derecha del contenido */
+.btn-plus-custom {
+    background-color: #1F4C82; /* color inicial */
+    color: white; /* color del ícono */
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-plus-custom i {
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .btn-plus-custom:hover {
+        background-color: #5BBCB7; /* color al pasar el mouse */
+    }
+
+        .btn-plus-custom:hover i {
+            color: white;
+        }
+
+
+/* Ajuste general del formulario y filtros */
+.filter-container {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+    .filter-container .form-control {
+        border-radius: 4px;
+        border-color: #ced4da;
+    }
+
+
+.btn-search-custom {
+    background-color: #1F4C82;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-search-custom:hover {
+        background-color: #5BBCB7;
+        color: white;
+    }
+
+
