@@ -267,6 +267,10 @@ label {
     .main-content.collapsed {
         margin-left: 0;
     }
+.tituloRol {
+    color: #1F4C82; /* o el color que desees */
+    font-weight: bold; /* opcional */
+}
 
 .card {
     border-radius: 8px;
@@ -350,4 +354,17 @@ label {
         color: white;
     }
 
+    /* Modal para agregar modales */
+
+
+.btn-save-custom {
+    background-color: #5BBCB7;
+    color: white;
+    border: none;
+}
+
+    .btn-save-custom:hover {
+        background-color: #4baea9;
+        color: white;
+    }
 

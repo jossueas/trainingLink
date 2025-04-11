@@ -48,10 +48,15 @@
         <div class="main-content collapsed" id="mainContent">
             <div class="container py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Role</h2>
-<button class="btn-plus-custom">
+                    <h2 class="mb-0 tituloRol" >Role</h2>
+
+                    <!--btn + -->
+<button type="button" class="btn btn-plus-custom" data-bs-toggle="modal" data-bs-target="#modalCrearRol">
     <i class="bi bi-plus-lg"></i>
 </button>
+
+
+
 
                 </div>
 
@@ -112,7 +117,44 @@
             </footer>
         </div>
 
+
+        <!-- Modal para crear rol -->
+<div class="modal fade" id="modalCrearRol" tabindex="-1" aria-labelledby="modalCrearRolLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCrearRolLabel">Agregar Nuevo Rol</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="txtNombreRol" class="form-label">Nombre del Rol</label>
+          <input type="text" class="form-control" id="txtNombreRol" placeholder="Ej. Supervisor" />
+        </div>
+        <div class="mb-3">
+          <label for="txtDescripcionRol" class="form-label">Descripción</label>
+          <input type="text" class="form-control" id="txtDescripcionRol" placeholder="Descripción del rol" />
+        </div>
+        <div class="mb-3">
+          <label for="ddlEstadoRol" class="form-label">Estado</label>
+          <select class="form-select" id="ddlEstadoRol">
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-save-custom">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     </form>
+
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
