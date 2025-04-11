@@ -131,24 +131,28 @@
       <div class="modal-body">
         <div class="mb-3">
           <label for="txtNombreRol" class="form-label">Nombre del Rol</label>
-          <input type="text" class="form-control" id="txtNombreRol" placeholder="Ej. Supervisor" />
+          <asp:TextBox ID="txtNombreRol" runat="server" CssClass="form-control" placeholder="Ej. Supervisor" />
         </div>
         <div class="mb-3">
           <label for="txtDescripcionRol" class="form-label">Descripción</label>
-          <input type="text" class="form-control" id="txtDescripcionRol" placeholder="Descripción del rol" />
+        <asp:TextBox ID="txtDescripcionRol" runat="server" CssClass="form-control" placeholder="Descripción del rol" />
         </div>
-        <div class="mb-3">
-          <label for="ddlEstadoRol" class="form-label">Estado</label>
-          <select class="form-select" id="ddlEstadoRol">
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-          </select>
-        </div>
+    <div class="mb-3">
+  <label for="ddlEstadoRol" class="form-label">Estado</label>
+  <asp:DropDownList ID="ddlEstadoRol" runat="server" CssClass="form-select">
+    <asp:ListItem Text="Activo" Value="1" />
+    <asp:ListItem Text="Inactivo" Value="0" />
+  </asp:DropDownList>
+</div>
+
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-save-custom">Guardar</button>
+      <button type="submit" runat="server" class="btn btn-save-custom" onserverclick="btnGuardarRol_ServerClick">
+    Guardar
+</button>
+
       </div>
 
     </div>
