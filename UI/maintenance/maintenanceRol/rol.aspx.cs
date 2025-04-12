@@ -10,16 +10,22 @@ namespace trainingLink.UI.maintenance.maintenanceRol
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Lógica de carga si es necesario
-        }
+            if (!IsPostBack)
+            {
+                CargarRoles();
 
+                if (Request.QueryString["success"] == "true")
+                {
+                    // Muestra la alerta y cierra el modal
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaGuardar", "cerrarModalYMostrarAlerta();", true);
+                }
+            }
+        }
         protected void btnGuardarRol_ServerClick(object sender, EventArgs e)
         {
-            // Obtener valores desde controles ASP.NET
             string nombreRol = txtNombreRol.Text.Trim();
             string descripcionRol = txtDescripcionRol.Text.Trim();
             string estadoRol = ddlEstadoRol.SelectedValue;
-
             bool estado = estadoRol == "1";
 
             string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
@@ -38,14 +44,41 @@ namespace trainingLink.UI.maintenance.maintenanceRol
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    // Aquí podrías mostrar un mensaje de éxito o recargar tabla
+                    // Aquí mostramos el toast de éxito y recargamos la tabla
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toast", "mostrarToastExito();", true);
+                    CargarRoles(); // vuelve a llenar el GridView
                 }
                 catch (Exception ex)
                 {
-                    // Aquí puedes registrar el error o mostrar un mensaje
+                    // Manejo de errores si falla el insert
                     throw new Exception("Error al insertar rol: " + ex.Message);
                 }
             }
         }
+
+
+        private void CargarRoles()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT Name, Description FROM Role", conn);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                gvRoles.DataSource = dt;
+                gvRoles.DataBind();
+            }
+        }
+
+
+
+
+
+
+
+
+
     }
 }

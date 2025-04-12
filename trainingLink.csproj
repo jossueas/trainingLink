@@ -70,6 +70,7 @@
     <Content Include="UI\Home\home.aspx" />
     <Content Include="UI\login\login.aspx" />
     <Content Include="UI\maintenance\maintenanceRol\rol.aspx" />
+    <Content Include="UI\master\scripts.js" />
     <Content Include="UI\master\styles.css" />
     <Content Include="UI\TestConnection.aspx" />
     <Content Include="Web.config" />
