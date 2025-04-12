@@ -56,11 +56,13 @@
                     <div class="card-body">
                         <div class="row g-2">
                             <div class="col-md-4">
-                                <select class="form-select">
-                                    <option>Status</option>
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
+                            <asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
+    <asp:ListItem Text="All" Value="" />
+    <asp:ListItem Text="Active" Value="1" />
+    <asp:ListItem Text="Inactive" Value="0" />
+</asp:DropDownList>
+
+
                             </div>
                             <div class="col-md-8">
                                 <div class="input-group">

@@ -21,6 +21,15 @@ namespace trainingLink.UI.maintenance.maintenanceRol
                 }
             }
         }
+        protected void ddlFiltroStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string filtro = ddlFiltroStatus.SelectedValue;
+            CargarRoles(filtro); // recargar la tabla con el filtro
+        }
+
+
+
+
         protected void btnGuardarRol_ServerClick(object sender, EventArgs e)
         {
             string nombreRol = txtNombreRol.Text.Trim();
@@ -57,13 +66,41 @@ namespace trainingLink.UI.maintenance.maintenanceRol
         }
 
 
-        private void CargarRoles()
+        /* private void CargarRoles()
+         {
+             string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
+
+             using (SqlConnection conn = new SqlConnection(connectionString))
+             {
+                 SqlCommand cmd = new SqlCommand("SELECT Name, Description FROM Role", conn);
+                 SqlDataAdapter da = new SqlDataAdapter(cmd);
+                 DataTable dt = new DataTable();
+                 da.Fill(dt);
+                 gvRoles.DataSource = dt;
+                 gvRoles.DataBind();
+             }
+         }
+        */
+
+
+        private void CargarRoles(string statusFiltro = "")
         {
             string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Name, Description FROM Role", conn);
+                string query = "SELECT Name, Description FROM Role";
+                if (!string.IsNullOrEmpty(statusFiltro))
+                {
+                    query += " WHERE Status = @Status";
+                }
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                if (!string.IsNullOrEmpty(statusFiltro))
+                {
+                    cmd.Parameters.AddWithValue("@Status", statusFiltro);
+                }
+
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
