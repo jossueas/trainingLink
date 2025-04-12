@@ -57,21 +57,22 @@
                         <div class="row g-2">
                             <div class="col-md-4">
                             <asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
-    <asp:ListItem Text="All" Value="" />
-    <asp:ListItem Text="Active" Value="1" />
-    <asp:ListItem Text="Inactive" Value="0" />
-</asp:DropDownList>
-
-
+                   <asp:ListItem Text="All" Value="" />
+                   <asp:ListItem Text="Active" Value="1" />
+                   <asp:ListItem Text="Inactive" Value="0" />
+                   </asp:DropDownList>
                             </div>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input type="search" class="form-control" placeholder="Search" aria-label="Search" />
-                                    <button class="btn btn-search-custom" type="submit">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
-                            </div>
+
+                            <!-- Buscar -->
+<div class="col-md-8">
+    <div class="input-group">
+        <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Search" />
+        <asp:LinkButton ID="btnBuscar" runat="server" CssClass="btn btn-search-custom" OnClick="btnBuscar_Click" CausesValidation="false">
+            <i class="bi bi-search"></i>
+        </asp:LinkButton>
+    </div>
+</div>
+
                         </div>
                     </div>
                 </div>

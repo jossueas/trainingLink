@@ -8,8 +8,13 @@ namespace trainingLink.UI.maintenance.maintenanceRol
 {
     public partial class rol : Page
     {
+
+    
         protected void Page_Load(object sender, EventArgs e)
         {
+
+           
+
             if (!IsPostBack)
             {
                 CargarRoles();
@@ -20,6 +25,10 @@ namespace trainingLink.UI.maintenance.maintenanceRol
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "alertaGuardar", "cerrarModalYMostrarAlerta();", true);
                 }
             }
+
+
+            btnBuscar.Text = "<i class='bi bi-search'></i>";
+        
         }
         protected void ddlFiltroStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -27,6 +36,7 @@ namespace trainingLink.UI.maintenance.maintenanceRol
             CargarRoles(filtro); // recargar la tabla con el filtro
         }
 
+        
 
 
 
@@ -109,7 +119,32 @@ namespace trainingLink.UI.maintenance.maintenanceRol
             }
         }
 
-       
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+            string busqueda = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(busqueda))
+            {
+                CargarRoles(); // Si no hay texto, mostrar todo
+                return;
+            }
+
+            string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_SearchRole", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Busqueda", busqueda); // <-- tu parámetro original
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                gvRoles.DataSource = dt;
+                gvRoles.DataBind();
+            }
+        }
 
 
 

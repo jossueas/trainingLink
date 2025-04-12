@@ -342,17 +342,20 @@ label {
     }
 
 
+    /*btn de search*/
+
 .btn-search-custom {
     background-color: #1F4C82;
     color: white;
     border: none;
-    transition: background-color 0.3s ease;
+    border-radius: 0 6px 6px 0;
 }
 
     .btn-search-custom:hover {
-        background-color: #5BBCB7;
+        background-color: #163a63;
         color: white;
     }
+
 
     /* Modal */
 
