@@ -12,6 +12,18 @@
 
     <!-- Estilos personalizados -->
     <link href="../../master/styles.css" rel="stylesheet" />
+    <style>
+        .btn-delete-custom {
+            background-color: #E9738E;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete-custom:hover {
+            background-color: #d95b76;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -47,7 +59,7 @@
             <div class="container py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0 tituloRol">Role</h2>
-                    <button type="button" class="btn btn-plus-custom" data-bs-toggle="modal" data-bs-target="#modalCrearRol">
+                    <button type="button" class="btn btn-plus-custom" data-bs-toggle="modal" data-bs-target="#modalCrearRol" onclick="prepararModalCrear()">
                         <i class="bi bi-plus-lg"></i>
                     </button>
                 </div>
@@ -56,22 +68,24 @@
                     <div class="card-body">
                         <div class="row g-2">
                             <div class="col-md-4">
-                            <asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
-                   <asp:ListItem Text="All" Value="" />
-                   <asp:ListItem Text="Active" Value="1" />
-                   <asp:ListItem Text="Inactive" Value="0" />
-                   </asp:DropDownList>
+                                <asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
+                                    <asp:ListItem Text="All" Value="" />
+                                    <asp:ListItem Text="Active" Value="1" />
+                                    <asp:ListItem Text="Inactive" Value="0" />
+                                </asp:DropDownList>
                             </div>
-
-                            <!-- Buscar -->
+                        <div class="col-md-8">
 <div class="col-md-8">
-    <div class="input-group">
-        <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Search" />
-        <asp:LinkButton ID="btnBuscar" runat="server" CssClass="btn btn-search-custom" OnClick="btnBuscar_Click" CausesValidation="false">
-            <i class="bi bi-search"></i>
-        </asp:LinkButton>
-    </div>
+    <asp:Panel runat="server" DefaultButton="btnBuscar">
+        <div class="input-group">
+            <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Search" />
+            <asp:LinkButton ID="btnBuscar" runat="server" CssClass="btn btn-search-custom" OnClick="btnBuscar_Click" CausesValidation="false">
+                <i class="bi bi-search"></i>
+            </asp:LinkButton>
+        </div>
+    </asp:Panel>
 </div>
+
 
                         </div>
                     </div>
@@ -83,44 +97,44 @@
                         <asp:BoundField DataField="Description" HeaderText="Description" />
                         <asp:TemplateField HeaderText="Action">
                             <ItemTemplate>
-                                <a href="#"><i class="bi bi-pencil-square"></i></a>
+                                <a href="javascript:void(0);" onclick='abrirModalEditar("<%# Eval("IdRol") %>", "<%# Eval("Name") %>", "<%# Eval("Description") %>", "<%# (Convert.ToBoolean(Eval("Status")) ? "1" : "0") %>")'>
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
             </div>
 
-            <!-- Toast de éxito -->
             <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
-              <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                  <div class="toast-body">
-                    ✅ Rol creado exitosamente.
-                  </div>
-                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ✅ Acción realizada exitosamente.
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                    </div>
                 </div>
-              </div>
             </div>
 
-            <!-- Footer -->
             <footer class="custom-footer">
                 <strong>TrainingLink</strong><br />
                 Sistema de Gestión de Training
             </footer>
         </div>
 
-        <!-- Modal -->
         <div class="modal fade" id="modalCrearRol" tabindex="-1" aria-labelledby="modalCrearRolLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content modal-bg-custom">
                     <div class="modal-header modal-header-custom">
-                        <h5 class="modal-title">Agregar Nuevo Rol</h5>
+                        <h5 class="modal-title" id="modalCrearRolLabel">Agregar Nuevo Rol</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="txtNombreRol" class="form-label">Nombre del Rol</label>
                             <asp:TextBox ID="txtNombreRol" runat="server" CssClass="form-control" placeholder="Ej. Supervisor" />
+                            <asp:HiddenField ID="hdnIdRol" runat="server" />
                         </div>
                         <div class="mb-3">
                             <label for="txtDescripcionRol" class="form-label">Descripción</label>
@@ -135,20 +149,41 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <div id="btnEliminarContainer" class="me-auto" style="display:none">
+                            <asp:Button ID="btnEliminarRol" runat="server" CssClass="btn btn-delete-custom" Text="Eliminar" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar este rol?');" OnClick="btnEliminarRol_ServerClick" />
+                        </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" runat="server" class="btn btn-save-custom" onserverclick="btnGuardarRol_ServerClick">Guardar</button>
+                        <asp:Button ID="btnGuardarRol" runat="server" CssClass="btn btn-save-custom" OnClick="btnGuardarRol_ServerClick" Text="Guardar" />
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bootstrap Bundle (Bootstrap + Popper) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Scripts personalizados (antes del cierre del form) -->
         <script src="../../master/scripts.js"></script>
-    </form>
+        <script>
+            function prepararModalCrear() {
+                document.getElementById("<%= txtNombreRol.ClientID %>").value = "";
+                document.getElementById("<%= txtDescripcionRol.ClientID %>").value = "";
+                document.getElementById("<%= ddlEstadoRol.ClientID %>").value = "1";
+                document.getElementById("<%= hdnIdRol.ClientID %>").value = "";
+                document.getElementById("<%= btnGuardarRol.ClientID %>").value = "Guardar";
+                document.getElementById("modalCrearRolLabel").innerText = "Agregar Nuevo Rol";
+                document.getElementById("btnEliminarContainer").style.display = "none";
+            }
 
-  
+            function abrirModalEditar(id, name, description, status) {
+                document.getElementById("<%= txtNombreRol.ClientID %>").value = name;
+                document.getElementById("<%= txtDescripcionRol.ClientID %>").value = description;
+                document.getElementById("<%= ddlEstadoRol.ClientID %>").value = status;
+                document.getElementById("<%= hdnIdRol.ClientID %>").value = id;
+                document.getElementById("<%= btnGuardarRol.ClientID %>").value = "Actualizar";
+                document.getElementById("modalCrearRolLabel").innerText = "Editar Rol";
+                document.getElementById("btnEliminarContainer").style.display = "block";
+                const modal = new bootstrap.Modal(document.getElementById("modalCrearRol"));
+                modal.show();
+            }
+        </script>
+    </form>
 </body>
 </html>

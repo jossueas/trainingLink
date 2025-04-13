@@ -42,5 +42,22 @@ function mostrarToastExito() {
 }
 
 
+function abrirModalEditar(id, nombre, descripcion, estado) {
+
+    console.log("Estado recibido:", status); // <--- probando esto
+    document.getElementById('<%= hdnIdRol.ClientID %>').value = id;
+    document.getElementById('<%= txtNombreRol.ClientID %>').value = nombre;
+    document.getElementById('<%= txtDescripcionRol.ClientID %>').value = descripcion;
+    document.getElementById('<%= ddlEstadoRol.ClientID %>').value = estado;
+
+    const btnGuardar = document.querySelector(".btn-save-custom");
+    btnGuardar.innerText = "Update";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearRol"));
+    modal.show();
+}
+
+
+
 // ? REGISTRA globalmente
 window.mostrarToastExito = mostrarToastExito;

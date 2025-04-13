@@ -36,7 +36,7 @@ namespace trainingLink.UI.maintenance.maintenanceRol
             CargarRoles(filtro); // recargar la tabla con el filtro
         }
 
-        
+
 
 
 
@@ -46,13 +46,24 @@ namespace trainingLink.UI.maintenance.maintenanceRol
             string descripcionRol = txtDescripcionRol.Text.Trim();
             string estadoRol = ddlEstadoRol.SelectedValue;
             bool estado = estadoRol == "1";
+            string idRol = hdnIdRol.Value;
 
             string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("sp_InsertRole", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd;
+                if (!string.IsNullOrEmpty(idRol))
+                {
+                    cmd = new SqlCommand("sp_UpdateRole", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdRol", idRol);
+                }
+                else
+                {
+                    cmd = new SqlCommand("sp_InsertRole", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                }
 
                 cmd.Parameters.AddWithValue("@Name", nombreRol);
                 cmd.Parameters.AddWithValue("@Description", descripcionRol);
@@ -62,18 +73,18 @@ namespace trainingLink.UI.maintenance.maintenanceRol
                 {
                     conn.Open();
                     cmd.ExecuteNonQuery();
+                    CargarRoles();
 
-                    // Aquí mostramos el toast de éxito y recargamos la tabla
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toast", "mostrarToastExito();", true);
-                    CargarRoles(); // vuelve a llenar el GridView
+                    // resetear y mostrar toast
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "mostrarToastExito();", true);
                 }
                 catch (Exception ex)
                 {
-                    // Manejo de errores si falla el insert
-                    throw new Exception("Error al insertar rol: " + ex.Message);
+                    throw new Exception("Error al guardar/actualizar el rol: " + ex.Message);
                 }
             }
         }
+
 
 
         /* private void CargarRoles()
@@ -99,7 +110,9 @@ namespace trainingLink.UI.maintenance.maintenanceRol
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT Name, Description FROM Role";
+                // Incluimos IdRole y Status para futuras acciones como editar y filtrar
+                string query = "SELECT IdRol, Name, Description, Status FROM Role";
+
                 if (!string.IsNullOrEmpty(statusFiltro))
                 {
                     query += " WHERE Status = @Status";
@@ -118,6 +131,7 @@ namespace trainingLink.UI.maintenance.maintenanceRol
                 gvRoles.DataBind();
             }
         }
+
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -146,7 +160,33 @@ namespace trainingLink.UI.maintenance.maintenanceRol
             }
         }
 
+        /*Eliminar*/
+        protected void btnEliminarRol_ServerClick(object sender, EventArgs e)
+        {
+            int idRol = int.Parse(hdnIdRol.Value);
+            string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
 
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_DeleteRole", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@IdRol", idRol);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    // Mostrar toast y recargar
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "mostrarToastExito();", true);
+                    CargarRoles();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al eliminar el rol: " + ex.Message);
+                }
+            }
+        }
 
 
 
