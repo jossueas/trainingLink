@@ -114,15 +114,20 @@ function abrirModalEditar(id, nombre, descripcion, estado) {
 
 // Modal de creación para ÁREA
 function prepararModalCrearArea() {
-    document.getElementById("txtNombreArea").value = "";
-    document.getElementById("txtDescripcionArea").value = "";
-    document.getElementById("ddlBusinessUnit").selectedIndex = 0;
-    document.getElementById("ddlEstadoArea").value = "1";
-    document.getElementById("hdnIdArea").value = "";
-    document.getElementById("btnGuardarArea").value = "Guardar";
+    // Restablecer los valores del formulario
+    document.getElementById("<%= txtNombreArea.ClientID %>").value = "";
+    document.getElementById("<%= txtDescripcionArea.ClientID %>").value = "";
+    document.getElementById("<%= ddlEstadoArea.ClientID %>").value = "1"; // Estado activo
+    document.getElementById("<%= hdnIdArea.ClientID %>").value = "";
+    document.getElementById("<%= btnGuardarArea.ClientID %>").value = "Guardar";
     document.getElementById("modalCrearAreaLabel").innerText = "Agregar Nueva Área";
     document.getElementById("btnEliminarContainer").style.display = "none";
+
+    // si ocupo que se llene el DropDownList en el modal de manera asincrónica,
+    // puedo llamar a la función del servidor para recargar las unidades de negocio.
+    // CargarUnidadesNegocio(); // Puedes habilitar esta función si es necesario cargar de nuevo
 }
+
 
 
 // Modal de edición para ÁREA

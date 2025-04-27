@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
-    <title>Área - TrainingLink</title>
+    <title>Area - TrainingLink</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
@@ -54,7 +54,7 @@
         <div class="main-content collapsed" id="mainContent">
             <div class="container py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0 tituloRol">Área</h2>
+                    <h2 class="mb-0 tituloRol">Area</h2>
                     <button type="button" class="btn btn-plus-custom" data-bs-toggle="modal" data-bs-target="#modalCrearArea" onclick="prepararModalCrearArea()">
                         <i class="bi bi-plus-lg"></i>
                     </button>
@@ -152,7 +152,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="ddlBusinessUnit" class="form-label">Unidad de Negocio</label>
-                            <asp:DropDownList ID="ddlBusinessUnit" runat="server" CssClass="form-select" />
+                         <asp:DropDownList ID="ddlBusinessUnit" runat="server" CssClass="form-select">
+                         </asp:DropDownList>
+
                         </div>
                         <div class="mb-3">
                             <label for="ddlEstadoArea" class="form-label">Estado</label>

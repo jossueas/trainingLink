@@ -20,6 +20,7 @@ namespace trainingLink.UI.maintenance.maintenanceArea
         }
 
         // Función para cargar los filtros de unidades de negocio
+        // Función para cargar los filtros de unidades de negocio
         private void CargarUnidadesNegocio()
         {
             string connStr = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
@@ -30,6 +31,7 @@ namespace trainingLink.UI.maintenance.maintenanceArea
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
+                // Cargar el DropDownList de filtro
                 ddlFiltroBusinessUnit.DataSource = dt;
                 ddlFiltroBusinessUnit.DataTextField = "Name";
                 ddlFiltroBusinessUnit.DataValueField = "IdBusinessUnit";
@@ -37,8 +39,18 @@ namespace trainingLink.UI.maintenance.maintenanceArea
 
                 // Añadir la opción "Todos" al inicio del DropDownList
                 ddlFiltroBusinessUnit.Items.Insert(0, new ListItem("Todos", "0"));
+
+                // Cargar el DropDownList en el modal también
+                ddlBusinessUnit.DataSource = dt;
+                ddlBusinessUnit.DataTextField = "Name";
+                ddlBusinessUnit.DataValueField = "IdBusinessUnit";
+                ddlBusinessUnit.DataBind();
+
+                // Añadir la opción "Seleccione una unidad" al inicio del DropDownList
+                ddlBusinessUnit.Items.Insert(0, new ListItem("Seleccione una unidad", "0"));
             }
         }
+
 
 
         private void CargarAreas()
