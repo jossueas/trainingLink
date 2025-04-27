@@ -35,7 +35,7 @@
 
         <!-- Sidebar -->
         <nav class="sidebar collapsed" id="sidebar">
-            <a href="#" class="nav-link">Inicio</a>
+            <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
             <a href="#" class="nav-link">Usuarios</a>
             <a href="#" class="nav-link">Reportes</a>
            <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">
@@ -43,7 +43,7 @@
     </a>
     <div class="collapse ms-3" id="submenuMantenimientos">
      <a href="..\maintenance\maintenanceRol\rol.aspx" class="nav-link">Role</a>
-
+        <a href="..\maintenance\maintenanceArea\area.aspx" class="nav-link">Area</a>
         <a href="#" class="nav-link">Bussines Unit</a>
     </div>
 

@@ -41,15 +41,17 @@
             </div>
         </header>
 
+       
+     
         <!-- Sidebar -->
         <nav class="sidebar collapsed" id="sidebar">
-            <a href="#" class="nav-link">Inicio</a>
+             <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
             <a href="#" class="nav-link">Usuarios</a>
             <a href="#" class="nav-link">Reportes</a>
             <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
             <div class="collapse ms-3" id="submenuMantenimientos">
                 <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
-                <a href="#" class="nav-link">Business Unit</a>
+                <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
             </div>
             <a href="#" class="nav-link">Salir</a>
         </nav>
@@ -106,6 +108,9 @@
                 </asp:GridView>
             </div>
 
+
+
+                 <!-- Toast -->
             <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
                 <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
