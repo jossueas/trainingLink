@@ -45,6 +45,8 @@
             <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse">Mantenimientos</a>
             <div class="collapse ms-3" id="submenuMantenimientos">
                 <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
+                <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
+
                 <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
             </div>
             <a href="#" class="nav-link">Salir</a>

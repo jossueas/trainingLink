@@ -75,6 +75,32 @@ function mostrarToastExitoArea() {
     }
 }
 
+// Toast para BussinesUnirr
+function mostrarToastExitoBsinessUnit() {
+    cerrarModal("modalCrearArea");
+
+    document.getElementById("txtNombreBusinessUnit").value = "";
+    document.getElementById("ddlEstadoBusinessUnit").selectedIndex = 0;
+    document.getElementById("hdnIdBusinessUnit").value = "";
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+
+
+
+
+
+
+
 
 // Cerrar el modal por ID
 
@@ -164,3 +190,101 @@ window.prepararModalCrearArea = prepararModalCrearArea;
 window.abrirModalEditar = abrirModalEditar;
 window.abrirModalEditarArea = abrirModalEditarArea;
 window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
+
+
+
+//************************Business Unit*******************************
+
+
+
+
+// Función para preparar el modal de Business Unit
+// Función para preparar el modal de Business Unit
+function prepararModalCrearBusinessUnit() {
+    // Limpiar los campos
+    document.getElementById("<%= txtNombreBusinessUnit.ClientID %>").value = ""; // Limpiar el campo Nombre
+    document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = "1"; // Establecer estado por defecto (Activo)
+
+    // Cambiar el valor del botón
+    document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Guardar"; // Cambiar título del botón a "Guardar"
+
+    // Opcional: Cambiar el título del modal
+    document.getElementById("modalCrearBusinessUnitLabel").innerText = "Agregar Nueva Business Unit";
+
+    // Ocultar el botón de eliminar (si aplica)
+    document.getElementById("btnEliminarContainerBusinessUnit").style.display = "none";
+}
+
+
+
+// Ensure the modal is fully visible before modifying its content
+$('#modalCrearBusinessUnit').on('shown.bs.modal', function () {
+    prepararModalCrearBusinessUnit();
+});
+
+
+
+
+// Función para abrir el modal de edición de Business Unit
+function abrirModalEditarBusinessUnit(id, name, description, status) {
+    document.getElementById("<%= txtNombreBusinessUnit.ClientID %>").value = name;
+    document.getElementById("<%= txtDescripcionBusinessUnit.ClientID %>").value = description;
+    document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = status; // Establecer estado (activo o inactivo)
+    document.getElementById("<%= hdnIdBusinessUnit.ClientID %>").value = id; // Asignar ID para actualizar
+    document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Actualizar"; // Cambiar el valor del botón
+    document.getElementById("modalCrearBusinessUnitLabel").innerText = "Editar Unidad de Negocio"; // Cambiar el título del modal
+    document.getElementById("btnEliminarContainerBusinessUnit").style.display = "block"; // Mostrar el botón de eliminar
+
+    // Mostrar el modal
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearBusinessUnit"));
+    modal.show();
+}
+
+
+// Función para eliminar una Business Unit
+function eliminarBusinessUnit(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar esta unidad de negocio?")) {
+        // Llamar al servidor para eliminar el registro
+        window.location.href = "area.aspx?delete=" + id;  // Aquí puedes redirigir o hacer un request AJAX para eliminar el registro
+    }
+}
+
+
+
+// Función para cargar las unidades de negocio en el modal (si es necesario)
+function cargarUnidadesDeNegocio() {
+    const ddlBusinessUnit = document.getElementById("<%= ddlBusinessUnit.ClientID %>");
+    fetch('path_to_get_business_units') // Aquí debes poner la ruta correcta a tu endpoint o el código del servidor que envía la lista de unidades de negocio
+        .then(response => response.json())
+        .then(data => {
+            // Limpiar opciones anteriores
+            ddlBusinessUnit.innerHTML = '';
+
+            // Agregar opción 'Seleccione' por defecto
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '0'; // O valor predeterminado
+            defaultOption.innerText = 'Seleccione una Unidad de Negocio';
+            ddlBusinessUnit.appendChild(defaultOption);
+
+            // Llenar con las unidades de negocio
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.IdBusinessUnit;
+                option.innerText = item.Name;
+                ddlBusinessUnit.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error cargando las unidades de negocio:', error));
+}
+
+
+// Función para mostrar el toast de éxito
+function mostrarToastExitoBusinessUnit() {
+    const toastEl = document.getElementById("toastSuccess");
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+
+    toastEl.addEventListener('shown.bs.toast', () => {
+        setTimeout(() => toast.hide(), 5000);
+    });
+}

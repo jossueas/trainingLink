@@ -69,7 +69,9 @@
   <ItemGroup>
     <Content Include="UI\Home\home.aspx" />
     <Content Include="UI\login\login.aspx" />
+    <Content Include="UI\maintenance\BusinessUnit.aspx" />
     <Content Include="UI\maintenance\maintenanceArea\area.aspx" />
+    <Content Include="UI\maintenance\maintenanceBusinessUnit\businessUnit.aspx" />
     <Content Include="UI\maintenance\maintenanceRol\rol.aspx" />
     <Content Include="UI\master\scripts.js" />
     <Content Include="UI\master\styles.css" />
@@ -92,12 +94,26 @@
     <Compile Include="UI\login\login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UI\maintenance\BusinessUnit.aspx.cs">
+      <DependentUpon>BusinessUnit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\maintenance\BusinessUnit.aspx.designer.cs">
+      <DependentUpon>BusinessUnit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UI\maintenance\maintenanceArea\area.aspx.cs">
       <DependentUpon>area.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\maintenance\maintenanceArea\area.aspx.designer.cs">
       <DependentUpon>area.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceBusinessUnit\businessUnit.aspx.cs">
+      <DependentUpon>businessUnit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceBusinessUnit\businessUnit.aspx.designer.cs">
+      <DependentUpon>businessUnit.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\maintenance\maintenanceRol\rol.aspx.cs">
       <DependentUpon>rol.aspx</DependentUpon>
