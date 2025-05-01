@@ -16,7 +16,6 @@ namespace trainingLink.UI.maintenance.maintenanceBusinessUnit
             if (!IsPostBack)
             {
                 CargarBusinessUnits(); // Cargar unidades de negocio al inicio
-                CargarFiltrosStatus(); // Cargar los filtros de estado (activo/inactivo)
             }
         }
 
@@ -33,22 +32,18 @@ namespace trainingLink.UI.maintenance.maintenanceBusinessUnit
 
 
 
-     
+
 
         // Función de búsqueda por nombre o descripción
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            // Aquí puedes llamar a la función para cargar los datos filtrados
+         
+
             CargarBusinessUnits();
         }
 
-        // Función para cargar los filtros de estado de las unidades de negocio
-        private void CargarFiltrosStatus()
-        {
-            ddlFiltroStatusBusinessUnit.Items.Insert(0, new ListItem("Todos", ""));
-            ddlFiltroStatusBusinessUnit.Items.Insert(1, new ListItem("Activo", "1"));
-            ddlFiltroStatusBusinessUnit.Items.Insert(2, new ListItem("Inactivo", "0"));
-        }
+
+      
 
         // Función para cargar las unidades de negocio
         // Función para cargar las unidades de negocio
@@ -117,7 +112,11 @@ namespace trainingLink.UI.maintenance.maintenanceBusinessUnit
                     conn.Open();
                     cmd.ExecuteNonQuery(); // Ejecuta la consulta
 
-                    // Recargar las unidades de negocio
+                    //Despúes de la oporación, recargar datos 
+                    CargarBusinessUnits();
+
+
+                    //Mostrar un toast exito 
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "mostrarToastExitoBusinessUnit();", true);
                 }
                 catch (Exception ex)

@@ -42,15 +42,6 @@ namespace trainingLink.UI.maintenance.maintenanceBusinessUnit
         protected global::System.Web.UI.WebControls.TextBox txtBuscar;
 
         /// <summary>
-        /// TextBox1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
-
-        /// <summary>
         /// btnBuscar control.
         /// </summary>
         /// <remarks>
@@ -94,6 +85,15 @@ namespace trainingLink.UI.maintenance.maintenanceBusinessUnit
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEstadoBusinessUnit;
+
+        /// <summary>
+        /// btnEliminarBusinessUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEliminarBusinessUnit;
 
         /// <summary>
         /// btnGuardarBusinessUnit control.

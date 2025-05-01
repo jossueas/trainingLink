@@ -181,15 +181,7 @@ function validarUnidadNegocioAntesDeGuardar(idDropDown) {
     return true;
 }
 
-// Registrar funciones en scope global
-window.toggleSidebar = toggleSidebar;
-window.cerrarModal = cerrarModal;
-window.mostrarToastExito = mostrarToastExito;
-window.mostrarToastExitoArea = mostrarToastExitoArea;
-window.prepararModalCrearArea = prepararModalCrearArea;
-window.abrirModalEditar = abrirModalEditar;
-window.abrirModalEditarArea = abrirModalEditarArea;
-window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
+
 
 
 
@@ -197,48 +189,15 @@ window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
 
 
 
-
-// Función para preparar el modal de Business Unit
-// Función para preparar el modal de Business Unit
-function prepararModalCrearBusinessUnit() {
-    // Limpiar los campos
-    document.getElementById("<%= txtNombreBusinessUnit.ClientID %>").value = ""; // Limpiar el campo Nombre
-    document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = "1"; // Establecer estado por defecto (Activo)
-
-    // Cambiar el valor del botón
-    document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Guardar"; // Cambiar título del botón a "Guardar"
-
-    // Opcional: Cambiar el título del modal
-    document.getElementById("modalCrearBusinessUnitLabel").innerText = "Agregar Nueva Business Unit";
-
-    // Ocultar el botón de eliminar (si aplica)
-    document.getElementById("btnEliminarContainerBusinessUnit").style.display = "none";
-}
-
-
-
-// Ensure the modal is fully visible before modifying its content
-$('#modalCrearBusinessUnit').on('shown.bs.modal', function () {
-    prepararModalCrearBusinessUnit();
-});
-
-
-
-
 // Función para abrir el modal de edición de Business Unit
-function abrirModalEditarBusinessUnit(id, name, description, status) {
-    document.getElementById("<%= txtNombreBusinessUnit.ClientID %>").value = name;
-    document.getElementById("<%= txtDescripcionBusinessUnit.ClientID %>").value = description;
-    document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = status; // Establecer estado (activo o inactivo)
-    document.getElementById("<%= hdnIdBusinessUnit.ClientID %>").value = id; // Asignar ID para actualizar
-    document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Actualizar"; // Cambiar el valor del botón
-    document.getElementById("modalCrearBusinessUnitLabel").innerText = "Editar Unidad de Negocio"; // Cambiar el título del modal
-    document.getElementById("btnEliminarContainerBusinessUnit").style.display = "block"; // Mostrar el botón de eliminar
-
-    // Mostrar el modal
+/*
+function mostrarModalCrearBusinessUnit() {
+    console.log("Modal abrir: prepararModalCrearBusinessUnit()");
+    prepararModalCrearBusinessUnit();
     const modal = new bootstrap.Modal(document.getElementById("modalCrearBusinessUnit"));
     modal.show();
 }
+*/
 
 
 // Función para eliminar una Business Unit
@@ -288,3 +247,30 @@ function mostrarToastExitoBusinessUnit() {
         setTimeout(() => toast.hide(), 5000);
     });
 }
+
+
+function abrirModalEditarBusinessUnit(id, nombre, estado) {
+    console.log("Estado recibido:", estado);
+
+    document.getElementById("hdnIdBusinessUnit").value = id;
+    document.getElementById("txtNombreBusinessUnit").value = nombre;
+    document.getElementById("ddlEstadoBusinessUnit").value = estado;
+
+    const btnGuardar = document.getElementById("btnGuardarBusinessUnit");
+    btnGuardar.value = "Actualizar";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearBusinessUnit"));
+    modal.show();
+}
+
+
+
+// Registrar funciones en scope global
+window.toggleSidebar = toggleSidebar;
+window.cerrarModal = cerrarModal;
+window.mostrarToastExito = mostrarToastExito;
+window.mostrarToastExitoArea = mostrarToastExitoArea;
+window.prepararModalCrearArea = prepararModalCrearArea;
+window.abrirModalEditar = abrirModalEditar;
+window.abrirModalEditarArea = abrirModalEditarArea;
+window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
