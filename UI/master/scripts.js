@@ -155,6 +155,62 @@ function validarUnidadNegocioAntesDeGuardar(idDropDown) {
     return true;
 }
 
+
+
+
+
+
+
+//Turno
+
+
+// Toast para TURNO
+
+
+function validarAreaAntesDeGuardar(idDropDown) {
+    const ddl = document.getElementById(idDropDown);
+    if (ddl && (ddl.value === "" || ddl.value === "0")) {
+        alert("⚠ Por favor seleccione un área válida antes de guardar el turno.");
+        return false;
+    }
+    return true;
+}
+
+function mostrarToastExitoTurno() {
+    cerrarModal("modalCrearTurno");
+
+    document.getElementById("txtNombreTurno").value = "";
+    document.getElementById("ddlEstadoTurno").value = "1";
+    document.getElementById("ddlArea").selectedIndex = 0;
+    document.getElementById("hdnIdTurno").value = "";
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Registrar funciones en scope global
 window.toggleSidebar = toggleSidebar;
 window.cerrarModal = cerrarModal;
@@ -164,3 +220,6 @@ window.prepararModalCrearArea = prepararModalCrearArea;
 window.abrirModalEditar = abrirModalEditar;
 window.abrirModalEditarArea = abrirModalEditarArea;
 window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
+window.mostrarToastExitoTurno = mostrarToastExitoTurno;
+window.validarAreaAntesDeGuardar = validarAreaAntesDeGuardar;
+
