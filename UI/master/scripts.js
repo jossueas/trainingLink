@@ -75,6 +75,32 @@ function mostrarToastExitoArea() {
     }
 }
 
+// Toast para BussinesUnirr
+function mostrarToastExitoBsinessUnit() {
+    cerrarModal("modalCrearArea");
+
+    document.getElementById("txtNombreBusinessUnit").value = "";
+    document.getElementById("ddlEstadoBusinessUnit").selectedIndex = 0;
+    document.getElementById("hdnIdBusinessUnit").value = "";
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+
+
+
+
+
+
+
 
 // Cerrar el modal por ID
 
@@ -159,57 +185,56 @@ function validarUnidadNegocioAntesDeGuardar(idDropDown) {
 
 
 
+//************************Business Unit*******************************
 
 
-//Turno
 
-
-// Toast para TURNO
-
-
-function validarAreaAntesDeGuardar(idDropDown) {
-    const ddl = document.getElementById(idDropDown);
-    if (ddl && (ddl.value === "" || ddl.value === "0")) {
-        alert("⚠ Por favor seleccione un área válida antes de guardar el turno.");
-        return false;
-    }
-    return true;
+// Función para abrir el modal de edición de Business Unit
+/*
+function mostrarModalCrearBusinessUnit() {
+    console.log("Modal abrir: prepararModalCrearBusinessUnit()");
+    prepararModalCrearBusinessUnit();
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearBusinessUnit"));
+    modal.show();
 }
+*/
 
-function mostrarToastExitoTurno() {
-    cerrarModal("modalCrearTurno");
 
-    document.getElementById("txtNombreTurno").value = "";
-    document.getElementById("ddlEstadoTurno").value = "1";
-    document.getElementById("ddlArea").selectedIndex = 0;
-    document.getElementById("hdnIdTurno").value = "";
-
-    const toastEl = document.getElementById("toastSuccess");
-    if (toastEl) {
-        const toast = new bootstrap.Toast(toastEl);
-        toast.show();
-
-        toastEl.addEventListener('shown.bs.toast', () => {
-            setTimeout(() => toast.hide(), 5000);
-        });
+// Función para eliminar una Business Unit
+function eliminarBusinessUnit(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar esta unidad de negocio?")) {
+        // Llamar al servidor para eliminar el registro
+        window.location.href = "area.aspx?delete=" + id;  // Aquí puedes redirigir o hacer un request AJAX para eliminar el registro
     }
 }
 
 
 
+// Función para cargar las unidades de negocio en el modal (si es necesario)
+function cargarUnidadesDeNegocio() {
+    const ddlBusinessUnit = document.getElementById("<%= ddlBusinessUnit.ClientID %>");
+    fetch('path_to_get_business_units') // Aquí debes poner la ruta correcta a tu endpoint o el código del servidor que envía la lista de unidades de negocio
+        .then(response => response.json())
+        .then(data => {
+            // Limpiar opciones anteriores
+            ddlBusinessUnit.innerHTML = '';
 
+            // Agregar opción 'Seleccione' por defecto
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '0'; // O valor predeterminado
+            defaultOption.innerText = 'Seleccione una Unidad de Negocio';
+            ddlBusinessUnit.appendChild(defaultOption);
 
-
-
-
-
-
-
-
-
-
-
-
+            // Llenar con las unidades de negocio
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.IdBusinessUnit;
+                option.innerText = item.Name;
+                ddlBusinessUnit.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error cargando las unidades de negocio:', error));
+}
 
 // Registrar funciones en scope global
 window.toggleSidebar = toggleSidebar;
@@ -220,6 +245,3 @@ window.prepararModalCrearArea = prepararModalCrearArea;
 window.abrirModalEditar = abrirModalEditar;
 window.abrirModalEditarArea = abrirModalEditarArea;
 window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
-window.mostrarToastExitoTurno = mostrarToastExitoTurno;
-window.validarAreaAntesDeGuardar = validarAreaAntesDeGuardar;
-
