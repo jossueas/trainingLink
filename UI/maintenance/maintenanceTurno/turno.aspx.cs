@@ -126,8 +126,16 @@ namespace trainingLink.UI.maintenance.maintenanceTurno
                 cmd.Parameters.AddWithValue("@IdTurno", idTurno);
                 conn.Open();
                 cmd.ExecuteNonQuery();
+
+                // Recargar datos después de eliminar
                 CargarTurnos();
             }
         }
+
+
+
+
+
+
     }
 }

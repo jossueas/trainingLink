@@ -56,10 +56,12 @@
             <a href="#" class="nav-link">Reportes</a>
             <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
             <div class="collapse ms-3" id="submenuMantenimientos">
+                 
                 <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
                 <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
 
-                <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
+                <a href="../maintenanceArea/turno.aspx" class="nav-link">Área</a>
+                 <a href="../maintenanceTurno/rol.aspx" class="nav-link">Turno</a>
             </div>
             <a href="#" class="nav-link">Salir</a>
         </nav>
