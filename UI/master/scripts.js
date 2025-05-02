@@ -236,6 +236,26 @@ function cargarUnidadesDeNegocio() {
         .catch(error => console.error('Error cargando las unidades de negocio:', error));
 }
 
+
+function mostrarToastExitoBusinessUnit() {
+    cerrarModal("modalCrearBusinessUnit");
+
+    document.getElementById("txtNombreBusinessUnit").value = "";
+    document.getElementById("ddlEstadoBusinessUnit").selectedIndex = 0;
+    document.getElementById("hdnIdBusinessUnit").value = "";
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+
 // Registrar funciones en scope global
 window.toggleSidebar = toggleSidebar;
 window.cerrarModal = cerrarModal;
