@@ -97,7 +97,7 @@
     </Compile>
     <Compile Include="UI\maintenance\BusinessUnit.aspx.cs">
       <DependentUpon>BusinessUnit.aspx</DependentUpon>
-
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\maintenance\BusinessUnit.aspx.designer.cs">
       <DependentUpon>BusinessUnit.aspx</DependentUpon>
