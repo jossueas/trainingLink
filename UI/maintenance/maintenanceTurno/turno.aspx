@@ -46,7 +46,8 @@
        <div class="collapse ms-3" id="submenuMantenimientos">
            <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
            <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
-           <a href="../maintenanceTurno/rol.aspx" class="nav-link">Turno</a>
+           <a href="../maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
+           <a href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
            <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
        </div>
        <a href="#" class="nav-link">Salir</a>
@@ -86,7 +87,7 @@
                 </div>
             </div>
 
-            <asp:GridView ID="gvTurno" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle">
+            <asp:GridView ID="gvTurno" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="Nombre" SortExpression="Name" />
                     <asp:BoundField DataField="NombreArea" HeaderText="Área" SortExpression="NombreArea" />

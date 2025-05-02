@@ -59,6 +59,7 @@
                  
                 <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
                 <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
+                         <a href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
 
                 <a href="../maintenanceArea/turno.aspx" class="nav-link">Área</a>
                  <a href="../maintenanceTurno/rol.aspx" class="nav-link">Turno</a>
@@ -116,7 +117,7 @@
                 </div>
 
                 <!-- GridView -->
-                <asp:GridView ID="gvBusinessUnit" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle">
+                <asp:GridView ID="gvBusinessUnit" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info">
                     <Columns>
                         <asp:BoundField DataField="Name" HeaderText="Nombre" SortExpression="Name" />
                        <asp:TemplateField HeaderText="Estado">

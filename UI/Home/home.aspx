@@ -13,10 +13,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<!-- Bootstrap JS (coloca al final del archivo justo antes del </body>) -->
 
+ 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
 
 </head>
 <body>
@@ -46,9 +50,9 @@
         <a href="..\maintenance\maintenanceBusinessUnit\businessUnit.aspx" class="nav-link">Bussines Unit</a>
        
         <a href="..\maintenance\maintenanceTurno\turno.aspx" class="nav-link">Turno</a>
-
-        
+         <a href="..\maintenance\maintenanceMuda\muda.aspx" class="nav-link">Muda</a>
         <a href="..\maintenance\maintenanceArea\area.aspx" class="nav-link">Area</a>
+          <a href="..\maintenance\maintenanceScrap\scrap.aspx" class="nav-link active">Scrap</a>
    
     </div>
 

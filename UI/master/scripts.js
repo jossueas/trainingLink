@@ -283,6 +283,103 @@ function mostrarToastExitoTurno() {
 }
 
 
+
+
+
+
+//MUDA
+
+// Función para mostrar el toast de éxito para MUDA
+function mostrarToastExitoMuda() {
+    cerrarModal("modalCrearMuda");
+
+    document.getElementById("txtNombreMuda").value = "";
+    document.getElementById("ddlEstadoMuda").selectedIndex = 0;
+    document.getElementById("hdnIdMuda").value = "";
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+// Modal de creación para MUDA
+function prepararModalCrearMuda() {
+    document.getElementById("txtNombreMuda").value = "";
+    document.getElementById("ddlEstadoMuda").value = "1";
+    document.getElementById("hdnIdMuda").value = "";
+    document.getElementById("btnGuardarMuda").value = "Guardar";
+    document.getElementById("modalCrearMudaLabel").innerText = "Agregar Nueva MUDA";
+    document.getElementById("btnEliminarContainerMuda").style.display = "none";
+}
+
+// Modal de edición para MUDA
+function abrirModalEditarMuda(id, name, status) {
+    document.getElementById("txtNombreMuda").value = name;
+    document.getElementById("ddlEstadoMuda").value = status;
+    document.getElementById("hdnIdMuda").value = id;
+    document.getElementById("btnGuardarMuda").value = "Actualizar";
+    document.getElementById("modalCrearMudaLabel").innerText = "Editar MUDA";
+    document.getElementById("btnEliminarContainerMuda").style.display = "block";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearMuda"));
+    modal.show();
+}
+
+
+//SCRAP
+
+
+// Toast para SCRAP
+function mostrarToastExitoScrap() {
+    cerrarModal("modalCrearScrap");
+
+    document.getElementById("txtNombreScrap").value = "";
+    document.getElementById("ddlEstadoScrap").selectedIndex = 0;
+    document.getElementById("hdnIdScrap").value = "";
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+// Modal creación para SCRAP
+function prepararModalCrearScrap() {
+    document.getElementById("txtNombreScrap").value = "";
+    document.getElementById("ddlEstadoScrap").value = "1";
+    document.getElementById("hdnIdScrap").value = "";
+    document.getElementById("btnGuardarScrap").value = "Guardar";
+    document.getElementById("modalCrearScrapLabel").innerText = "Agregar Scrap";
+    document.getElementById("btnEliminarContainerScrap").style.display = "none";
+}
+
+// Modal edición para SCRAP
+function abrirModalEditarScrap(id, name, status) {
+    document.getElementById("txtNombreScrap").value = name;
+    document.getElementById("ddlEstadoScrap").value = status;
+    document.getElementById("hdnIdScrap").value = id;
+    document.getElementById("btnGuardarScrap").value = "Actualizar";
+    document.getElementById("modalCrearScrapLabel").innerText = "Editar Scrap";
+    document.getElementById("btnEliminarContainerScrap").style.display = "block";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearScrap"));
+    modal.show();
+}
+
+
+
+
 // Registrar funciones en scope global
 window.toggleSidebar = toggleSidebar;
 window.cerrarModal = cerrarModal;
@@ -292,3 +389,6 @@ window.prepararModalCrearArea = prepararModalCrearArea;
 window.abrirModalEditar = abrirModalEditar;
 window.abrirModalEditarArea = abrirModalEditarArea;
 window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
+window.mostrarToastExitoScrap = mostrarToastExitoScrap;
+window.prepararModalCrearScrap = prepararModalCrearScrap;
+window.abrirModalEditarScrap = abrirModalEditarScrap;
