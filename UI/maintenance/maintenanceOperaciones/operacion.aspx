@@ -66,28 +66,23 @@
             </div>
 <div class="card mb-4">
     <div class="card-body">
-        <div class="row g-2">
-            <!-- Filtro por estado -->
-            <div class="col-md-4">
-                <asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
-                    <asp:ListItem Text="Todos" Value="" />
-                    <asp:ListItem Text="Activo" Value="1" />
-                    <asp:ListItem Text="Inactivo" Value="0" />
-                </asp:DropDownList>
-            </div>
+<div class="d-flex gap-2 align-items-center mb-3">
+    <!-- Filtro de estado -->
+<asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
+    <asp:ListItem Text="Todos" Value=""></asp:ListItem>
+    <asp:ListItem Text="Activo" Value="1"></asp:ListItem>
+    <asp:ListItem Text="Inactivo" Value="0"></asp:ListItem>
+</asp:DropDownList>
 
-            <!-- Búsqueda por nombre -->
-            <div class="col-md-8">
-                <asp:Panel runat="server" DefaultButton="btnBuscar">
-                    <div class="input-group">
-                        <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Buscar por nombre" />
-                        <asp:LinkButton ID="btnBuscar" runat="server" CssClass="btn btn-search-custom" OnClick="btnBuscar_Click" CausesValidation="false">
-                            <i class="bi bi-search"></i>
-                        </asp:LinkButton>
-                    </div>
-                </asp:Panel>
-            </div>
-        </div>
+
+    <!-- Campo de búsqueda -->
+<asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Buscar por nombre..."></asp:TextBox>
+    <!-- Botón de búsqueda -->
+  <asp:LinkButton ID="btnBuscar" runat="server" CssClass="btn btn-primary" OnClick="btnBuscar_Click">
+    <i class="bi bi-search"></i>
+</asp:LinkButton>
+</div>
+
     </div>
 </div>
 

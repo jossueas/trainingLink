@@ -59,10 +59,19 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
         }
         private void CargarOperaciones()
         {
+            int? status = null;
+            if (!string.IsNullOrEmpty(ddlFiltroStatus.SelectedValue))
+                status = int.Parse(ddlFiltroStatus.SelectedValue);
+
+            string nombre = txtBuscar.Text.Trim();
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand("sp_GetAllOperations", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatusFilter", status.HasValue ? (object)status.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@NameFilter", !string.IsNullOrEmpty(nombre) ? (object)nombre : DBNull.Value);
+
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataSet ds = new DataSet();
                 da.Fill(ds);
@@ -71,25 +80,25 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
                 {
                     DataTable dt = ds.Tables[0];
 
-                    // Agregar columna ScriptEditCall si no existe
+                    // Asegurar que exista la columna para el botón editar
                     if (!dt.Columns.Contains("ScriptEditCall"))
                         dt.Columns.Add("ScriptEditCall", typeof(string));
 
                     foreach (DataRow row in dt.Rows)
                     {
                         int id = Convert.ToInt32(row["IdOperation"]);
-                        string name = row["Name"].ToString().Replace("\"", "\\\""); // escapa comillas
+                        string name = row["Name"].ToString().Replace("\"", "\\\"");
                         string output = row["OutputTarget"].ToString();
                         string yield = row["YieldTarget"].ToString();
                         string training = row["OutputTargetTraining"].ToString();
                         string leadTime = row["LeadTime"].ToString();
                         string days = row["NumberDays"].ToString();
                         string areaId = row["IdArea"].ToString();
-                        string status = Convert.ToBoolean(row["Status"]) ? "1" : "0";
+                        string statusStr = Convert.ToBoolean(row["Status"]) ? "1" : "0";
                         string percentOutput = row["PercentOutput"].ToString();
                         string percentYieldTarget = row["PercentYieldTarget"].ToString();
 
-                        row["ScriptEditCall"] = $"abrirModalEditarOperacion({id}, \"{name}\", {output}, {yield}, {training}, {leadTime}, {days}, \"{areaId}\", \"{status}\", {percentOutput}, {percentYieldTarget})";
+                        row["ScriptEditCall"] = $"abrirModalEditarOperacion({id}, \"{name}\", {output}, {yield}, {training}, {leadTime}, {days}, \"{areaId}\", \"{statusStr}\", {percentOutput}, {percentYieldTarget})";
                     }
 
                     gvOperacion.DataSource = dt;
@@ -102,6 +111,7 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
                 }
             }
         }
+
 
 
 
