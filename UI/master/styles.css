@@ -393,3 +393,10 @@ label {
     color: #1F4C82;
     font-weight: bold;
 }
+
+
+
+.is-invalid {
+    border: 2px solid #dc3545 !important; /* rojo Bootstrap */
+    box-shadow: 0 0 3px rgba(220, 53, 69, 0.6);
+}

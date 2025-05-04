@@ -529,12 +529,22 @@ function generarCamposCurva() {
     const numeroDias = parseInt(document.getElementById("txtNumberDays").value);
     const contenedor = document.getElementById("contenedorCurvaEntrenamiento");
 
-    contenedor.innerHTML = ""; // Limpiar anterior
+    // Paso 1: Guardar valores existentes
+    const valoresExistentes = {};
+    const inputsActuales = contenedor.querySelectorAll("input[type='number']");
+    inputsActuales.forEach(input => {
+        const id = input.id; // ejemplo: inputDia3
+        valoresExistentes[id] = input.value;
+    });
 
+    // Paso 2: Limpiar el contenedor
+    contenedor.innerHTML = "";
+
+    // Paso 3: Crear nuevos inputs reutilizando valores existentes
     if (!isNaN(numeroDias) && numeroDias > 0) {
         for (let i = 1; i <= numeroDias; i++) {
             const col = document.createElement("div");
-            col.className = "col-md-3"; // 4 por fila aprox.
+            col.className = "col-md-3"; // aprox 4 columnas por fila
 
             const label = document.createElement("label");
             label.innerText = `Día ${i}:`;
@@ -546,12 +556,17 @@ function generarCamposCurva() {
             input.name = `inputDia${i}`;
             input.id = `inputDia${i}`;
 
+            // Recuperar valor si ya existía
+            const valorGuardado = valoresExistentes[`inputDia${i}`];
+            if (valorGuardado !== undefined) {
+                input.value = valorGuardado;
+            }
+
             col.appendChild(label);
             col.appendChild(input);
             contenedor.appendChild(col);
         }
     }
-
 }
 
 
@@ -572,6 +587,40 @@ function cargarCurva(idOperacion) {
             contenedor.appendChild(div);
         });
     });
+}
+
+function validarOperacionAntesDeGuardar() {
+    const campos = [
+        { id: "txtNombreOperacion", label: "Nombre" },
+        { id: "ddlAreaOperacion", label: "Área", tipo: "select" },
+        { id: "txtOutputTarget", label: "Output Target" },
+        { id: "txtYieldTarget", label: "Yield Target" },
+        { id: "txtOutputTargetTraining", label: "Output Target Training" },
+        { id: "txtPercentOutput", label: "% Output" },
+        { id: "txtPercentYieldTarget", label: "% Yield Target" },
+        { id: "txtLeadTime", label: "Lead Time" },
+        { id: "txtNumberDays", label: "Número de Días" }
+    ];
+
+    let esValido = true;
+
+    campos.forEach(campo => {
+        const input = document.getElementById(campo.id);
+        const valor = input.value.trim();
+
+        if ((campo.tipo === "select" && (valor === "" || valor === "0")) || (!campo.tipo && valor === "")) {
+            input.classList.add("is-invalid");
+            esValido = false;
+        } else {
+            input.classList.remove("is-invalid");
+        }
+    });
+
+    if (!esValido) {
+        alert("⚠ Por favor complete todos los campos obligatorios.");
+    }
+
+    return esValido;
 }
 
 

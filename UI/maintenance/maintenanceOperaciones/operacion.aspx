@@ -215,8 +215,9 @@
                         OnClick="btnEliminarOperacion_ServerClick" />
                 </div>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <asp:Button ID="btnGuardarOperacion" runat="server" CssClass="btn btn-save-custom" Text="Guardar"
-                    OnClick="btnGuardarOperacion_ServerClick" ClientIDMode="Static" />
+               <asp:Button ID="btnGuardarOperacion" runat="server" CssClass="btn btn-save-custom" Text="Guardar"
+    OnClick="btnGuardarOperacion_ServerClick" OnClientClick="return validarOperacionAntesDeGuardar();" ClientIDMode="Static" />
+
             </div>
         </div>
     </div>
