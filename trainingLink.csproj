@@ -73,6 +73,7 @@
     <Content Include="UI\maintenance\maintenanceArea\area.aspx" />
     <Content Include="UI\maintenance\maintenanceBusinessUnit\businessUnit.aspx" />
     <Content Include="UI\maintenance\maintenanceMuda\muda.aspx" />
+    <Content Include="UI\maintenance\maintenanceOperaciones\operacion.aspx" />
     <Content Include="UI\maintenance\maintenanceRol\rol.aspx" />
     <Content Include="UI\maintenance\maintenanceScrap\scrap.aspx" />
     <Content Include="UI\maintenance\maintenanceTurno\turno.aspx" />
@@ -124,6 +125,13 @@
     </Compile>
     <Compile Include="UI\maintenance\maintenanceMuda\muda.aspx.designer.cs">
       <DependentUpon>muda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceOperaciones\operacion.aspx.cs">
+      <DependentUpon>operacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceOperaciones\operacion.aspx.designer.cs">
+      <DependentUpon>operacion.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\maintenance\maintenanceRol\rol.aspx.cs">
       <DependentUpon>rol.aspx</DependentUpon>

@@ -53,6 +53,7 @@
          <a href="..\maintenance\maintenanceMuda\muda.aspx" class="nav-link">Muda</a>
         <a href="..\maintenance\maintenanceArea\area.aspx" class="nav-link">Area</a>
           <a href="..\maintenance\maintenanceScrap\scrap.aspx" class="nav-link active">Scrap</a>
+          <a href="..\maintenance\maintenanceOperaciones\operacion.aspx" class="nav-link">Operación</a>
    
     </div>
 

@@ -377,6 +377,204 @@ function abrirModalEditarScrap(id, name, status) {
     modal.show();
 }
 
+//OPERACION
+
+
+// Mostrar toast y cerrar modal
+function mostrarToastExitoOperacion() {
+    cerrarModal("modalCrearOperacion");
+
+    document.getElementById("txtNombreOperacion").value = "";
+    document.getElementById("ddlAreaOperacion").selectedIndex = 0;
+    document.getElementById("txtOutputTarget").value = "";
+    document.getElementById("txtYieldTarget").value = "";
+    document.getElementById("txtPercentOutput").value = "";
+    document.getElementById("txtPercentYieldTarget").value = "";
+    document.getElementById("txtLeadTime").value = "";
+    document.getElementById("txtNumberDays").value = "";
+    document.getElementById("contenedorCurvaEntrenamiento").innerHTML = "";
+    document.getElementById("ddlEstadoOperacion").selectedIndex = 0;
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+// Preparar modal de creación
+function prepararModalCrearOperacion() {
+    document.getElementById("txtNombreOperacion").value = "";
+    document.getElementById("ddlAreaOperacion").selectedIndex = 0;
+    document.getElementById("txtOutputTarget").value = "";
+    document.getElementById("txtYieldTarget").value = "";
+    document.getElementById("txtPercentOutput").value = "";
+    document.getElementById("txtPercentYieldTarget").value = "";
+    document.getElementById("txtLeadTime").value = "";
+    document.getElementById("txtNumberDays").value = "";
+    document.getElementById("contenedorCurvaEntrenamiento").innerHTML = "";
+    document.getElementById("ddlEstadoOperacion").value = "1";
+    document.getElementById("hdnIdOperacion").value = "";
+    document.getElementById("btnGuardarOperacion").value = "Guardar";
+    document.getElementById("modalCrearOperacionLabel").innerText = "Agregar Operación";
+    document.getElementById("btnEliminarContainerOperacion").style.display = "none";
+}
+
+// Abrir modal de edición
+function abrirModalEditarOperacion(id, name, output, yieldTarget, training, leadTime, days, areaId, status, percentOutput, percentYieldTarget) {
+    document.getElementById("hdnIdOperacion").value = id;
+    document.getElementById("txtNombreOperacion").value = name;
+    document.getElementById("txtOutputTarget").value = output;
+    document.getElementById("txtYieldTarget").value = yieldTarget;
+    document.getElementById("txtOutputTargetTraining").value = training;
+    document.getElementById("txtLeadTime").value = leadTime;
+    document.getElementById("txtNumberDays").value = days;
+    document.getElementById("ddlAreaOperacion").value = areaId;
+    document.getElementById("ddlEstadoOperacion").value = status;
+
+    document.getElementById("txtPercentOutput").value = percentOutput;
+    document.getElementById("txtPercentYieldTarget").value = percentYieldTarget;
+
+
+    cargarCurva(id); // <- aquí se carga la curva en el modal
+
+    document.getElementById("modalCrearOperacionLabel").innerText = "Editar Operación";
+    document.getElementById("btnGuardarOperacion").value = "Actualizar";
+    document.getElementById("btnEliminarContainerOperacion").style.display = "block";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearOperacion"));
+    modal.show();
+}
+
+
+
+// Generar inputs de curva automáticamente
+function generarCurvaAutomatica() {
+    const container = document.getElementById("contenedorCurvaEntrenamiento");
+    const numberDays = parseInt(document.getElementById("txtNumberDays").value);
+    const percentOutput = parseFloat(document.getElementById("txtPercentOutput").value);
+    const outputTarget = parseFloat(document.getElementById("txtOutputTarget").value);
+
+    container.innerHTML = "";
+    if (!numberDays || numberDays <= 0 || isNaN(percentOutput) || isNaN(outputTarget)) return;
+
+    let currentValue = 0;
+    for (let i = 1; i <= numberDays; i++) {
+        const percentPerDay = percentOutput / numberDays;
+        const value = Math.round((outputTarget * (percentPerDay * i)) / 100);
+
+        const inputGroup = document.createElement("div");
+        inputGroup.className = "mb-2";
+        inputGroup.innerHTML = `
+            <label>Día ${i}:</label>
+            <input type="number" class="form-control" name="day_${i}" value="${value}" readonly />
+        `;
+
+        container.appendChild(inputGroup);
+    }
+}
+
+// Validar antes de guardar
+function validarOperacionAntesDeGuardar() {
+    const nombre = document.getElementById("txtNombreOperacion").value.trim();
+    const area = document.getElementById("ddlAreaOperacion").value;
+    const dias = document.getElementById("txtNumberDays").value;
+
+    if (nombre === "" || area === "0" || dias === "") {
+        alert("⚠ Todos los campos obligatorios deben ser completados.");
+        return false;
+    }
+    return true;
+}
+
+
+function generarCurvaEntrenamiento() {
+    const contenedor = document.getElementById("contenedorCurvaEntrenamiento");
+    const cantidad = parseInt(document.getElementById("txtNumberDays").value, 10);
+
+    contenedor.innerHTML = ""; // Limpiar lo anterior
+
+    if (isNaN(cantidad) || cantidad <= 0) return;
+
+    for (let i = 1; i <= cantidad; i++) {
+        const div = document.createElement("div");
+        div.className = "col-md-2 mb-2";
+
+        const label = document.createElement("label");
+        label.className = "form-label";
+        label.innerText = `Día ${i}:`;
+
+        const input = document.createElement("input");
+        input.type = "number";
+        input.className = "form-control";
+        input.name = `inputDia${i}`;
+        input.id = `inputDia${i}`;
+
+        div.appendChild(label);
+        div.appendChild(input);
+        contenedor.appendChild(div);
+    }
+
+
+
+
+}
+
+
+function generarCamposCurva() {
+    const numeroDias = parseInt(document.getElementById("txtNumberDays").value);
+    const contenedor = document.getElementById("contenedorCurvaEntrenamiento");
+
+    contenedor.innerHTML = ""; // Limpiar anterior
+
+    if (!isNaN(numeroDias) && numeroDias > 0) {
+        for (let i = 1; i <= numeroDias; i++) {
+            const col = document.createElement("div");
+            col.className = "col-md-3"; // 4 por fila aprox.
+
+            const label = document.createElement("label");
+            label.innerText = `Día ${i}:`;
+            label.className = "form-label";
+
+            const input = document.createElement("input");
+            input.type = "number";
+            input.className = "form-control";
+            input.name = `inputDia${i}`;
+            input.id = `inputDia${i}`;
+
+            col.appendChild(label);
+            col.appendChild(input);
+            contenedor.appendChild(col);
+        }
+    }
+
+}
+
+
+
+// Cargar curva desde el backend
+function cargarCurva(idOperacion) {
+    PageMethods.ObtenerCurvaPorOperacion(idOperacion, function (data) {
+        const contenedor = document.getElementById("contenedorCurvaEntrenamiento");
+        contenedor.innerHTML = "";
+        data.forEach(item => {
+            const div = document.createElement("div");
+            div.classList.add("col-md-6");
+            div.innerHTML = `
+    <label class="form-label">Día ${item.Dia}:</label>
+    <input type="number" class="form-control" name="inputDia${item.Dia}" id="inputDia${item.Dia}" value="${item.Valor}" />
+`;
+
+            contenedor.appendChild(div);
+        });
+    });
+}
+
+
 
 
 
@@ -392,3 +590,12 @@ window.validarUnidadNegocioAntesDeGuardar = validarUnidadNegocioAntesDeGuardar;
 window.mostrarToastExitoScrap = mostrarToastExitoScrap;
 window.prepararModalCrearScrap = prepararModalCrearScrap;
 window.abrirModalEditarScrap = abrirModalEditarScrap;
+
+window.prepararModalCrearOperacion = prepararModalCrearOperacion;
+
+window.abrirModalEditarOperacion = abrirModalEditarOperacion;
+window.mostrarToastExitoOperacion = mostrarToastExitoOperacion;
+window.validarOperacionAntesDeGuardar = validarOperacionAntesDeGuardar;
+// Registrar funciones globales para Operación
+window.generarCamposCurva = generarCamposCurva;
+window.generarCurvaAutomatica = generarCurvaAutomatica;
