@@ -79,6 +79,7 @@
     <Content Include="UI\maintenance\maintenanceTurno\turno.aspx" />
     <Content Include="UI\master\scripts.js" />
     <Content Include="UI\master\styles.css" />
+    <Content Include="UI\registroEntrenamiento\registroEntrenamiento.aspx" />
     <Content Include="UI\TestConnection.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -153,6 +154,13 @@
     </Compile>
     <Compile Include="UI\maintenance\maintenanceTurno\turno.aspx.designer.cs">
       <DependentUpon>turno.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\registroEntrenamiento\registroEntrenamiento.aspx.cs">
+      <DependentUpon>registroEntrenamiento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\registroEntrenamiento\registroEntrenamiento.aspx.designer.cs">
+      <DependentUpon>registroEntrenamiento.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\TestConnection.aspx.cs">
       <DependentUpon>TestConnection.aspx</DependentUpon>
