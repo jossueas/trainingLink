@@ -198,11 +198,13 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
             using (SqlCommand cmd = new SqlCommand("sp_DeleteOperation", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@IdOperation", hdnIdOperacion.Value);
+                cmd.Parameters.AddWithValue("@IdOperation", hdnIdOperacion.Value); // asegúrate que este valor no venga vacío
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery(); // 🔥 Esto ahora elimina primero los hijos (CurvaAprendizaje) y luego Operation
             }
-            CargarOperaciones();
+
+            CargarOperaciones(); // Recarga el GridView
         }
+
     }
 }
