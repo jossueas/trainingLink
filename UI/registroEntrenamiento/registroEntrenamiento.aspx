@@ -34,20 +34,16 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Colaborador</label>
-                                <asp:DropDownList ID="ddlColaborador" runat="server" CssClass="form-select" />
-                            </div>
+<asp:DropDownList ID="ddlColaborador" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Operación</label>
-                                <asp:DropDownList ID="ddlOperacion" runat="server" CssClass="form-select" />
-                            </div>
+<asp:DropDownList ID="ddlOperacion" runat="server" CssClass="form-select" />                       </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Entrenador</label>
-                                <asp:DropDownList ID="ddlEntrenador" runat="server" CssClass="form-select" />
-                            </div>
+<asp:DropDownList ID="ddlEntrenador" runat="server" CssClass="form-select" />                         </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Turno</label>
-                                <asp:DropDownList ID="ddlTurno" runat="server" CssClass="form-select" />
-                            </div>
+<asp:DropDownList ID="ddlTurno" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Fecha Inicio</label>
                                 <asp:TextBox ID="txtFechaInicio" runat="server" CssClass="form-control" TextMode="Date" />
@@ -58,14 +54,14 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tipo de Entrenamiento</label>
-                                <asp:DropDownList ID="ddlTipoEntrenamiento" runat="server" CssClass="form-select" />
-                            </div>
+<asp:DropDownList ID="ddlTipoEntrenamiento" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tipo de Entrenador</label>
-                                <asp:DropDownList ID="ddlTipoEntrenador" runat="server" CssClass="form-select">
-                                    <asp:ListItem Text="Trainer" Value="Trainer" />
-                                    <asp:ListItem Text="Train the Trainer" Value="TrainTheTrainer" />
-                                </asp:DropDownList>
+<asp:DropDownList ID="ddlTipoEntrenador" runat="server" CssClass="form-select">
+    <asp:ListItem Text="Trainer" Value="Trainer" />
+    <asp:ListItem Text="Train the Trainer" Value="TrainTheTrainer" />
+</asp:DropDownList>
+
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Estado</label>
