@@ -33,6 +33,15 @@ namespace trainingLink.UI.master
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
+        /// gvEntrenamientos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvEntrenamientos;
+
+        /// <summary>
         /// ddlColaborador control.
         /// </summary>
         /// <remarks>

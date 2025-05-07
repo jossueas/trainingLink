@@ -224,6 +224,7 @@
 
 
 </form>
+    <script src="../master/scripts.js"></script>
 </body>
 </html>
 

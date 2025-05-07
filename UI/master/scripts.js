@@ -623,6 +623,69 @@ function validarOperacionAntesDeGuardar() {
     return esValido;
 }
 
+function mostrarToastExitoEntrenamiento() {
+    // Cierra el modal (asegúrate que Bootstrap esté funcionando)
+    const modalEl = document.getElementById("modalRegistroEntrenamiento");
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+
+    // Limpia los campos
+    document.getElementById("ddlColaborador").selectedIndex = 0;
+    document.getElementById("ddlOperacion").selectedIndex = 0;
+    document.getElementById("ddlEntrenador").selectedIndex = 0;
+    document.getElementById("ddlTurno").selectedIndex = 0;
+    document.getElementById("ddlTipoEntrenamiento").selectedIndex = 0;
+    document.getElementById("ddlTipoEntrenador").selectedIndex = 0;
+    document.getElementById("ddlEstado").selectedIndex = 0;
+    document.getElementById("txtFechaInicio").value = "";
+    document.getElementById("txtFechaFinal").value = "";
+
+    // Muestra el toast
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+
+
+function validarEntrenamientoAntesDeGuardar() {
+    let valido = true;
+
+    const campos = [
+        { id: "ddlColaborador", nombre: "Colaborador" },
+        { id: "ddlOperacion", nombre: "Operación" },
+        { id: "ddlEntrenador", nombre: "Entrenador" },
+        { id: "ddlTurno", nombre: "Turno" },
+        { id: "txtFechaInicio", nombre: "Fecha Inicio" },
+        { id: "txtFechaFinal", nombre: "Fecha Final" },
+        { id: "ddlTipoEntrenamiento", nombre: "Tipo de Entrenamiento" },
+        { id: "ddlTipoEntrenador", nombre: "Tipo de Entrenador" },
+        { id: "ddlEstado", nombre: "Estado" }
+    ];
+
+    campos.forEach(campo => {
+        const control = document.getElementById(campo.id);
+        if (!control || control.value === "" || control.value === "0") {
+            control.classList.add("is-invalid");
+            valido = false;
+        } else {
+            control.classList.remove("is-invalid");
+        }
+    });
+
+    if (!valido) {
+        alert("⚠ Por favor complete todos los campos obligatorios.");
+    }
+
+    return valido;
+}
+
 
 
 
@@ -648,3 +711,5 @@ window.validarOperacionAntesDeGuardar = validarOperacionAntesDeGuardar;
 // Registrar funciones globales para Operación
 window.generarCamposCurva = generarCamposCurva;
 window.generarCurvaAutomatica = generarCurvaAutomatica;
+window.mostrarToastExitoEntrenamiento = mostrarToastExitoEntrenamiento;
+window.validarEntrenamientoAntesDeGuardar = validarEntrenamientoAntesDeGuardar;

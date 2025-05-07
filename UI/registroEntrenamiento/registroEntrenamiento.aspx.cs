@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace trainingLink.UI.master
@@ -137,6 +138,9 @@ private void CargarColaboradores()
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+            //  Aquí mostramos el toast desde el backend
+            ScriptManager.RegisterStartupScript(this, GetType(), "toastEntrenamiento", "mostrarToastExitoEntrenamiento();", true);
         }
+
     }
 }
