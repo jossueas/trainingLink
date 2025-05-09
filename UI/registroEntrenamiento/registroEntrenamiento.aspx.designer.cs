@@ -33,6 +33,42 @@ namespace trainingLink.UI.master
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
+        /// ddlFiltroEstado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroEstado;
+
+        /// <summary>
+        /// ddlFiltroColaborador control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroColaborador;
+
+        /// <summary>
+        /// ddlFiltroEntrenador control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroEntrenador;
+
+        /// <summary>
+        /// btnBuscarEntrenamiento control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnBuscarEntrenamiento;
+
+        /// <summary>
         /// gvEntrenamientos control.
         /// </summary>
         /// <remarks>

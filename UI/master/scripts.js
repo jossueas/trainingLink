@@ -687,6 +687,39 @@ function validarEntrenamientoAntesDeGuardar() {
 }
 
 
+function abrirModalEditarEntrenamiento(id, colaborador, operacion, entrenador, turno, fechaInicio, fechaFinal, tipoEntrenamiento, tipoEntrenador, estado) {
+    document.getElementById("ddlColaborador").value = colaborador;
+    document.getElementById("ddlOperacion").value = operacion;
+    document.getElementById("ddlEntrenador").value = entrenador;
+    document.getElementById("ddlTurno").value = turno;
+    document.getElementById("txtFechaInicio").value = fechaInicio;
+    document.getElementById("txtFechaFinal").value = fechaFinal;
+    document.getElementById("ddlTipoEntrenamiento").value = tipoEntrenamiento;
+    document.getElementById("ddlTipoEntrenador").value = tipoEntrenador;
+    document.getElementById("ddlEstado").value = estado;
+
+    const modal = new bootstrap.Modal(document.getElementById("modalRegistroEntrenamiento"));
+    modal.show();
+}
+
+
+function mostrarToastSinResultados() {
+    const toastHTML = `
+        <div class="toast align-items-center text-white bg-warning border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    🔍 No se encontraron resultados con los filtros aplicados.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    `;
+    const container = document.querySelector('.toast-container');
+    if (container) {
+        container.innerHTML = toastHTML;
+    }
+}
+
 
 
 
@@ -713,3 +746,5 @@ window.generarCamposCurva = generarCamposCurva;
 window.generarCurvaAutomatica = generarCurvaAutomatica;
 window.mostrarToastExitoEntrenamiento = mostrarToastExitoEntrenamiento;
 window.validarEntrenamientoAntesDeGuardar = validarEntrenamientoAntesDeGuardar;
+window.abrirModalEditarEntrenamiento = abrirModalEditarEntrenamiento;
+window.mostrarToastSinResultados = mostrarToastSinResultados;

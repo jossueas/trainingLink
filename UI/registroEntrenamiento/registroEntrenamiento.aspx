@@ -57,7 +57,75 @@
           <!-- Main Content -->
   <div class="main-content collapsed" id="mainContent">
 
+      <div class ="container py-5">
+<div class="row mb-3">
+    <div class="col-md-3"> 
+        <label for="ddlFiltroEstado"  class="form-label label-turquesa">Estado</label>
+       <asp:DropDownList ID="ddlFiltroEstado" runat="server" CssClass="form-select">
+    <asp:ListItem Text="Todos" Value="" />
+    <asp:ListItem Text="Activo" Value="1" />
+    <asp:ListItem Text="Completo" Value="2" />
+    <asp:ListItem Text="Incompleto" Value="3" />
+</asp:DropDownList>
 
+    </div>
+
+    <div class="col-md-4">
+        <label for="ddlFiltroColaborador" class="form-label label-turquesa">Colaborador</label>
+        <asp:DropDownList ID="ddlFiltroColaborador" runat="server" CssClass="form-select" />
+    </div>
+
+    <div class="col-md-4">
+        <label for="ddlFiltroEntrenador" class="form-label label-turquesa">Entrenador</label>
+        <asp:DropDownList ID="ddlFiltroEntrenador" runat="server" CssClass="form-select" />
+    </div>
+
+    <div class="col-md-1 d-flex align-items-end">
+        <asp:LinkButton ID="btnBuscarEntrenamiento" runat="server" CssClass="btn btn-primary w-100" OnClick="btnBuscarEntrenamiento_Click">
+            <i class="bi bi-search"></i>
+        </asp:LinkButton>
+    </div>
+</div>
+
+
+
+
+
+      
+<asp:GridView ID="gvEntrenamientos" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info" Visible="true">
+    <Columns>
+        <asp:BoundField DataField="NombreColaborador" HeaderText="Colaborador" />
+        <asp:BoundField DataField="NombreOperacion" HeaderText="Operación" />
+        <asp:BoundField DataField="NombreEntrenador" HeaderText="Entrenador" />
+        <asp:BoundField DataField="NombreTurno" HeaderText="Turno" />
+        <asp:BoundField DataField="FechaInicio" HeaderText="Fecha Inicio" DataFormatString="{0:yyyy-MM-dd}" />
+        <asp:BoundField DataField="FechaFinal" HeaderText="Fecha Final" DataFormatString="{0:yyyy-MM-dd}" />
+        <asp:BoundField DataField="TipoEntrenamiento" HeaderText="Tipo Entrenamiento" />
+        <asp:BoundField DataField="TipoEntrenador" HeaderText="Tipo Entrenador" />
+  <asp:TemplateField HeaderText="Estado">
+
+<ItemTemplate>
+    <%# Convert.ToInt32(Eval("Estado")) == 1 ? "Activo" :
+        Convert.ToInt32(Eval("Estado")) == 2 ? "Completo" :
+        Convert.ToInt32(Eval("Estado")) == 3 ? "Incompleto" : "Desconocido" %>
+</ItemTemplate>
+
+
+
+</asp:TemplateField>
+
+        <asp:TemplateField HeaderText="Acciones">
+            <ItemTemplate>
+                <a href="javascript:void(0);" onclick='<%# Eval("ScriptEditCall") %>'>
+                    <i class="bi bi-eye"></i>
+                </a>
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
+</asp:GridView>
+
+
+           
 
 
 
@@ -73,6 +141,7 @@
     </div>
 </div>
 
+          <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;"></div>
 
 
 
@@ -83,7 +152,7 @@
           Sistema de Gestión de Training
       </footer>
   </div>
-
+        
 
 
 
@@ -131,9 +200,10 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Estado</label>
                                 <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
+                                     <asp:ListItem Text=" " Value="0" />
                                     <asp:ListItem Text="Activo" Value="1" />
                                     <asp:ListItem Text="Completo" Value="2" />
-                                    <asp:ListItem Text="Incompleto" Value="0" />
+                                    <asp:ListItem Text="Incompleto" Value="3" />
                                 </asp:DropDownList>
                             </div>
                         </div>
