@@ -28,17 +28,21 @@
 
  <!-- Sidebar -->
  <nav class="sidebar collapsed" id="sidebar">
-     <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
-     <a href="#" class="nav-link">Usuarios</a>
-     <a href="#" class="nav-link">Reportes</a>
-     <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse">Mantenimientos</a>
-     <div class="collapse ms-3" id="submenuMantenimientos">
-         <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
-         <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
-         <a href="../maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
-          <a href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-         <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
-           <a href="../maintenanceScrap/scrap.aspx" class="nav-link active">Scrap</a>
+           <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
+      <a href="#" class="nav-link">Usuarios</a>
+      <a href="#" class="nav-link">Reportes</a>
+     <a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+  <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
+  <div class="collapse ms-3" id="submenuMantenimientos">
+
+<a href="../maintenance/maintenanceRol/rol.aspx" class="nav-link">Role</a>
+<a href="../maintenance/maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Business Unit</a>
+<a href="../maintenance/maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
+<a href="../maintenance/maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
+<a href="../maintenance/maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
+     <a href="../maintenance/maintenanceArea/area.aspx" class="nav-link">Área</a>
+       <a href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
+
      </div>
      <a href="#" class="nav-link">Salir</a>
  </nav>
@@ -47,7 +51,7 @@
     <div class="main-content container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Registro de Entrenamientos</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistroEntrenamiento">
+            <button type="button" class="btn btn-save-custom" data-bs-toggle="modal" data-bs-target="#modalRegistroEntrenamiento">
                 <i class="bi bi-plus-lg"></i> Nuevo Entrenamiento
             </button>
         </div>
@@ -191,10 +195,8 @@
 <asp:DropDownList ID="ddlTipoEntrenamiento" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tipo de Entrenador</label>
-<asp:DropDownList ID="ddlTipoEntrenador" runat="server" CssClass="form-select">
-    <asp:ListItem Text="Trainer" Value="Trainer" />
-    <asp:ListItem Text="Train the Trainer" Value="TrainTheTrainer" />
-</asp:DropDownList>
+<asp:DropDownList ID="ddlTipoEntrenador" runat="server" CssClass="form-select" />
+
 
                             </div>
                             <div class="col-md-6 mb-3">

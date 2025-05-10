@@ -720,6 +720,64 @@ function mostrarToastSinResultados() {
     }
 }
 
+//
+
+document.addEventListener("DOMContentLoaded", function () {
+    const ddlOperacion = document.getElementById("ddlOperacion");
+    const txtFechaInicio = document.getElementById("txtFechaInicio");
+    const txtFechaFinal = document.getElementById("txtFechaFinal");
+
+    ddlOperacion.addEventListener("change", calcularFechaFinalSugerida);
+    txtFechaInicio.addEventListener("change", calcularFechaFinalSugerida);
+
+    function calcularFechaFinalSugerida() {
+        const idOperacion = ddlOperacion.value;
+        const fechaInicioStr = txtFechaInicio.value;
+
+        if (!idOperacion || !fechaInicioStr) return;
+
+        // Hacer un fetch a un handler o web method que retorne el LeadTime de la operación seleccionada
+        fetch(`/UI/api/OperacionHandler.ashx?idOperacion=${idOperacion}`)
+            .then(res => res.json())
+            .then(data => {
+                const leadTime = parseInt(data.leadTime);
+                const fechaInicio = new Date(fechaInicioStr);
+                if (!isNaN(leadTime)) {
+                    fechaInicio.setDate(fechaInicio.getDate() + leadTime);
+                    const fechaFinalStr = fechaInicio.toISOString().split("T")[0];
+                    txtFechaFinal.value = fechaFinalStr;
+                }
+            })
+            .catch(err => console.error("Error al obtener LeadTime:", err));
+    }
+});
+function onOperacionChange() {
+    var ddlOperacion = document.getElementById("ddlOperacion");
+    var selectedValue = ddlOperacion.value;
+
+    if (selectedValue) {
+        fetch("../api/OperacionHandler.ashx?idOperacion=" + selectedValue)
+            .then(response => response.json())
+            .then(data => {
+                var leadTime = data.leadTime;
+
+                var fechaInicioInput = document.getElementById("txtFechaInicio");
+                var fechaFinalInput = document.getElementById("txtFechaFinal");
+
+                if (fechaInicioInput.value) {
+                    var fechaInicio = new Date(fechaInicioInput.value);
+                    fechaInicio.setDate(fechaInicio.getDate() + leadTime);
+
+                    let yyyy = fechaInicio.getFullYear();
+                    let mm = String(fechaInicio.getMonth() + 1).padStart(2, '0');
+                    let dd = String(fechaInicio.getDate()).padStart(2, '0');
+
+                    fechaFinalInput.value = `${yyyy}-${mm}-${dd}`;
+                }
+            })
+            .catch(error => console.error("Error al obtener LeadTime:", error));
+    }
+}
 
 
 

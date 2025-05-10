@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace trainingLink.UI.master
 {
@@ -24,6 +25,7 @@ namespace trainingLink.UI.master
                 ddlEstado.SelectedValue = "1"; // Activo por defecto
                 CargarEntrenamientos(); // cargar entrenamientos para seguimiento
                 CargarColaboradoresParaRegistro();
+                CargarTiposEntrenadorDesdeBD();
             }
         }
 
@@ -76,6 +78,7 @@ namespace trainingLink.UI.master
             {
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
+
                 while (reader.Read())
                 {
                     string code1 = reader["Code1"].ToString();
@@ -214,7 +217,30 @@ namespace trainingLink.UI.master
             // Mostrar un mensaje de éxito (toast)
             ScriptManager.RegisterStartupScript(this, GetType(), "toastEntrenamiento", "mostrarToastExitoEntrenamiento();", true);
         }
-     
+
+        private void CargarTiposEntrenadorDesdeBD()
+        {
+            ddlTipoEntrenador.Items.Clear(); // Limpia si ya había algo
+
+            string query = "SELECT DISTINCT TipoEntrenador FROM Entrenador WHERE TipoEntrenador IS NOT NULL ORDER BY TipoEntrenador";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                ddlTipoEntrenador.Items.Add(new ListItem("Seleccione un tipo", ""));
+
+
+                while (reader.Read())
+                {
+                    string tipo = reader["TipoEntrenador"].ToString();
+                    ddlTipoEntrenador.Items.Add(new ListItem(tipo, tipo));
+                }
+            }
+        }
+
+
 
 
         private void CargarEntrenamientos()
@@ -261,6 +287,10 @@ namespace trainingLink.UI.master
                 }
             }
         }
+
+
+      
+
 
 
 

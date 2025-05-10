@@ -18,7 +18,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-
+<style>
+    .btn-azul-custom {
+        background-color: #0A94FC;
+        color: white;
+        border: none;
+    }
+</style>
 
 
 
@@ -73,16 +79,16 @@
                             <div class="card-body">
                                 <h5 class="card-title">Usuarios</h5>
                                 <p>Administra los usuarios registrados en el sistema.</p>
-                                <a href="#" class="btn btn-primary">Ir</a>
+                                <a href="#" class="btn btn-azul-custom">Ir</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Reportes</h5>
-                                <p>Genera informes detallados de actividades.</p>
-                                <a href="#" class="btn btn-primary">Ver Reportes</a>
+                                <h5 class="card-title">Entrenamientos</h5>
+                                <p>Registra y adminstra los entrenamientos.</p>
+<a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="btn btn-azul-custom">Ir a Entrenamientos</a>
                             </div>
                         </div>
                     </div>
@@ -91,7 +97,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Configuración</h5>
                                 <p>Ajustes generales de la aplicación.</p>
-                                <a href="#" class="btn btn-primary">Configurar</a>
+                                <a href="#" class="btn btn-azul-custom">Configurar</a>
                             </div>
                         </div>
                     </div>

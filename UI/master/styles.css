@@ -406,3 +406,10 @@ label {
     color: #0A94FC;
     font-weight: 500;
 }
+
+
+.btn-azul-custom {
+    background-color: #0A94FC !important;
+    color: white !important;
+    border: none !important;
+}

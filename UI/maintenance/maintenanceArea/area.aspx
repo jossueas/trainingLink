@@ -40,6 +40,7 @@
         <!-- Sidebar -->
         <nav class="sidebar collapsed" id="sidebar">
             <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
+            <a href="..\registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
             <a href="#" class="nav-link">Usuarios</a>
             <a href="#" class="nav-link">Reportes</a>
             <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse">Mantenimientos</a>

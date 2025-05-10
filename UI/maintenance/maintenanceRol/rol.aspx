@@ -48,15 +48,16 @@
             <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
             <a href="#" class="nav-link">Usuarios</a>
             <a href="#" class="nav-link">Reportes</a>
+            <a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
             <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
             <div class="collapse ms-3" id="submenuMantenimientos">
                 <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
                 <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
                 <a href="../maintenanceTurno/rol.aspx" class="nav-link">Turno</a>
                 <a href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-
                 <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
-                   <a href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
+                <a href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
+                <a href="../maintenanceScrap/Scrap.aspx" class="nav-link">Scrap</a>
             </div>
             <a href="#" class="nav-link">Salir</a>
         </nav>
