@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="registroEntrenamiento.aspx.cs" Inherits="trainingLink.UI.master.registroEntrenamiento" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="registroEntrenamiento.aspx.cs"
+         Inherits="trainingLink.UI.master.registroEntrenamiento" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -96,7 +97,7 @@
 
 
       
-<asp:GridView ID="gvEntrenamientos" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info" Visible="true">
+<asp:GridView ID="gvEntrenamientos" runat="server" AutoGenerateColumns="False" OnRowCommand="gvEntrenamientos_RowCommand" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info" >
     <Columns>
         <asp:BoundField DataField="NombreColaborador" HeaderText="Colaborador" />
         <asp:BoundField DataField="NombreOperacion" HeaderText="Operación" />
@@ -118,13 +119,15 @@
 
 </asp:TemplateField>
 
-        <asp:TemplateField HeaderText="Acciones">
-            <ItemTemplate>
-                <a href="javascript:void(0);" onclick='<%# Eval("ScriptEditCall") %>'>
-                    <i class="bi bi-eye"></i>
-                </a>
-            </ItemTemplate>
-        </asp:TemplateField>
+  <asp:TemplateField HeaderText="Acciones">
+  <ItemTemplate>
+    <asp:LinkButton ID="lnkVerSeguimiento" runat="server" CommandName="VerSeguimiento"
+      CommandArgument='<%# Eval("IdRegistro") %>' CssClass="btn btn-link">
+      <i class="bi bi-eye"></i>
+    </asp:LinkButton>
+  </ItemTemplate>
+</asp:TemplateField>
+
     </Columns>
 </asp:GridView>
 
@@ -171,30 +174,30 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Colaborador</label>
+                                <label class="form-label label-turquesa">Colaborador</label>
 <asp:DropDownList ID="ddlColaborador" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Operación</label>
+                                <label class="form-label label-turquesa">Operación</label>
 <asp:DropDownList ID="ddlOperacion" runat="server" CssClass="form-select" />                       </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Entrenador</label>
+                                <label class="form-label label-turquesa">Entrenador</label>
 <asp:DropDownList ID="ddlEntrenador" runat="server" CssClass="form-select" />                         </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Turno</label>
+                                <label class="form-label label-turquesa">Turno</label>
 <asp:DropDownList ID="ddlTurno" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Fecha Inicio</label>
+                                <label class="form-label label-turquesa">Fecha Inicio</label>
                                 <asp:TextBox ID="txtFechaInicio" runat="server" CssClass="form-control" TextMode="Date" />
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Fecha Final</label>
+                                <label class="form-label label-turquesa">Fecha Final</label>
                                 <asp:TextBox ID="txtFechaFinal" runat="server" CssClass="form-control" TextMode="Date" />
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Tipo de Entrenamiento</label>
+                                <label class="form-label label-turquesa">Tipo de Entrenamiento</label>
 <asp:DropDownList ID="ddlTipoEntrenamiento" runat="server" CssClass="form-select" />                            </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Tipo de Entrenador</label>
+                                <label class="form-label label-turquesa">Tipo de Entrenador</label>
 <asp:DropDownList ID="ddlTipoEntrenador" runat="server" CssClass="form-select" />
 
 
@@ -222,10 +225,110 @@
                 </div>
             </div>
         </div>
-    
+<!-- Modal Seguimiento de Entrenamiento -->
+<div class="modal fade" id="modalSeguimientoEntrenamiento" tabindex="-1" aria-labelledby="modalSeguimientoEntrenamientoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header modal-header-custom">
+        <h5 class="modal-title" id="modalSeguimientoEntrenamientoLabel">Seguimiento de Entrenamiento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body modal-bg-custom">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../master/scripts.js"></script>
+        <asp:HiddenField ID="hdnIdRegistroSeguimiento" runat="server" />
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label label-turquesa">Colaborador:</label>
+            <asp:TextBox ID="txtColaboradorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label label-turquesa">Operación:</label>
+            <asp:TextBox ID="txtOperacionSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label label-turquesa">Turno:</label>
+            <asp:TextBox ID="txtTurnoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label label-turquesa">Entrenador:</label>
+            <asp:TextBox ID="txtEntrenadorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label label-turquesa">Tipo de Entrenamiento:</label>
+            <asp:TextBox ID="txtTipoEntrenamientoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <label class="form-label label-turquesa">Días de Entrenamiento:</label>
+            <asp:TextBox ID="txtDiasEntrenamiento" runat="server" CssClass="form-control" ReadOnly="true" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label label-turquesa">Horas Efectivas:</label>
+            <asp:TextBox ID="txtHorasEfectivas" runat="server" CssClass="form-control" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label label-turquesa">Muda:</label>
+            <asp:DropDownList ID="ddlMuda" runat="server" CssClass="form-control" />
+          </div>
+        </div>
+
+        <!-- Campos condicionales -->
+        <div class="row mt-3" runat="server" id="grupoIGTD">
+          <div class="col-md-6">
+            <label class="form-label label-turquesa">Unidades Buenas:</label>
+            <asp:TextBox ID="txtBuenasIGTD" runat="server" CssClass="form-control" TextMode="Number" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label label-turquesa">Unidades Malas:</label>
+            <asp:TextBox ID="txtMalasIGTD" runat="server" CssClass="form-control" TextMode="Number" />
+          </div>
+        </div>
+
+        <div class="row mt-3" runat="server" id="grupoSRC">
+          <div class="col-md-6">
+            <label class="form-label label-turquesa">Training Stage:</label>
+            <asp:DropDownList ID="ddlStageSRC" runat="server" CssClass="form-control">
+              <asp:ListItem Text="Seleccione..." Value="" />
+              <asp:ListItem Text="A" Value="A" />
+              <asp:ListItem Text="B" Value="B" />
+              <asp:ListItem Text="C" Value="C" />
+              <asp:ListItem Text="D" Value="D" />
+            </asp:DropDownList>
+          </div>
+        </div>
+
+        <!-- Curva de Aprendizaje -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h6 class="label-turquesa">Curva de Aprendizaje (Seguimiento)</h6>
+            <asp:PlaceHolder ID="phCurvaSeguimiento" runat="server" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <asp:Button ID="btnGuardarSeguimiento" runat="server" CssClass="btn btn-save-custom" Text="Guardar Seguimiento" OnClick="btnGuardarSeguimiento_Click" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Tu JS personalizado -->
+<script src="../master/scripts.js"></script>
+
 
 </form>
 

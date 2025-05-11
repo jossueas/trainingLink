@@ -23,6 +23,7 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
             if (!IsPostBack)
             {
                 CargarAreas();
+                CargarUnidadesNegocio();
                 CargarOperaciones();
             }
         }
@@ -97,8 +98,10 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
                         string statusStr = Convert.ToBoolean(row["Status"]) ? "1" : "0";
                         string percentOutput = row["PercentOutput"].ToString();
                         string percentYieldTarget = row["PercentYieldTarget"].ToString();
+                        string idBusinessUnit = row["idBusinessUnit"] != DBNull.Value ? row["idBusinessUnit"].ToString() : "";
 
-                        row["ScriptEditCall"] = $"abrirModalEditarOperacion({id}, \"{name}\", {output}, {yield}, {training}, {leadTime}, {days}, \"{areaId}\", \"{statusStr}\", {percentOutput}, {percentYieldTarget})";
+
+                        row["ScriptEditCall"] = $"abrirModalEditarOperacion({id}, \"{name}\", {output}, {yield}, {training}, {leadTime}, {days}, \"{areaId}\", \"{statusStr}\", {percentOutput}, {percentYieldTarget}, \"{idBusinessUnit}\")";
                     }
 
                     gvOperacion.DataSource = dt;
@@ -112,6 +115,24 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
             }
         }
 
+        private void CargarUnidadesNegocio()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("SELECT IdBusinessUnit, Name FROM BusinessUnit WHERE Status = 1", conn))
+            {
+                conn.Open();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                ddlUnidadNegocio.DataSource = dt;
+                ddlUnidadNegocio.DataValueField = "IdBusinessUnit";
+                ddlUnidadNegocio.DataTextField = "Name";
+                ddlUnidadNegocio.DataBind();
+            }
+
+            ddlUnidadNegocio.Items.Insert(0, new ListItem("Seleccione una unidad", ""));
+        }
 
 
 
@@ -135,6 +156,8 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
                 cmd.Parameters.AddWithValue("@LeadTime", txtLeadTime.Text);
                 cmd.Parameters.AddWithValue("@NumberDays", txtNumberDays.Text);
                 cmd.Parameters.AddWithValue("@Status", ddlEstadoOperacion.SelectedValue);
+                cmd.Parameters.AddWithValue("@IdBusinessUnit", ddlUnidadNegocio.SelectedValue);
+
 
                 if (idOperacion > 0)
                     cmd.Parameters.AddWithValue("@IdOperation", idOperacion);

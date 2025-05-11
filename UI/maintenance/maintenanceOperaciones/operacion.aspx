@@ -154,6 +154,12 @@
                         <label for="ddlAreaOperacion" class="form-label">Área</label>
                         <asp:DropDownList ID="ddlAreaOperacion" runat="server" CssClass="form-select" ClientIDMode="Static" />
                     </div>
+                    <div class="col-md-6 mb-3">
+    <label for="ddlUnidadNegocio" class="form-label">Unidad de Negocio</label>
+<asp:DropDownList ID="ddlUnidadNegocio" runat="server" CssClass="form-select" ClientIDMode="Static"/>
+</div>
+
+
                     <div class="col-md-4 mb-3">
                         <label for="txtOutputTarget" class="form-label">Output Target</label>
                         <asp:TextBox ID="txtOutputTarget" runat="server" CssClass="form-control" TextMode="Number" ClientIDMode="Static" />

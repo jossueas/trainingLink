@@ -96,6 +96,15 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
         protected global::System.Web.UI.WebControls.DropDownList ddlAreaOperacion;
 
         /// <summary>
+        /// ddlUnidadNegocio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUnidadNegocio;
+
+        /// <summary>
         /// txtOutputTarget control.
         /// </summary>
         /// <remarks>
