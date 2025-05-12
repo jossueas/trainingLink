@@ -722,7 +722,91 @@ function mostrarToastSinResultados() {
     }
 }
 
-//
+///
+function cargarGraficoCurva(idEntrenamiento) {
+    PageMethods.ObtenerDatosCurvaParaGrafico(idEntrenamiento, function (resultado) {
+        //  líneas para depurar
+        console.log("Esperada:", resultado.Esperada);
+        console.log("Real:", resultado.Real);
+
+        const maxDias = Math.max(resultado.Esperada.length, resultado.Real.length);
+        const dias = Array.from({ length: maxDias }, (_, i) => "Día " + (i + 1));
+
+        const data = {
+            labels: dias,
+            datasets: [
+                {
+                    label: "Esperada",
+                    data: resultado.Esperada,
+                    borderColor: "blue",
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: "Real",
+                    data: resultado.Real,
+                    borderColor: "orange",
+                    borderWidth: 2,
+                    fill: false
+                }
+            ]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Curva de Aprendizaje (Esperada vs Real)'
+                    }
+                }
+            }
+        };
+
+        if (window.chartCurva) {
+            window.chartCurva.destroy();
+        }
+
+        const canvas = document.getElementById("graficoCurva");
+        if (canvas) {
+            window.chartCurva = new Chart(canvas, config);
+        }
+    }, function (error) {
+        console.error("Error al obtener datos del gráfico:", error);
+    });
+}
+
+
+
+window.onload = function () {
+    console.log("JS cargado");
+
+    const modal = document.getElementById('modalSeguimientoEntrenamiento');
+    if (modal) {
+        modal.addEventListener('shown.bs.modal', function () {
+            console.log("Modal abierto correctamente");
+        });
+    }
+};
+
+
+function toggleGraficoCurva() {
+    const contenedor = document.getElementById("contenedorGrafico");
+    const icono = document.getElementById("iconoToggleGrafico");
+
+    if (!contenedor || !icono) return;
+
+    const visible = contenedor.style.display !== "none";
+
+    contenedor.style.display = visible ? "none" : "block";
+    icono.className = visible ? "bi bi-chevron-up":"bi bi-chevron-down" ;
+}
 
 
 
@@ -753,3 +837,4 @@ window.mostrarToastExitoEntrenamiento = mostrarToastExitoEntrenamiento;
 window.validarEntrenamientoAntesDeGuardar = validarEntrenamientoAntesDeGuardar;
 window.abrirModalEditarEntrenamiento = abrirModalEditarEntrenamiento;
 window.mostrarToastSinResultados = mostrarToastSinResultados;
+window.cargarGraficoCurva = cargarGraficoCurva;

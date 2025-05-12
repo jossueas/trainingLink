@@ -9,7 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
     <link href="../master/styles.css" rel="stylesheet" />
- 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </head>
 <body>
@@ -307,10 +308,35 @@
         <div class="row mt-4">
           <div class="col-12">
             <h6 class="label-turquesa">Curva de Aprendizaje (Seguimiento)</h6>
-            <asp:PlaceHolder ID="phCurvaSeguimiento" runat="server" />
+           <div class="row" runat="server">
+    <asp:PlaceHolder ID="phCurvaSeguimiento" runat="server" />
+</div>
+
           </div>
         </div>
       </div>
+
+
+<div class="row mt-4">
+  <div class="col-12">
+<h6 class="label-turquesa d-flex justify-content-between align-items-center" style="padding-left: 10px;">
+  Gráfico de Curva (Esperada vs Real)
+  <a id="toggleGraficoLink" href="#" onclick="toggleGraficoCurva(); return false;" class="text-decoration-none me-2">
+    <i id="iconoToggleGrafico" class="bi bi-chevron-down fs-4 text-primary" style="cursor: pointer;" title="Mostrar u ocultar gráfico"></i>
+  </a>
+</h6>
+
+
+
+    <div class="container p-2">
+      <div id="contenedorGrafico" style="display: none;">
+        <canvas id="graficoCurva" width="500" height="130" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -331,6 +357,6 @@
 
 
 </form>
-
+    
 </body>
 </html>

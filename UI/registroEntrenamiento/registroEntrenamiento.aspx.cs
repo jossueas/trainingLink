@@ -23,7 +23,7 @@ namespace trainingLink.UI.master
                 int diasHidden;
                 if (int.TryParse(txtDiasEntrenamiento.Text, out diasHidden))
                 {
-                    GenerarInputsCurva(diasHidden, idRegistroHidden);
+                    GenerarInputsCurva(idRegistroHidden);
                 }
             }
 
@@ -397,7 +397,12 @@ namespace trainingLink.UI.master
                             txtHorasEfectivas.Text = reader["HorasEfectivas"]?.ToString();
 
 
-                            ddlMuda.SelectedValue = reader["IdMuda"]?.ToString();
+                            string idMuda = reader["IdMuda"]?.ToString();
+                            if (ddlMuda.Items.FindByValue(idMuda) != null)
+                            {
+                                ddlMuda.SelectedValue = idMuda;
+                            }
+
 
 
                             DateTime inicio = Convert.ToDateTime(reader["FechaInicio"]);
@@ -415,12 +420,19 @@ namespace trainingLink.UI.master
                
 
                 //  curva dinámica con los días y el idRegistro
-                GenerarInputsCurva(dias, idRegistro);
+                GenerarInputsCurva(idRegistro);
 
                 // Mostrar el modal con JS
                 ScriptManager.RegisterStartupScript(this, GetType(), "abrirModalSeguimiento", @"
-    const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento'));
-    modal.show();", true);
+  const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento'));
+  modal.show();      console.log(""Abrir modal"");", true);
+
+
+                //  Cargar gráfico justo después de abrir el modal
+                ScriptManager.RegisterStartupScript(this, GetType(), "graficoCurva",
+                    $"cargarGraficoCurva({idRegistro});", true);
+
+
             }
         }
 
@@ -444,11 +456,12 @@ namespace trainingLink.UI.master
             }
         }
 
-        private void GenerarInputsCurva(int dias, int? idRegistro = null)
+        private void GenerarInputsCurva(int? idRegistro = null)
         {
             phCurvaSeguimiento.Controls.Clear();
 
             Dictionary<int, int> valoresGuardados = new Dictionary<int, int>();
+            int numberDays = 0;
 
             if (idRegistro.HasValue)
             {
@@ -456,20 +469,19 @@ namespace trainingLink.UI.master
                 {
                     conn.Open();
 
-                    // Paso 1: Obtener el IdOperacion desde RegistroEntrenamiento
-                    int idOperacion = 0;
-                    using (SqlCommand cmdOperacion = new SqlCommand("SELECT IdOperacion FROM RegistroEntrenamiento WHERE IdRegistro = @IdRegistro", conn))
+                    // Obtener NumberDays desde Operacion
+                    using (SqlCommand cmd = new SqlCommand(@"
+                SELECT O.NumberDays 
+                FROM RegistroEntrenamiento R 
+                INNER JOIN Operacion O ON R.IdOperacion = O.IdOperation
+                WHERE R.IdRegistro = @IdRegistro", conn))
                     {
-                        cmdOperacion.Parameters.AddWithValue("@IdRegistro", idRegistro.Value);
-                        object result = cmdOperacion.ExecuteScalar();
-                        if (result != null)
-                        {
-                            idOperacion = Convert.ToInt32(result);
-                        }
+                        cmd.Parameters.AddWithValue("@IdRegistro", idRegistro.Value);
+                        object result = cmd.ExecuteScalar();
+                        numberDays = result != DBNull.Value ? Convert.ToInt32(result) : 0;
                     }
 
-                    // Paso 2: Obtener la curva desde CurvaAprendizajeSeguimiento
-                    // Paso 2: Obtener la curva desde CurvaAprendizajeSeguimiento
+                    // Cargar valores guardados para ese entrenamiento
                     using (SqlCommand cmd = new SqlCommand("SELECT Dia, Valor FROM CurvaAprendizajeSeguimiento WHERE IdEntrenamiento = @IdEntrenamiento", conn))
                     {
                         cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro.Value);
@@ -486,15 +498,15 @@ namespace trainingLink.UI.master
                 }
             }
 
-            // Generación de inputs visuales 
-            for (int i = 1; i <= dias; i++)
+            // Renderizar inputs en filas de 3 columnas
+            for (int i = 1; i <= numberDays; i++)
             {
-                Panel panel = new Panel { CssClass = "col-md-3 mb-2" };
+                Panel panel = new Panel { CssClass = "col-md-4 mb-3" };
 
-                Label lbl = new Label { Text = $"Día {i}:", CssClass = "form-label" };
+                Label lbl = new Label { Text = $"Día {i}:", CssClass = "form-label fw-bold d-block" };
                 TextBox txt = new TextBox
                 {
-                    ID = $"inputSeguimientoDia{i}", // CORREGIDO
+                    ID = $"inputSeguimientoDia{i}",
                     CssClass = "form-control",
                     Text = valoresGuardados.ContainsKey(i) ? valoresGuardados[i].ToString() : "0"
                 };
@@ -503,22 +515,38 @@ namespace trainingLink.UI.master
                 panel.Controls.Add(txt);
                 phCurvaSeguimiento.Controls.Add(panel);
             }
-
         }
+
 
 
         protected void btnGuardarSeguimiento_Click(object sender, EventArgs e)
         {
             int idRegistro = int.Parse(hdnIdRegistroSeguimiento.Value);
-            int totalDias = int.Parse(txtDiasEntrenamiento.Text);
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                //Pasos en el metodo para tener claro como esta trabajando
+                // 1. Obtener cantidad de días desde Operacion
+                int totalDias = 0;
+                using (SqlCommand cmdDias = new SqlCommand(@"
+            SELECT O.NumberDays 
+            FROM RegistroEntrenamiento R
+            INNER JOIN Operacion O ON R.IdOperacion = O.IdOperation
+            WHERE R.IdRegistro = @IdRegistro", conn))
+                {
+                    cmdDias.Parameters.AddWithValue("@IdRegistro", idRegistro);
+                    object result = cmdDias.ExecuteScalar();
+                    totalDias = result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                }
 
-                // 1. Actualizar HorasEfectivas
+                if (totalDias <= 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "errorDias", "alert('No se pudo determinar el número de días para la operación.');", true);
+                    return;
+                }
+
+                // 2. Actualizar HorasEfectivas
                 using (SqlCommand cmd = new SqlCommand("UPDATE RegistroEntrenamiento SET HorasEfectivas = @Horas WHERE IdRegistro = @Id", conn))
                 {
                     cmd.Parameters.AddWithValue("@Horas", txtHorasEfectivas.Text);
@@ -526,7 +554,7 @@ namespace trainingLink.UI.master
                     cmd.ExecuteNonQuery();
                 }
 
-                // Obtener IdOperacion
+                // 3. Obtener IdOperacion
                 int idOperacion = 0;
                 using (SqlCommand cmd = new SqlCommand("SELECT IdOperacion FROM RegistroEntrenamiento WHERE IdRegistro = @Id", conn))
                 {
@@ -536,8 +564,7 @@ namespace trainingLink.UI.master
                         idOperacion = Convert.ToInt32(result);
                 }
 
-                // 2. Insertar o actualizar curva
-
+                // 4. Insertar o actualizar curva
                 for (int i = 1; i <= totalDias; i++)
                 {
                     TextBox input = phCurvaSeguimiento.FindControl("inputSeguimientoDia" + i) as TextBox;
@@ -563,22 +590,21 @@ namespace trainingLink.UI.master
                         if (count > 0)
                         {
                             using (SqlCommand update = new SqlCommand(@"
-    UPDATE CurvaAprendizajeSeguimiento 
-    SET Valor = @Valor 
-    WHERE IdEntrenamiento = @IdEntrenamiento AND Dia = @Dia", conn))
+                        UPDATE CurvaAprendizajeSeguimiento 
+                        SET Valor = @Valor 
+                        WHERE IdEntrenamiento = @IdEntrenamiento AND Dia = @Dia", conn))
                             {
                                 update.Parameters.AddWithValue("@Valor", valor);
                                 update.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
                                 update.Parameters.AddWithValue("@Dia", i);
                                 update.ExecuteNonQuery();
                             }
-
                         }
                         else
                         {
                             using (SqlCommand insert = new SqlCommand(@"
-    INSERT INTO CurvaAprendizajeSeguimiento (IdEntrenamiento, IdOperation, Dia, Valor)
-    VALUES (@IdEntrenamiento, @IdOperacion, @Dia, @Valor)", conn))
+                        INSERT INTO CurvaAprendizajeSeguimiento (IdEntrenamiento, IdOperation, Dia, Valor)
+                        VALUES (@IdEntrenamiento, @IdOperacion, @Dia, @Valor)", conn))
                             {
                                 insert.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
                                 insert.Parameters.AddWithValue("@IdOperacion", idOperacion);
@@ -586,13 +612,11 @@ namespace trainingLink.UI.master
                                 insert.Parameters.AddWithValue("@Valor", valor);
                                 insert.ExecuteNonQuery();
                             }
-
                         }
                     }
                 }
 
-
-                // 3. Insertar o actualizar seguimiento
+                // 5. Insertar o actualizar seguimiento
                 string fechaHoy = DateTime.Now.ToString("yyyy-MM-dd");
                 string checkSeguimiento = @"
             SELECT COUNT(*) FROM Seguimiento
@@ -642,12 +666,14 @@ namespace trainingLink.UI.master
                     }
                 }
 
-                // Feedback visual
+                // 6. Feedback visual
                 CargarEntrenamientos();
                 ScriptManager.RegisterStartupScript(this, GetType(), "cerrarModal", "const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento')); modal.hide();", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "toastSeguimiento", "mostrarToastExitoEntrenamiento();", true);
             }
         }
+
+
 
 
 
@@ -668,12 +694,44 @@ namespace trainingLink.UI.master
 
 
 
+        [System.Web.Services.WebMethod]
+        public static object ObtenerDatosCurvaParaGrafico(int idEntrenamiento)
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["TrainingLinkConnection"].ConnectionString;
+
+            var esperada = new List<decimal?>();
+            var real = new List<decimal?>();
 
 
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand("sp_ObtenerCurvasEntrenamiento", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@IdEntrenamiento", idEntrenamiento);
+                conn.Open();
 
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        decimal? valor = reader["Valor"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Valor"]);
+                        string tipo = reader["Tipo"].ToString();
 
+                        if (tipo == "Esperada")
+                            esperada.Add(valor);
+                        else if (tipo == "Real")
+                            real.Add(valor);
 
+                    }
+                }
+            }
 
+            return new
+            {
+                Esperada = esperada,
+                Real = real
+            };
+        }
 
 
 
