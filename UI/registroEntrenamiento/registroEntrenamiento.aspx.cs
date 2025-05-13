@@ -29,6 +29,21 @@ namespace trainingLink.UI.master
 
             if (!IsPostBack)
             {
+                string code1 = Session["Code1"]?.ToString();
+                if (string.IsNullOrEmpty(code1))
+                {
+                    Response.Redirect("~/login.aspx");
+                    return;
+                }
+
+                if (!TienePermiso(code1, "operacion"))
+                {
+                    Response.Redirect("~/UI/login/sinPermiso.aspx");
+
+                    return;
+                }
+
+
                 CargarColaboradores();
                 CargarOperaciones();
                 CargarEntrenadores();
@@ -44,7 +59,28 @@ namespace trainingLink.UI.master
             }
           
         }
+        private bool TienePermiso(string code1, string menuKey)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("sp_GetPermisosPorUsuario", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Code1", code1);
 
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader["MenuKey"].ToString() == menuKey && (bool)reader["PuedeVer"])
+                                return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         protected void ddlFiltroEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
             CargarEntrenamientos();
