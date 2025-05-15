@@ -808,6 +808,55 @@ function toggleGraficoCurva() {
     icono.className = visible ? "bi bi-chevron-up":"bi bi-chevron-down" ;
 }
 
+    // ACCESS
+
+prepararModalCrearPermiso = function () {
+    document.getElementById("hdnIdPermiso").value = "";
+    document.getElementById("ddlCode1").selectedIndex = 0;
+    document.getElementById("ddlMenuKey").selectedIndex = 0;
+    document.getElementById("chkPuedeVer").checked = false;
+    document.getElementById("modalPermisoLabel").innerText = "Agregar Permiso";
+
+    var modal = new bootstrap.Modal(document.getElementById("modalPermiso"));
+    modal.show();
+};
+
+abrirModalEditarPermiso = function (idPermiso, code1, menuKey, puedeVer) {
+    document.getElementById("hdnIdPermiso").value = idPermiso;
+    document.getElementById("ddlCode1").value = code1;
+    document.getElementById("ddlMenuKey").value = menuKey;
+    document.getElementById("chkPuedeVer").checked = puedeVer;
+    document.getElementById("modalPermisoLabel").innerText = "Editar Permiso";
+
+    var modal = new bootstrap.Modal(document.getElementById("modalPermiso"));
+    modal.show();
+};
+
+
+ cerrarModalPermiso  = function () {
+        var modalElement = document.getElementById("modalPermiso");
+        var modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) {
+            modal.hide();
+        }
+        return false;
+    };
+
+if (window.jQuery) {
+    $(function () {
+        if ($('#ddlUsuarios').length) {
+            $('#ddlUsuarios').select2({ theme: 'bootstrap4', width: 'style', placeholder: "Seleccione un usuario" });
+        }
+
+        if ($('#ddlCode1').length) {
+            $('#ddlCode1').select2({ theme: 'bootstrap4', width: '100%', dropdownParent: $('#modalPermiso'), placeholder: "Seleccione un usuario" });
+        }
+
+        if ($('#ddlMenuKey').length) {
+            $('#ddlMenuKey').select2({ theme: 'bootstrap4', width: '100%', dropdownParent: $('#modalPermiso'), placeholder: "Seleccione un módulo" });
+        }
+    });
+}
 
 
 
@@ -838,3 +887,7 @@ window.validarEntrenamientoAntesDeGuardar = validarEntrenamientoAntesDeGuardar;
 window.abrirModalEditarEntrenamiento = abrirModalEditarEntrenamiento;
 window.mostrarToastSinResultados = mostrarToastSinResultados;
 window.cargarGraficoCurva = cargarGraficoCurva;
+window.prepararModalCrearPermiso = prepararModalCrearPermiso;
+    window.cerrarModalPermiso = cerrarModalPermiso;
+    window.abrirModalEditarPermiso = abrirModalEditarPermiso;
+
