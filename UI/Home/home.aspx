@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../master/styles.css" rel="stylesheet" />
         <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 
@@ -41,11 +41,15 @@
         <a href="#" class="text-decoration-none text-dark">
             <i class="bi bi-gear-fill fs-4"></i>
         </a>
+             </div>
+
         </header>
 
         <!-- Sidebar -->
         <nav class="sidebar collapsed" id="sidebar">
             <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
+            <a href="..\maintenance\maintenanceAccess\access.aspx" class="nav-link">Acesos </a>
+
             <a href="..\registroEntrenamiento\registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
             <a href="#" class="nav-link">Reportes</a>
            <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">
