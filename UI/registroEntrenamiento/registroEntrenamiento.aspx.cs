@@ -29,19 +29,28 @@ namespace trainingLink.UI.master
 
             if (!IsPostBack)
             {
+
+
+
                 string code1 = Session["Code1"]?.ToString();
-                if (string.IsNullOrEmpty(code1))
-                {
-                    Response.Redirect("~/login.aspx");
-                    return;
-                }
+                var permisos = PermisoHelper.ObtenerMenuKeysParaUsuario(code1);
 
-                if (!TienePermiso(code1, "operacion"))
-                {
-                    Response.Redirect("~/UI/login/sinPermiso.aspx");
+                linkInicio.Visible = true;
+                linkAccesos.Visible = permisos.Contains("acceso");
+                linkRegistroEntrenamiento.Visible = permisos.Contains("registroEntrenamiento");
+                linkRol.Visible = permisos.Contains("rol");
+                linkBusinessUnit.Visible = permisos.Contains("businessUnit");
+                linkTurno.Visible = permisos.Contains("turno");
+                linkMuda.Visible = permisos.Contains("muda");
+                linkArea.Visible = permisos.Contains("area");
+                linkScrap.Visible = permisos.Contains("scrap");
+                linkOperacion.Visible = permisos.Contains("operacion");
 
-                    return;
-                }
+                // Comentados pero listos
+                // linkEntrenadores.Visible = permisos.Contains("entrenadores");
+                // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
+
+                linkSalir.Visible = true; // Siempre visible
 
 
                 CargarColaboradores();

@@ -28,26 +28,30 @@
      </div>
  </header>
 
- <!-- Sidebar -->
- <nav class="sidebar collapsed" id="sidebar">
-           <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
-      <a href="#" class="nav-link">Usuarios</a>
-      <a href="#" class="nav-link">Reportes</a>
-     <a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
-  <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
-  <div class="collapse ms-3" id="submenuMantenimientos">
+    
+            <!-- Sidebar -->
+     <nav class="sidebar collapsed" id="sidebar">
+<a id="linkInicio" runat="server" href="../Home/home.aspx" class="nav-link">Inicio</a>
+<a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Accesos</a>
+<a id="linkRegistroEntrenamiento" runat="server" href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+<a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse">Mantenimientos</a>
+    <div class="collapse ms-3" id="submenuMantenimientos">
+    <a id="linkRol" runat="server" href="../maintenance/maintenanceRol/rol.aspx" class="nav-link">Role</a>
+    <a id="linkBusinessUnit" runat="server" href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
+    <a id="linkTurno" runat="server" href="../maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
+    <a id="linkMuda" runat="server" href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
+    <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
+    <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
+    <a id="linkOperacion" runat="server" href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
 
-<a href="../maintenance/maintenanceRol/rol.aspx" class="nav-link">Role</a>
-<a href="../maintenance/maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Business Unit</a>
-<a href="../maintenance/maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
-<a href="../maintenance/maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-<a href="../maintenance/maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
-     <a href="../maintenance/maintenanceArea/area.aspx" class="nav-link">Área</a>
-       <a href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
+    <%-- A futuro --%>
+    <%-- <a id="linkEntrenadores" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenadores</a> --%>
+    <%-- <a id="linkEntrenamientos" runat="server" href="../maintenanceEntrenamiento/entrenamiento.aspx" class="nav-link">Entrenamientos</a> --%>
+</div>
 
-     </div>
-     <a href="#" class="nav-link">Salir</a>
- </nav>
+<a id="linkSalir" runat="server" href="#" class="nav-link">Salir</a>
+
+        </nav>
     
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
     <div class="main-content container py-5">
