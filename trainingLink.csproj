@@ -70,6 +70,7 @@
     <Content Include="UI\Home\home.aspx" />
     <Content Include="UI\login\login.aspx" />
     <Content Include="UI\login\sinPermiso.aspx" />
+    <Content Include="UI\maintenance\maintenanceAccess\access.aspx" />
     <Content Include="UI\maintenance\maintenanceArea\area.aspx" />
     <Content Include="UI\maintenance\maintenanceBusinessUnit\businessUnit.aspx" />
     <Content Include="UI\maintenance\maintenanceMuda\muda.aspx" />
@@ -106,6 +107,13 @@
     </Compile>
     <Compile Include="UI\login\sinPermiso.aspx.designer.cs">
       <DependentUpon>sinPermiso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceAccess\access.aspx.cs">
+      <DependentUpon>access.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\maintenance\maintenanceAccess\access.aspx.designer.cs">
+      <DependentUpon>access.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\maintenance\maintenanceArea\area.aspx.cs">
       <DependentUpon>area.aspx</DependentUpon>
@@ -156,6 +164,7 @@
     <Compile Include="UI\maintenance\maintenanceTurno\turno.aspx.designer.cs">
       <DependentUpon>turno.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UI\master\PermisoHelper.cs" />
     <Compile Include="UI\registroEntrenamiento\registroEntrenamiento.aspx.cs">
       <DependentUpon>registroEntrenamiento.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
