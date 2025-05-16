@@ -812,25 +812,43 @@ function toggleGraficoCurva() {
 
 prepararModalCrearPermiso = function () {
     document.getElementById("hdnIdPermiso").value = "";
-    document.getElementById("ddlCode1").selectedIndex = 0;
-    document.getElementById("ddlMenuKey").selectedIndex = 0;
+
+    $('#ddlCode1').val("").prop("disabled", false).trigger('change');
+    $('#ddlMenuKey').val("").prop("disabled", false).trigger('change');
+
     document.getElementById("chkPuedeVer").checked = false;
     document.getElementById("modalPermisoLabel").innerText = "Agregar Permiso";
 
+    // Ocultar botón eliminar
+    const btnEliminar = document.getElementById("btnEliminarPermiso");
+    if (btnEliminar) {
+        btnEliminar.style.display = "none";
+    }
+
     var modal = new bootstrap.Modal(document.getElementById("modalPermiso"));
     modal.show();
 };
+
 
 abrirModalEditarPermiso = function (idPermiso, code1, menuKey, puedeVer) {
     document.getElementById("hdnIdPermiso").value = idPermiso;
-    document.getElementById("ddlCode1").value = code1;
-    document.getElementById("ddlMenuKey").value = menuKey;
+
+    $('#ddlCode1').val(code1).prop("disabled", true).trigger('change');
+    $('#ddlMenuKey').val(menuKey).prop("disabled", true).trigger('change');
+
     document.getElementById("chkPuedeVer").checked = puedeVer;
     document.getElementById("modalPermisoLabel").innerText = "Editar Permiso";
 
-    var modal = new bootstrap.Modal(document.getElementById("modalPermiso"));
+    // Mostrar botón eliminar
+    const btnEliminar = document.getElementById("btnEliminarPermiso");
+    if (btnEliminar) {
+        btnEliminar.style.display = "inline-block";
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById("modalPermiso"));
     modal.show();
 };
+
 
 
  cerrarModalPermiso  = function () {
@@ -844,18 +862,48 @@ abrirModalEditarPermiso = function (idPermiso, code1, menuKey, puedeVer) {
 
 if (window.jQuery) {
     $(function () {
-        if ($('#ddlUsuarios').length) {
-            $('#ddlUsuarios').select2({ theme: 'bootstrap4', width: 'style', placeholder: "Seleccione un usuario" });
-        }
+        $('#ddlCode1').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+            dropdownParent: $('#modalPermiso'),
+            placeholder: "Seleccione un usuario"
+        });
 
-        if ($('#ddlCode1').length) {
-            $('#ddlCode1').select2({ theme: 'bootstrap4', width: '100%', dropdownParent: $('#modalPermiso'), placeholder: "Seleccione un usuario" });
-        }
+        $('#ddlMenuKey').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+            dropdownParent: $('#modalPermiso'),
+            placeholder: "Seleccione un módulo"
+        });
 
-        if ($('#ddlMenuKey').length) {
-            $('#ddlMenuKey').select2({ theme: 'bootstrap4', width: '100%', dropdownParent: $('#modalPermiso'), placeholder: "Seleccione un módulo" });
-        }
+        $('#ddlUsuarios').select2({
+            theme: 'bootstrap4',
+            width: 'style',
+            placeholder: "Seleccione un usuario"
+        });
     });
+
+
+}
+function confirmarEliminacion() {
+    return confirm("¿Estás seguro de que deseas eliminar este permiso?");
+}
+
+
+function mostrarToastExitoPermiso(mensaje = "Acción realizada exitosamente") {
+    const toastEl = document.getElementById("toastSuccess");
+
+    if (toastEl) {
+        const toastBody = toastEl.querySelector(".toast-body");
+        toastBody.textContent = mensaje;
+
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
 }
 
 

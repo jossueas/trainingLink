@@ -52,22 +52,7 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
             CargarPermisos();
         }
 
-        private void CargarModulos()
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT MenuKey, NombreMostrar FROM Menu ORDER BY NombreMostrar", conn))
-                {
-                    ddlMenuKey.DataSource = cmd.ExecuteReader();
-                    ddlMenuKey.DataTextField = "NombreMostrar";
-                    ddlMenuKey.DataValueField = "MenuKey";
-                    ddlMenuKey.DataBind();
-                }
-            }
-
-            ddlMenuKey.Items.Insert(0, new ListItem("Seleccione un módulo", ""));
-        }
+ 
 
 
         protected void btnGuardarPermiso_Click(object sender, EventArgs e)
@@ -75,7 +60,8 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
             string idPermiso = hdnIdPermiso.Value;
             string code1 = ddlCode1.SelectedValue;
             string menuKey = ddlMenuKey.SelectedValue;
-            bool puedeVer = chkPuedeVer.Checked;
+            bool puedeVer = Request.Form["chkPuedeVer"] == "on";
+
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -113,23 +99,34 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
             ScriptManager.RegisterStartupScript(this, GetType(), "cerrarModalPermiso", "cerrarModalPermiso();", true);
         }
 
-
         private void CargarUsuarios()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionStringGeneralData))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT Code1, FullName FROM [User] ORDER BY FullName", conn);
+                ddlUsuarios.DataSource = cmd.ExecuteReader(); // ✅ corregido
+                ddlUsuarios.DataTextField = "FullName";
+                ddlUsuarios.DataValueField = "Code1";
+                ddlUsuarios.DataBind();
+            }
+            ddlUsuarios.Items.Insert(0, new ListItem("Seleccione un usuario", ""));
+        }
+        private void CargarModulos()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT Code1, FullName FROM GeneralData.dbo.[User] ORDER BY FullName", conn))
-                {
-                    ddlUsuarios.DataSource = cmd.ExecuteReader();
-                    ddlUsuarios.DataTextField = "FullName";
-                    ddlUsuarios.DataValueField = "Code1";
-                    ddlUsuarios.DataBind();
-                }
+                SqlCommand cmd = new SqlCommand("SELECT MenuKey, NombreMostrar FROM Menu ORDER BY NombreMostrar", conn);
+                ddlMenuKey.DataSource = cmd.ExecuteReader();
+                ddlMenuKey.DataTextField = "NombreMostrar";
+                ddlMenuKey.DataValueField = "MenuKey";
+                ddlMenuKey.DataBind();
             }
-
-            ddlUsuarios.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", ""));
+            ddlMenuKey.Items.Insert(0, new ListItem("Seleccione un módulo", ""));
         }
+
+
 
         private void CargarUsuariosModal()
         {
@@ -139,14 +136,14 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
                 using (SqlCommand cmd = new SqlCommand("SELECT Code1, FullName FROM [User] ORDER BY FullName", conn))
                 {
                     ddlCode1.DataSource = cmd.ExecuteReader();
-                    ddlCode1.DataTextField = "FullName"; // Lo que se ve
-                    ddlCode1.DataValueField = "Code1";   // Lo que se guarda
+                    ddlCode1.DataTextField = "FullName";
+                    ddlCode1.DataValueField = "Code1";
                     ddlCode1.DataBind();
                 }
+                ddlCode1.Items.Insert(0, new ListItem("Seleccione un usuario", ""));
             }
-
-            ddlCode1.Items.Insert(0, new ListItem("Seleccione un usuario", ""));
         }
+
 
 
         private void CargarPermisos()
@@ -169,5 +166,55 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
                 }
             }
         }
+
+        protected void btnEliminarPermiso_Click(object sender, EventArgs e)
+        {
+            string idPermiso = hdnIdPermiso.Value;
+
+            if (!string.IsNullOrEmpty(idPermiso))
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand("sp_DeletePermiso", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IdPermiso", int.Parse(idPermiso));
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            CargarPermisos();
+
+            // Cierra modal + muestra toast
+            ScriptManager.RegisterStartupScript(this, GetType(), "cerrarModalPermiso", "cerrarModalPermiso();", true);
+            MostrarToastExitoEliminacion();
+        }
+
+
+
+
+
+
+
+        private void MostrarToastExitoEliminacion()
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "toastEliminado", "mostrarToastExitoPermiso('Permiso eliminado correctamente');", true);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

@@ -93,13 +93,14 @@
                         <asp:BoundField DataField="Code1" HeaderText="Usuario" />
                         <asp:BoundField DataField="FullName" HeaderText="Nombre" />
                         <asp:BoundField DataField="MenuKey" HeaderText="Módulo" />
-                        <asp:CheckBoxField DataField="PuedeVer" HeaderText="¿Puede Ver?" />
+                        <asp:CheckBoxField DataField="PuedeVer" HeaderText="Tiene Acceso" />
                         <asp:TemplateField HeaderText="Acciones">
                             <ItemTemplate>
-                                <button type="button" class="btn btn-outline-info btn-sm"
-                                    onclick='<%# "abrirModalEditarPermiso(" + Eval("IdPermiso") + ",\"" + Eval("Code1") + "\",\"" + Eval("MenuKey") + "\"," + Eval("PuedeVer").ToString().ToLower() + ")" %>'>
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
+                             <button type="button" class="btn btn-outline-info btn-sm" 
+    onclick='<%# "abrirModalEditarPermiso(\"" + Eval("IdPermiso") + "\",\"" + Eval("Code1") + "\",\"" + Eval("MenuKey") + "\"," + Eval("PuedeVer").ToString().ToLower() + ")" %>'>
+    <i class="bi bi-pencil-square"></i>
+</button>
+
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -139,26 +140,34 @@
                         <asp:HiddenField ID="hdnIdPermiso" runat="server" />
                         <div class="mb-3">
                             <label for="ddlCode1" class="form-label">Usuario</label>
-<asp:DropDownList ID="ddlCode1" runat="server"
-    CssClass="form-select select2-modal"
-    ClientIDMode="Static">
-</asp:DropDownList>
+<asp:DropDownList ID="ddlCode1" runat="server" CssClass="form-select" ClientIDMode="Static" />
                         </div>
                         <div class="mb-3">
                             <label for="txtMenuKey" class="form-label">Módulo (MenuKey)</label>
-<asp:DropDownList ID="ddlMenuKey" runat="server"
-    CssClass="form-select select2-modal"
-    ClientIDMode="Static" />
+<asp:DropDownList ID="ddlMenuKey" runat="server" CssClass="form-select" ClientIDMode="Static" />
                         </div>
-                        <div class="form-check mb-3">
-                            <asp:CheckBox ID="chkPuedeVer" runat="server" CssClass="form-check-input" />
-                            <label class="form-check-label" for="chkPuedeVer">Puede Ver</label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <asp:Button ID="btnGuardarPermiso" runat="server" CssClass="btn btn-success" Text="Guardar" OnClick="btnGuardarPermiso_Click" />
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    </div>
+<div class="form-check form-switch mb-3">
+    <input type="checkbox" class="form-check-input" id="chkPuedeVer" name="chkPuedeVer" />
+    <label class="form-check-label label-turquesa" for="chkPuedeVer">Acceso</label>
+</div>
+
+
+
+
+                    
+                 <div class="modal-footer d-flex justify-content-between">
+<asp:Button ID="btnEliminarPermiso" runat="server"
+    CssClass="btn btn-danger me-auto"
+    Text="Eliminar"
+    OnClientClick="return confirmarEliminacion();" 
+    OnClick="btnEliminarPermiso_Click"
+    Style="display: none;" />
+    <div>
+        <asp:Button ID="btnGuardarPermiso" runat="server" CssClass="btn btn-success" Text="Guardar" OnClick="btnGuardarPermiso_Click" />
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    </div>
+</div>
+
                 </div>
             </div>
         </div>

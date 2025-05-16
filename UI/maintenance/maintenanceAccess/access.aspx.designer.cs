@@ -177,13 +177,13 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
         protected global::System.Web.UI.WebControls.DropDownList ddlMenuKey;
 
         /// <summary>
-        /// chkPuedeVer control.
+        /// btnEliminarPermiso control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkPuedeVer;
+        protected global::System.Web.UI.WebControls.Button btnEliminarPermiso;
 
         /// <summary>
         /// btnGuardarPermiso control.
