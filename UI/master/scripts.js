@@ -906,6 +906,26 @@ function mostrarToastExitoPermiso(mensaje = "Acción realizada exitosamente") {
     }
 }
 
+function mostrarToastYLimpiarPermiso(mensaje = "Permiso guardado correctamente") {
+    cerrarModalPermiso();
+
+    // Limpiar campos del modal
+    $('#ddlCode1').val(null).trigger('change');
+    $('#ddlMenuKey').val(null).trigger('change');
+
+    const chk = document.getElementById("chkPuedeVer");
+    if (chk) chk.checked = false;
+
+    mostrarToastExitoPermiso(mensaje);
+}
+
+
+function limpiarFormularioPermiso() {
+    $('#ddlCode1').val('').trigger('change');
+    $('#ddlMenuKey').val('').trigger('change');
+    document.getElementById("chkPuedeVer").checked = false;
+    document.getElementById("hdnIdPermiso").value = "";
+}
 
 
 

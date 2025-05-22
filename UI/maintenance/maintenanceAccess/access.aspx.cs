@@ -78,6 +78,8 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
                         cmd.Parameters.AddWithValue("@PuedeVer", puedeVer);
                         cmd.ExecuteNonQuery();
                     }
+                    // Toast + reset
+                    ScriptManager.RegisterStartupScript(this, GetType(), "toastYlimpiar", "mostrarToastYLimpiarPermiso();", true);
                 }
                 else
                 {
@@ -96,7 +98,9 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
             CargarPermisos();
 
             // Registrar JS para cerrar el modal visualmente
-            ScriptManager.RegisterStartupScript(this, GetType(), "cerrarModalPermiso", "cerrarModalPermiso();", true);
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "toastActualizado", "mostrarToastExito('Permiso actualizado exitosamente'); cerrarModalPermiso();", true);
+
         }
 
         private void CargarUsuarios()
