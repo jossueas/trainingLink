@@ -612,6 +612,16 @@ namespace trainingLink.UI.master
                     cmd.Parameters.AddWithValue("@Horas", txtHorasEfectivas.Text);
                     cmd.Parameters.AddWithValue("@Id", idRegistro);
                     cmd.ExecuteNonQuery();
+
+
+                }
+
+                // 2b. Actualizar Estado 
+                using (SqlCommand cmdEstado = new SqlCommand("UPDATE RegistroEntrenamiento SET Estado = @Estado WHERE IdRegistro = @Id", conn))
+                {
+                    cmdEstado.Parameters.AddWithValue("@Estado", DropDownList1Seguimiento.SelectedValue); // ID del estado actual
+                    cmdEstado.Parameters.AddWithValue("@Id", idRegistro);
+                    cmdEstado.ExecuteNonQuery();
                 }
 
                 // 3. Obtener IdOperacion
