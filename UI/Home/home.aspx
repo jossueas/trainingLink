@@ -1,4 +1,4 @@
-﻿<!-- HTML (home.aspx) -->
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="home.aspx.cs" Inherits="trainingLink.UI.Home.Home" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,7 +11,6 @@
     <link href="../master/styles.css" rel="stylesheet" />
         <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 
  
@@ -46,12 +45,13 @@
         </header>
 
         <!-- Sidebar -->
-        <nav class="sidebar collapsed" id="sidebar">
-            <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
-            <a href="..\maintenance\maintenanceAccess\access.aspx" class="nav-link">Acesos </a>
+ <nav class="sidebar" id="sidebar">
+<a href="home.aspx" class="nav-link">Inicio</a>
 
-            <a href="..\registroEntrenamiento\registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
-            <a href="#" class="nav-link">Reportes</a>
+<a href="../maintenance/maintenanceAccess/access.aspx" class="nav-link">Acesos</a>
+
+<a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+           
            <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">
         Mantenimientos
     </a>
@@ -67,12 +67,19 @@
    
     </div>
 
-    <a href="#" class="nav-link">Salir</a>
+<asp:Button ID="btnSalir" runat="server"
+    Text="Salir"
+    CssClass="nav-link btn btn-link text-start w-100"
+    OnClick="btnSalir_Click"
+    UseSubmitBehavior="false" />
+
+
 </nav>
          
 
         <!-- Main Content -->
-        <div class="main-content collapsed" id="mainContent">
+      <div class="main-content" id="mainContent">
+
             <div class="container py-5">
                 <h2 class="mb-4">Bienvenido a <span class="accent">TrainingLink</span></h2>
                 <p>Seleccione una opción del menú para comenzar.</p>
@@ -81,9 +88,9 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Usuarios</h5>
-                                <p>Administra los usuarios registrados en el sistema.</p>
-                                <a href="#" class="btn btn-azul-custom">Ir</a>
+                                <h5 class="card-title">Accesos</h5>
+                                <p>Administra los accesos de los usuarios </p>
+                                <a href="..\maintenance\maintenanceAccess\access.aspx" class="btn btn-azul-custom">Ir a Accesos</a>
                             </div>
                         </div>
                     </div>
@@ -91,17 +98,18 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Entrenamientos</h5>
-                                <p>Registra y adminstra los entrenamientos.</p>
-<a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="btn btn-azul-custom">Ir a Entrenamientos</a>
+                                <p>Registra y adminstra los entrenamientos</p>
+                                <a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="btn btn-azul-custom">Ir a Registro Entrenamientos</a>
+
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Configuración</h5>
+                                <h5 class="card-title">Operación</h5>
                                 <p>Ajustes generales de la aplicación.</p>
-                                <a href="#" class="btn btn-azul-custom">Configurar</a>
+                                <a href="#" class="btn btn-azul-custom">Ir a Operaciónes</a>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.NetworkInformation;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
@@ -35,6 +36,8 @@ namespace trainingLink.UI.master
                 string code1 = Session["Code1"]?.ToString();
                 var permisos = PermisoHelper.ObtenerMenuKeysParaUsuario(code1);
 
+               
+
                 linkInicio.Visible = true;
                 linkAccesos.Visible = permisos.Contains("acceso");
                 linkRegistroEntrenamiento.Visible = permisos.Contains("registroEntrenamiento");
@@ -50,7 +53,7 @@ namespace trainingLink.UI.master
                 // linkEntrenadores.Visible = permisos.Contains("entrenadores");
                 // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
 
-                linkSalir.Visible = true; // Siempre visible
+               linkSalir.Visible = true; // Siempre visible
 
 
                 CargarColaboradores();
@@ -252,12 +255,17 @@ namespace trainingLink.UI.master
             // Validar las fechas
             DateTime fechaInicio = DateTime.Parse(txtFechaInicio.Text);
             DateTime fechaFinal = DateTime.Parse(txtFechaFinal.Text);
-            
+
             //revisar 
             if (fechaFinal < fechaInicio)
             {
-                throw new Exception("La fecha final no puede ser menor que la fecha de inicio.");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "fechaInvalida", @"
+        alert('⚠️ La fecha final no puede ser menor que la fecha de inicio.');
+        var modal = new bootstrap.Modal(document.getElementById('modalRegistroEntrenamiento'));
+        modal.show();", true);
+                return;
             }
+
 
             // Inserción en la base de datos
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -454,6 +462,13 @@ namespace trainingLink.UI.master
                             DateTime fin = Convert.ToDateTime(reader["FechaFinal"]);
                             dias = ((fin - inicio).Days + 1); // ✅ calculamos los días aquí
                             txtDiasEntrenamiento.Text = dias.ToString();
+
+                            // Seteo estado
+                            string estadoSeguimiento = reader["Estado"]?.ToString();
+                            if (DropDownList1Seguimiento.Items.FindByValue(estadoSeguimiento) != null)
+                            {
+                                DropDownList1Seguimiento.SelectedValue = estadoSeguimiento;
+                            }
 
                             string unidadNegocio = reader["UnidadNegocio"].ToString();
                             grupoIGTD.Style["display"] = unidadNegocio == "IGTD" ? "flex" : "none";
@@ -776,6 +791,14 @@ namespace trainingLink.UI.master
                 Esperada = esperada,
                 Real = real
             };
+        }
+
+
+        protected void btnSalir_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("~/UI/Login/Login.aspx");
         }
 
 

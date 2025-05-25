@@ -13,6 +13,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <!-- Bootstrap CSS -->
+
 
     <link href="../../master/styles.css" rel="stylesheet" />
 
@@ -48,30 +50,37 @@
             </div>
         </header>
 
+        
 
         <!-- Sidebar -->
-        <nav class="sidebar collapsed" id="sidebar">
-            <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
-            <a href="#" class="nav-link">Usuarios</a>
-            <a href="#" class="nav-link">Reportes</a>
-            <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
-            <div class="collapse ms-3" id="submenuMantenimientos">
-                 
-                <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
-                <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
-                         <a href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-
-                <a href="../maintenanceArea/turno.aspx" class="nav-link">Área</a>
-                 <a href="../maintenanceTurno/rol.aspx" class="nav-link">Turno</a>
+        <nav class="sidebar d-flex flex-column vh-100" id="sidebar">
+            <div>
+                <a id="linkInicio" runat="server" href="../../Home/home.aspx" class="nav-link">Inicio</a>
+                <a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Acesos</a>
+                <a id="linkRegistroEntrenamiento" runat="server" href="../../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+                <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
+                <div class="collapse ms-3" id="submenuMantenimientos">
+                    <a id="linkRol" runat="server" href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
+                    <a id="linkBusinessUnit" runat="server" href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Business Unit</a>
+                    <a id="linkTurno" runat="server" href="../maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
+                    <a id="linkMuda" runat="server" href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
+                    <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
+                    <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
+                    <a id="linkOperacion" runat="server" href="../maintenanceOperaciones/operacion.aspx" class="nav-link">Operación</a>
+                </div>
             </div>
-            <a href="#" class="nav-link">Salir</a>
+
+            <!-- Botón Salir al fondo -->
+            <div class="mt-auto p-3">
+                <asp:Button ID="btnSalir" runat="server" CssClass="btn-plus-custom btn-sm w-100 d-flex align-items-center justify-content-center gap-2" Text="Salir" OnClick="btnSalir_Click" UseSubmitBehavior="false" />
+            </div>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content collapsed" id="mainContent">
             <div class="container py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Business Unit</h2>
+                    <h2 class="mb-0 tituloRol">Business Unit</h2>
                     <button type="button" class="btn btn-plus-custom"
                         data-bs-toggle="modal"
                         data-bs-target="#modalCrearBusinessUnit"
@@ -96,19 +105,21 @@
     </div>
 
     <div class="col-md-9">
-        <asp:Panel runat="server" DefaultButton="btnBuscar">
-            <div class="input-group">
-                <asp:TextBox ID="txtBuscar" runat="server"
-                             CssClass="form-control"
-                             placeholder="Buscar por nombre" />
-                <asp:LinkButton ID="btnBuscar" runat="server"
-                                CssClass="btn btn-search-custom"
-                                OnClick="btnBuscar_Click"
-                                CausesValidation="false">
-                    <i class="bi bi-search"></i>
-                </asp:LinkButton>
-            </div>
-        </asp:Panel>
+<asp:Panel runat="server" DefaultButton="btnBuscar">
+    <div class="input-group">
+        <asp:TextBox ID="txtBuscar" runat="server"
+            CssClass="form-control"
+            placeholder="Buscar por nombre..." />
+        <asp:LinkButton ID="btnBuscar" runat="server"
+            CssClass="btn btn-search-custom"
+            OnClick="btnBuscar_Click"
+            CausesValidation="false">
+            <i class="bi bi-search"></i>
+        </asp:LinkButton>
+    </div>
+</asp:Panel>
+
+
     </div>
 </div>
 
@@ -204,29 +215,34 @@
             </div>
         </div>
 
-        <!-- Scripts -->
+   <!-- Scripts al final del body -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- JavaScript Functions -->
-        <script src="../../master/scripts.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+     <script src="../../master/scripts.js"></script>
+
 
         <script>
+            $(document).ready(function () {
+                $('.select2').select2();
+            });
+
             // Preparar el modal para crear una nueva Business Unit
             function prepararModalCrearBusinessUnit() {
                 document.getElementById("<%= txtNombreBusinessUnit.ClientID %>").value = "";
-             document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = "1";
-             document.getElementById("<%= hdnIdBusinessUnit.ClientID %>").value = "";
-             document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Guardar";
+                document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = "1";
+                document.getElementById("<%= hdnIdBusinessUnit.ClientID %>").value = "";
+                document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Guardar";
                 document.getElementById("modalCrearBusinessUnitLabel").innerText = "Agregar Nueva Business Unit";
                 document.getElementById("btnEliminarContainerBusinessUnit").style.display = "none";
             }
 
-            //Abrir el modal para editar una Business Unit existente
-
+            // Abrir el modal para editar una Business Unit existente
             function abrirModalEditarBusinessUnit(id, name, status) {
                 document.getElementById("<%= txtNombreBusinessUnit.ClientID %>").value = name;
-      document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = status;
-      document.getElementById("<%= hdnIdBusinessUnit.ClientID %>").value = id;
-      document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Actualizar";
+                document.getElementById("<%= ddlEstadoBusinessUnit.ClientID %>").value = status;
+                document.getElementById("<%= hdnIdBusinessUnit.ClientID %>").value = id;
+                document.getElementById("<%= btnGuardarBusinessUnit.ClientID %>").value = "Actualizar";
                 document.getElementById("modalCrearBusinessUnitLabel").innerText = "Editar Business Unit";
                 document.getElementById("btnEliminarContainerBusinessUnit").style.display = "block";
 
@@ -234,7 +250,6 @@
                 modal.show();
             }
         </script>
-
 
     </form>
 </body>

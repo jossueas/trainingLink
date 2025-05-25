@@ -9,6 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Estilos personalizados -->
     <link href="../../master/styles.css" rel="stylesheet" />
@@ -40,27 +41,34 @@
                 </a>
             </div>
         </header>
-
-
+        
 
         <!-- Sidebar -->
-        <nav class="sidebar collapsed" id="sidebar">
-            <a href="..\Home\home.aspx" class="nav-link">Inicio</a>
-            <a href="#" class="nav-link">Usuarios</a>
-            <a href="#" class="nav-link">Reportes</a>
-            <a href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
-            <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
-            <div class="collapse ms-3" id="submenuMantenimientos">
-                <a href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
-                <a href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
-                <a href="../maintenanceTurno/rol.aspx" class="nav-link">Turno</a>
-                <a href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-                <a href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
-                <a href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
-                <a href="../maintenanceScrap/Scrap.aspx" class="nav-link">Scrap</a>
+        <nav class="sidebar d-flex flex-column vh-100" id="sidebar">
+            <div>
+                <a id="linkInicio" runat="server" href="../../Home/home.aspx" class="nav-link">Inicio</a>
+                <a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Acesos</a>
+                <a id="linkRegistroEntrenamiento" runat="server" href="../../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+                <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false">Mantenimientos</a>
+                <div class="collapse ms-3" id="submenuMantenimientos">
+                    <a id="linkRol" runat="server" href="../maintenanceRol/rol.aspx" class="nav-link">Role</a>
+                    <a id="linkBusinessUnit" runat="server" href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Business Unit</a>
+                    <a id="linkTurno" runat="server" href="../maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
+                    <a id="linkMuda" runat="server" href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
+                    <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
+                    <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
+                    <a id="linkOperacion" runat="server" href="../maintenanceOperaciones/operacion.aspx" class="nav-link">Operación</a>
+                </div>
             </div>
-            <a href="#" class="nav-link">Salir</a>
+
+            <!-- Botón Salir al fondo -->
+            <div class="mt-auto p-3">
+                <asp:Button ID="btnSalir" runat="server" CssClass="btn-plus-custom btn-sm w-100 d-flex align-items-center justify-content-center gap-2" Text="Salir" OnClick="btnSalir_Click" UseSubmitBehavior="false" />
+            </div>
         </nav>
+
+
+
 
         <!-- Main Content -->
         <div class="main-content collapsed" id="mainContent">
@@ -71,38 +79,52 @@
                         <i class="bi bi-plus-lg"></i>
                     </button>
                 </div>
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-2 align-items-end">
+            <!-- Dropdown: filtro por estado -->
+            <div class="col-md-4">
+                <asp:DropDownList ID="ddlFiltroStatus" runat="server"
+                    CssClass="form-select"
+                    AutoPostBack="true"
+                    OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
+                    <asp:ListItem Text="All" Value="" />
+                    <asp:ListItem Text="Active" Value="1" />
+                    <asp:ListItem Text="Inactive" Value="0" />
+                </asp:DropDownList>
+            </div>
 
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <asp:DropDownList ID="ddlFiltroStatus" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltroStatus_SelectedIndexChanged">
-                                    <asp:ListItem Text="All" Value="" />
-                                    <asp:ListItem Text="Active" Value="1" />
-                                    <asp:ListItem Text="Inactive" Value="0" />
-                                </asp:DropDownList>
-                            </div>
-                        <div class="col-md-8">
-<div class="col-md-8">
-    <asp:Panel runat="server" DefaultButton="btnBuscar">
-        <div class="input-group">
-            <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Search" />
-            <asp:LinkButton ID="btnBuscar" runat="server" CssClass="btn btn-search-custom" OnClick="btnBuscar_Click" CausesValidation="false">
-                <i class="bi bi-search"></i>
-            </asp:LinkButton>
+            <!-- Búsqueda a la derecha -->
+            <div class="col-md-8">
+                <asp:Panel runat="server" DefaultButton="btnBuscar">
+                    <div class="input-group">
+                        <asp:TextBox ID="txtBuscar" runat="server"
+                            CssClass="form-control"
+                            placeholder="Search" />
+                        <asp:LinkButton ID="btnBuscar" runat="server"
+                            CssClass="btn btn-search-custom"
+                            OnClick="btnBuscar_Click"
+                            CausesValidation="false">
+                            <i class="bi bi-search"></i>
+                        </asp:LinkButton>
+                    </div>
+                </asp:Panel>
+            </div>
         </div>
-    </asp:Panel>
+    </div>
 </div>
 
-
-                        </div>
-                    </div>
-                </div>
 
                 <asp:GridView ID="gvRoles" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info">
                     <Columns>
                         <asp:BoundField DataField="Name" HeaderText="Role" />
                         <asp:BoundField DataField="Description" HeaderText="Description" />
+                        <asp:TemplateField HeaderText="Estado">
+    <ItemTemplate>
+        <%# Convert.ToBoolean(Eval("Status")) ? "Activo" : "Inactivo" %>
+    </ItemTemplate>
+</asp:TemplateField>
+
                         <asp:TemplateField HeaderText="Action">
                             <ItemTemplate>
                                 <a href="javascript:void(0);" onclick='abrirModalEditar("<%# Eval("IdRol") %>", "<%# Eval("Name") %>", "<%# Eval("Description") %>", "<%# (Convert.ToBoolean(Eval("Status")) ? "1" : "0") %>")'>

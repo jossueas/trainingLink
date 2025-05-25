@@ -16,7 +16,7 @@
     <form id="form1" runat="server">
         <!-- Header con logo -->
         <div class="custom-header">
-            <img src="../../Files/images/logoPhilips.png" alt="Philips Logo" />
+            <img src="../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
         </div>
 
         <!-- Círculos decorativos -->

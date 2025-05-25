@@ -38,7 +38,7 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
                 // linkEntrenadores.Visible = permisos.Contains("entrenadores");
                 // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
 
-                linkSalir.Visible = true; // Siempre visible
+                btnSalir.Visible = true; // Siempre visible
 
                 CargarUsuariosModal(); // ddlCode1
                 CargarModulos();       // ddlMenuKey
@@ -212,6 +212,12 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
 
 
 
+        protected void btnSalir_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("~/UI/Login/Login.aspx");
+        }
 
 
 

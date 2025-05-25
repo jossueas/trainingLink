@@ -32,17 +32,17 @@
             <!-- Sidebar -->
      <nav class="sidebar collapsed" id="sidebar">
 <a id="linkInicio" runat="server" href="../Home/home.aspx" class="nav-link">Inicio</a>
-<a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Accesos</a>
-<a id="linkRegistroEntrenamiento" runat="server" href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+<a id="linkAccesos" runat="server" href="../maintenance//maintenanceAccess/access.aspx" class="nav-link">Accesos</a>
+<a id="linkRegistroEntrenamiento" runat="server" href="../maintenance//registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
 <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse">Mantenimientos</a>
     <div class="collapse ms-3" id="submenuMantenimientos">
     <a id="linkRol" runat="server" href="../maintenance/maintenanceRol/rol.aspx" class="nav-link">Role</a>
-    <a id="linkBusinessUnit" runat="server" href="../maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
-    <a id="linkTurno" runat="server" href="../maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
-    <a id="linkMuda" runat="server" href="../maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-    <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
-    <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
-    <a id="linkOperacion" runat="server" href="../maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
+    <a id="linkBusinessUnit" runat="server" href="../maintenance//maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
+    <a id="linkTurno" runat="server" href="../maintenance/maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
+    <a id="linkMuda" runat="server" href="../maintenance//maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
+    <a id="linkArea" runat="server" href="../maintenance//maintenanceArea/area.aspx" class="nav-link">Área</a>
+    <a id="linkScrap" runat="server" href="../maintenance//maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
+    <a id="linkOperacion" runat="server" href="../maintenance//maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
 
     <%-- A futuro --%>
     <%-- <a id="linkEntrenadores" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenadores</a> --%>
@@ -73,6 +73,7 @@
         <label for="ddlFiltroEstado"  class="form-label label-turquesa">Estado</label>
        <asp:DropDownList ID="ddlFiltroEstado" runat="server" CssClass="form-select">
     <asp:ListItem Text="Todos" Value="" />
+    <asp:ListItem Text="Inactivo" Value="0" />
     <asp:ListItem Text="Activo" Value="1" />
     <asp:ListItem Text="Completo" Value="2" />
     <asp:ListItem Text="Incompleto" Value="3" />
@@ -80,14 +81,16 @@
 
     </div>
 
-    <div class="col-md-4">
-        <label for="ddlFiltroColaborador" class="form-label label-turquesa">Colaborador</label>
-        <asp:DropDownList ID="ddlFiltroColaborador" runat="server" CssClass="form-select" />
-    </div>
+
 
     <div class="col-md-4">
         <label for="ddlFiltroEntrenador" class="form-label label-turquesa">Entrenador</label>
         <asp:DropDownList ID="ddlFiltroEntrenador" runat="server" CssClass="form-select" />
+    </div>
+
+        <div class="col-md-4">
+        <label for="ddlFiltroColaborador" class="form-label label-turquesa">Colaborador</label>
+<asp:DropDownList ID="ddlFiltroColaborador" runat="server" CssClass="form-select select2" />
     </div>
 
     <div class="col-md-1 d-flex align-items-end">
@@ -115,7 +118,8 @@
   <asp:TemplateField HeaderText="Estado">
 
 <ItemTemplate>
-    <%# Convert.ToInt32(Eval("Estado")) == 1 ? "Activo" :
+         <%# Convert.ToInt32(Eval("Estado")) == 0 ? "Inactivo" :
+   Convert.ToInt32(Eval("Estado")) == 1 ? "Activo" :
         Convert.ToInt32(Eval("Estado")) == 2 ? "Completo" :
         Convert.ToInt32(Eval("Estado")) == 3 ? "Incompleto" : "Desconocido" %>
 </ItemTemplate>
@@ -178,9 +182,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label label-turquesa">Colaborador</label>
-<asp:DropDownList ID="ddlColaborador" runat="server" CssClass="form-select" />                            </div>
+                              <div class="col-md-6 mb-3">
+                        <label class="form-label label-turquesa">Colaborador</label>
+                        <asp:DropDownList ID="ddlColaborador" runat="server" CssClass="form-select select2" ClientIDMode="Static" />
+                    </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label label-turquesa">Operación</label>
 <asp:DropDownList ID="ddlOperacion" runat="server" CssClass="form-select" />                       </div>
@@ -210,7 +215,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Estado</label>
                                 <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
-                                     <asp:ListItem Text=" " Value="0" />
+                                     <asp:ListItem Text="Inactivo" Value="0" />
                                     <asp:ListItem Text="Activo" Value="1" />
                                     <asp:ListItem Text="Completo" Value="2" />
                                     <asp:ListItem Text="Incompleto" Value="3" />
@@ -281,6 +286,22 @@
             <label class="form-label label-turquesa">Muda:</label>
             <asp:DropDownList ID="ddlMuda" runat="server" CssClass="form-control" />
           </div>
+
+
+
+               <div class="col-md-4">
+      <label class="form-label">Estado</label>
+      <asp:DropDownList ID="DropDownList1Seguimiento" runat="server" CssClass="form-select">
+           <asp:ListItem Text="Inactivo" Value="0" />
+          <asp:ListItem Text="Activo" Value="1" />
+          <asp:ListItem Text="Completo" Value="2" />
+          <asp:ListItem Text="Incompleto" Value="3" />
+      </asp:DropDownList>
+  </div>
+
+
+
+
         </div>
 
         <!-- Campos condicionales -->
@@ -352,6 +373,33 @@
 
 
   
+      <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+      <script>
+
+          $(document).ready(function () {
+              // Aplica Select2 a ddlFiltroColaborador
+              $('#<%= ddlFiltroColaborador.ClientID %>').select2({
+                  width: '100%',
+                  placeholder: 'Seleccione un colaborador',
+                  allowClear: true
+              });
+          });
+
+
+      </script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#ddlColaborador').select2({
+            dropdownParent: $('#modalRegistroEntrenamiento')
+        });
+    });
+      </script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

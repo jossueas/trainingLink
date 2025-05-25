@@ -22,6 +22,26 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
         {
             if (!IsPostBack)
             {
+
+                string code1 = Session["Code1"]?.ToString();
+                var permisos = PermisoHelper.ObtenerMenuKeysParaUsuario(code1);
+
+                linkInicio.Visible = true;
+                linkAccesos.Visible = permisos.Contains("acceso");
+                linkRegistroEntrenamiento.Visible = permisos.Contains("registroEntrenamiento");
+                linkRol.Visible = permisos.Contains("rol");
+                linkBusinessUnit.Visible = permisos.Contains("businessUnit");
+                linkTurno.Visible = permisos.Contains("turno");
+                linkMuda.Visible = permisos.Contains("muda");
+                linkArea.Visible = permisos.Contains("area");
+                linkScrap.Visible = permisos.Contains("scrap");
+                linkOperacion.Visible = permisos.Contains("operacion");
+
+                // Comentados pero listos
+                // linkEntrenadores.Visible = permisos.Contains("entrenadores");
+                // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
+
+                btnSalir.Visible = true; // Siempre visible
                 CargarAreas();
                 CargarUnidadesNegocio();
                 CargarOperaciones();
@@ -238,6 +258,21 @@ namespace trainingLink.UI.maintenance.maintenanceOperacion
 
             CargarOperaciones(); // Recarga el GridView
         }
+
+
+
+
+        protected void btnSalir_Click(object sender, EventArgs e)
+        {
+            // Eliminar todas las variables de sesión
+            Session.Clear();
+            Session.Abandon();
+
+            // Redirigir al login
+            Response.Redirect("~/UI/login/login.aspx", true); // Asegúrate de que la ruta sea correcta
+        }
+
+
 
     }
 }

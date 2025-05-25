@@ -141,15 +141,6 @@ namespace trainingLink.UI.master
         protected global::System.Web.UI.WebControls.DropDownList ddlFiltroEstado;
 
         /// <summary>
-        /// ddlFiltroColaborador control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroColaborador;
-
-        /// <summary>
         /// ddlFiltroEntrenador control.
         /// </summary>
         /// <remarks>
@@ -157,6 +148,15 @@ namespace trainingLink.UI.master
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlFiltroEntrenador;
+
+        /// <summary>
+        /// ddlFiltroColaborador control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroColaborador;
 
         /// <summary>
         /// btnBuscarEntrenamiento control.
@@ -346,6 +346,15 @@ namespace trainingLink.UI.master
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMuda;
+
+        /// <summary>
+        /// DropDownList1Seguimiento control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList1Seguimiento;
 
         /// <summary>
         /// grupoIGTD control.

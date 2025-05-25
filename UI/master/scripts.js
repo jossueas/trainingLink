@@ -254,6 +254,23 @@ function mostrarToastExitoBusinessUnit() {
         });
     }
 }
+
+function mostrarToastEliminadoBusinessUnit() {
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toastBody = toastEl.querySelector(".toast-body");
+        toastBody.textContent = "🗑️ Business Unit eliminada correctamente.";
+
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+
 function validarAreaAntesDeGuardar(idDropDown) {
     const ddl = document.getElementById(idDropDown);
     if (ddl && (ddl.value === "" || ddl.value === "0")) {
@@ -957,5 +974,6 @@ window.mostrarToastSinResultados = mostrarToastSinResultados;
 window.cargarGraficoCurva = cargarGraficoCurva;
 window.prepararModalCrearPermiso = prepararModalCrearPermiso;
     window.cerrarModalPermiso = cerrarModalPermiso;
-    window.abrirModalEditarPermiso = abrirModalEditarPermiso;
+window.abrirModalEditarPermiso = abrirModalEditarPermiso;
+window.mostrarToastEliminadoBusinessUnit = mostrarToastEliminadoBusinessUnit;
 
