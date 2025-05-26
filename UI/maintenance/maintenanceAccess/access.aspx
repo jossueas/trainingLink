@@ -71,12 +71,18 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0 tituloRol">Gestión de Accesos</h2>
                 </div>
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="w-25">
-                        <asp:DropDownList ID="ddlUsuarios" runat="server" CssClass="form-select select2-bootstrap" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ddlUsuarios_SelectedIndexChanged" />
-                    </div>
-                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar Acceso" CssClass="btn btn-primary" OnClientClick="prepararModalCrearPermiso(); return false;" />
-                </div>
+         <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-25">
+        <asp:DropDownList ID="ddlUsuarios" runat="server" CssClass="form-select select2-bootstrap" ClientIDMode="Static" AutoPostBack="true" OnSelectedIndexChanged="ddlUsuarios_SelectedIndexChanged" />
+    </div>
+    <div class="d-flex gap-2">
+       <a href="../maintenanceUsuarios/usuarios.aspx" class="btn btn-outline-primary">
+    <i class="bi bi-person-fill"></i> Usuarios
+</a>
+        <asp:Button ID="btnAgregar" runat="server" Text="Agregar Acceso" CssClass="btn btn-primary" OnClientClick="prepararModalCrearPermiso(); return false;" />
+    </div>
+</div>
+
                 <div class="card mb-4">
                     <asp:GridView ID="gvPermisos" runat="server" CssClass="table table-bordered table-hover text-center align-middle" AutoGenerateColumns="False" DataKeyNames="IdPermiso">
                         <Columns>

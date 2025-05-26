@@ -1,4 +1,26 @@
-﻿// test por fallo ala hora de cargar el js
+﻿function abrirModalEditarUsuario(id, code1, nombre, idRol, status, rolNombre) {
+    console.log("EDITANDO USUARIO →", {
+        id, code1, nombre, idRol, status, rolNombre
+    });
+
+    // Debug visual de las opciones
+    console.log("ddlRol values:", [...document.getElementById("ddlRol").options].map(opt => ({ value: opt.value, text: opt.text })));
+    console.log("ddlEstadoUsuario values:", [...document.getElementById("ddlEstadoUsuario").options].map(opt => opt.value));
+
+    // Asignar valores al modal
+    document.getElementById("hdnIdUsuario").value = id;
+    document.getElementById("txtNombreUsuario").value = nombre;
+
+    $('#ddlCode1').val(code1).trigger('change');
+    document.getElementById("ddlRol").value = idRol.toString();
+    document.getElementById("ddlEstadoUsuario").value = status.toString();
+
+    document.getElementById("modalUsuarioLabel").innerText = "Editar Usuario";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalUsuario"));
+    modal.show();
+}
+// test por fallo ala hora de cargar el js
 console.log("JS cargado");
 
 // Alternar el sidebar
@@ -37,6 +59,8 @@ function cerrarModal(modalId) {
 
 
 // Toast para ROL
+
+
 function mostrarToastExito() {
     cerrarModal("modalCrearRol");
 
@@ -943,6 +967,84 @@ function limpiarFormularioPermiso() {
     document.getElementById("chkPuedeVer").checked = false;
     document.getElementById("hdnIdPermiso").value = "";
 }
+
+
+
+
+
+
+//Usuarios
+
+// Usuarios
+
+function prepararModalUsuario() {
+    // Resetear campos
+    $('#ddlCode1').val('').trigger('change');
+    document.getElementById('txtNombreUsuario').value = '';
+    document.getElementById('ddlRol').selectedIndex = 0;
+    document.getElementById('ddlEstadoUsuario').value = '1';
+    document.getElementById('hdnIdUsuario').value = '';
+    document.getElementById("modalUsuarioLabel").innerText = "Agregar Usuario";
+
+    // Mostrar modal
+    const modal = new bootstrap.Modal(document.getElementById("modalUsuario"));
+    modal.show();
+}
+
+$(document).ready(function () {
+    $('#ddlCode1').select2({
+        dropdownParent: $('#modalUsuario'),
+        width: '100%',
+        placeholder: 'Seleccione un colaborador'
+    });
+
+    $('#ddlCode1').on('change', function () {
+        const selectedText = $(this).find("option:selected").text();
+        const nombreSolo = selectedText.split(' - ')[1]?.trim() || "";
+        $('#txtNombreUsuario').val(nombreSolo);
+    });
+});
+
+function prepararModalCrearUsuario() {
+    $('#ddlCode1').val('').trigger('change');
+    document.getElementById('txtNombreUsuario').value = '';
+    document.getElementById('ddlRol').selectedIndex = 0;
+    document.getElementById('ddlEstadoUsuario').value = '1';
+    document.getElementById('hdnIdUsuario').value = '';
+    document.getElementById('modalUsuarioLabel').innerText = 'Agregar Usuario';
+}
+
+function abrirModalEditarUsuario(id, code1, nombre, idRol, status, rolNombre) {
+    console.log("EDITANDO USUARIO →", {
+        id, code1, nombre, idRol, status, rolNombre
+    });
+
+    console.log("ddlRol values:", [...document.getElementById("ddlRol").options].map(opt => ({ value: opt.value, text: opt.text })));
+    console.log("ddlEstadoUsuario values:", [...document.getElementById("ddlEstadoUsuario").options].map(opt => opt.value));
+
+    document.getElementById("hdnIdUsuario").value = id;
+    document.getElementById("txtNombreUsuario").value = nombre;
+
+    $('#ddlCode1').val(code1).trigger('change');
+    document.getElementById("ddlRol").value = idRol.toString();
+    document.getElementById("ddlEstadoUsuario").value = status.toString();
+
+    document.getElementById("modalUsuarioLabel").innerText = "Editar Usuario";
+
+    const modal = new bootstrap.Modal(document.getElementById("modalUsuario"));
+    modal.show();
+}
+
+function eliminarUsuario(idUsuario) {
+    if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+        __doPostBack('EliminarUsuario', idUsuario);
+    }
+}
+
+
+
+
+
 
 
 
