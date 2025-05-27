@@ -168,13 +168,22 @@ namespace trainingLink.UI.maintenance.maintenanceEntrenador
         protected global::System.Web.UI.WebControls.GridView gvEntrenadores;
 
         /// <summary>
-        /// txtNombreEntrenador control.
+        /// ddlCode1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNombreEntrenador;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCode1;
+
+        /// <summary>
+        /// HiddenField1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
 
         /// <summary>
         /// hdnIdEntrenador control.

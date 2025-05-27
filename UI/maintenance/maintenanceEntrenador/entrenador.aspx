@@ -130,15 +130,17 @@
         </asp:TemplateField>
         <asp:TemplateField HeaderText="Acciones">
             <ItemTemplate>
-                <!-- Botón para editar -->
-             <a href="javascript:void(0);"
+<a href="javascript:void(0);"
    onclick='<%# "abrirModalEditarEntrenador(" 
        + Eval("Id") + ", \"" 
        + Eval("Nombre").ToString().Replace("\"", "\\\"") + "\", \"" 
        + Eval("TipoEntrenador").ToString().Replace("\"", "\\\"") + "\", " 
-       + Eval("Estado") + ")" %>'>
+       + (Convert.ToBoolean(Eval("Estado")) ? "1" : "0") + ", "
+       + Eval("IdUsuario") + ")" %>'>
     <i class="bi bi-pencil-square"></i>
 </a>
+
+
 
             </ItemTemplate>
         </asp:TemplateField>
@@ -175,9 +177,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
+
+                            <!--campo con Select2 -->
+<div class="mb-3">
+    <label for="ddlCode1" class="form-label">Colaborador</label>
+<asp:DropDownList ID="ddlCode1" runat="server" CssClass="form-select select2" ClientIDMode="Static" />
+    <asp:HiddenField ID="HiddenField1" runat="server" />
+</div>
                         <div class="mb-3">
-                            <label for="txtNombreRol" class="form-label">Nombre del Entrenador</label>
-                            <asp:TextBox ID="txtNombreEntrenador" runat="server" CssClass="form-control" placeholder="Ej. Entrenador" />
+
                             <asp:HiddenField ID="hdnIdEntrenador" runat="server" />
                             <asp:HiddenField ID="hdnIdUsuario" runat="server" />
 
@@ -189,9 +197,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="ddlEstadoEntrenador" class="form-label">Estado</label>
-                            <asp:DropDownList ID="ddlEstadoEntrenador" runat="server" CssClass="form-select">
-                                <asp:ListItem Text="Activo" Value="1" />
-                                <asp:ListItem Text="Inactivo" Value="0" />
+<asp:DropDownList ID="ddlEstadoEntrenador" runat="server" CssClass="form-select">
+    <asp:ListItem Text="Activo" Value="1" />
+    <asp:ListItem Text="Inactivo" Value="0" />
+</asp:DropDownList>
+
+                            <asp:ListItem Text="Activo" Value="1" />
+                            <asp:ListItem Text="Inactivo" Value="0" />
+
                             </asp:DropDownList>
                         </div>
                     </div>
@@ -206,11 +219,33 @@
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../../master/scripts.js"></script>
+<!-- jQuery debe ir primero -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+<!-- Luego Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Luego Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Finalmente tu JS personalizado -->
+<script src="../../master/scripts.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#<%= ddlCode1.ClientID %>').select2({
+            dropdownParent: $('#modalCrearEntrenador'),
+            width: '100%',
+            placeholder: 'Seleccione un colaborador'
+        });
+    });
+</script>
+
+
         <script type="text/javascript">
             function prepararModalCrearEntrenador() {
-                document.getElementById("<%= txtNombreEntrenador.ClientID %>").value = "";
         document.getElementById("<%= txtTipoEntrenador.ClientID %>").value = "";
         document.getElementById("<%= ddlEstadoEntrenador.ClientID %>").value = "1";
         document.getElementById("<%= hdnIdEntrenador.ClientID %>").value = "";

@@ -19,6 +19,7 @@ namespace trainingLink.UI.maintenance.maintenanceEntrenador
 
             if (!IsPostBack)
             {
+                CargarColaboradores();
                 CargarEntrenadores();
 
                 if (Request.QueryString["success"] == "true")
@@ -71,16 +72,33 @@ namespace trainingLink.UI.maintenance.maintenanceEntrenador
         }
 
 
+        private void CargarColaboradores()
+        {
+            string query = "SELECT Code1, FullName FROM GeneralData.dbo.[User] ORDER BY FullName";
 
+            string connString = ConfigurationManager.ConnectionStrings["GeneralDataConnection"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                ddlCode1.DataSource = cmd.ExecuteReader();
+                ddlCode1.DataTextField = "FullName";
+                ddlCode1.DataValueField = "Code1";
+                ddlCode1.DataBind();
+            }
+
+            ddlCode1.Items.Insert(0, new ListItem("Seleccione un colaborador", ""));
+        }
 
 
         protected void btnGuardarEntrenador_ServerClick(object sender, EventArgs e)
         {
-            string nombreEntrenador = txtNombreEntrenador.Text.Trim();
+            string nombreEntrenador = ddlCode1.SelectedItem.Text.Trim();  // Ahora desde el DropDown
             string tipoEntrenador = txtTipoEntrenador.Text.Trim();
             string estadoEntrenador = ddlEstadoEntrenador.SelectedValue;
             bool estado = estadoEntrenador == "1";
             string idEntrenador = hdnIdEntrenador.Value;
+            int idUsuario = string.IsNullOrEmpty(ddlCode1.SelectedValue) ? 0 : int.Parse(ddlCode1.SelectedValue);
 
             string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
 
@@ -102,8 +120,7 @@ namespace trainingLink.UI.maintenance.maintenanceEntrenador
                 cmd.Parameters.AddWithValue("@Nombre", nombreEntrenador);
                 cmd.Parameters.AddWithValue("@TipoEntrenador", tipoEntrenador);
                 cmd.Parameters.AddWithValue("@Estado", estado);
-                cmd.Parameters.AddWithValue("@IdUsuario",hdnIdUsuario); 
-
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
                 try
                 {
@@ -111,8 +128,7 @@ namespace trainingLink.UI.maintenance.maintenanceEntrenador
                     cmd.ExecuteNonQuery();
                     CargarEntrenadores();
 
-                    // resetear y mostrar toast
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "mostrarToastExito();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "mostrarToastExitoEntrenador();", true);
                 }
                 catch (Exception ex)
                 {

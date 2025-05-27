@@ -666,36 +666,10 @@ function validarOperacionAntesDeGuardar() {
     return esValido;
 }
 
-function mostrarToastExitoEntrenamiento() {
-    // Cierra el modal (asegúrate que Bootstrap esté funcionando)
-    const modalEl = document.getElementById("modalRegistroEntrenamiento");
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    if (modal) modal.hide();
-
-    // Limpia los campos
-    document.getElementById("ddlColaborador").selectedIndex = 0;
-    document.getElementById("ddlOperacion").selectedIndex = 0;
-    document.getElementById("ddlEntrenador").selectedIndex = 0;
-    document.getElementById("ddlTurno").selectedIndex = 0;
-    document.getElementById("ddlTipoEntrenamiento").selectedIndex = 0;
-    document.getElementById("ddlTipoEntrenador").selectedIndex = 0;
-    document.getElementById("ddlEstado").selectedIndex = 0;
-    document.getElementById("txtFechaInicio").value = "";
-    document.getElementById("txtFechaFinal").value = "";
-
-    // Muestra el toast
-    const toastEl = document.getElementById("toastSuccess");
-    if (toastEl) {
-        const toast = new bootstrap.Toast(toastEl);
-        toast.show();
-
-        toastEl.addEventListener('shown.bs.toast', () => {
-            setTimeout(() => toast.hide(), 5000);
-        });
-    }
-}
 
 
+
+///ENTRENAMIENTO
 
 function validarEntrenamientoAntesDeGuardar() {
     let valido = true;
@@ -728,6 +702,21 @@ function validarEntrenamientoAntesDeGuardar() {
 
     return valido;
 }
+function mostrarToastExitoEntrenamiento() {
+    cerrarModal("modalRegistroEntrenamiento");
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+}
+
+window.mostrarToastExitoEntrenamiento = mostrarToastExitoEntrenamiento;
 
 
 function abrirModalEditarEntrenamiento(id, colaborador, operacion, entrenador, turno, fechaInicio, fechaFinal, tipoEntrenamiento, tipoEntrenador, estado) {
@@ -1058,14 +1047,15 @@ function prepararModalCrearEntrenador() {
 }
 
 
-function abrirModalEditarEntrenador(id, name, tipoEntrenador, estado) {
-    document.getElementById("<%= txtNombreEntrenador.ClientID %>").value = name;
-    document.getElementById("<%= txtTipoEntrenador.ClientID %>").value = tipoEntrenador;
-    document.getElementById("<%= ddlEstadoEntrenador.ClientID %>").value = status;
-    document.getElementById("<%= hdnIdEntrenador.ClientID %>").value = id;
-    document.getElementById("<%= btnGuardarEntrenador.ClientID %>").value = "Actualizar";
+function abrirModalEditarEntrenador(id, nombre, tipoEntrenador, estado, idUsuario) {
+    $('#ddlCode1').val(idUsuario).trigger('change');
+    document.getElementById("txtTipoEntrenador").value = tipoEntrenador;
+    document.getElementById("ddlEstadoEntrenador").value = estado;
+    document.getElementById("hdnIdEntrenador").value = id;
+    document.getElementById("btnGuardarEntrenador").value = "Actualizar";
     document.getElementById("modalCrearEntrenadorLabel").innerText = "Editar Entrenador";
     document.getElementById("btnEliminarContainer").style.display = "block";
+
     const modal = new bootstrap.Modal(document.getElementById("modalCrearEntrenador"));
     modal.show();
 }
@@ -1073,12 +1063,13 @@ function abrirModalEditarEntrenador(id, name, tipoEntrenador, estado) {
 
 
 
-
-
 function mostrarToastExitoEntrenador() {
     cerrarModal("modalCrearEntrenador");
 
-    document.getElementById("txtNombreEntrenador").value = "";
+    // Reiniciar el dropdown de colaborador (Select2)
+    $('#ddlCode1').val(null).trigger('change');
+
+    // Limpiar tipo de entrenador y estado
     document.getElementById("txtTipoEntrenador").value = "";
     document.getElementById("ddlEstadoEntrenador").selectedIndex = 0;
 
@@ -1091,26 +1082,35 @@ function mostrarToastExitoEntrenador() {
             setTimeout(() => toast.hide(), 5000);
         });
     }
+}
 
 
 
+function abrirModalEditarEntrenador(id, nombre, tipoEntrenador, estado, idUsuario) {
+    // Seleccionar el colaborador en el select2
+    $('#ddlCode1').val(idUsuario).trigger('change');
 
-    function abrirModalEditarEntrenador(id, name, tipoEntrenador, estado) {
-        document.getElementById("<%= txtNombreEntrenador.ClientID %>").value = name;
-        document.getElementById("<%= txtTipoEntrenador.ClientID %>").value = tipoEntrenador;
-        document.getElementById("<%= ddlEstadoEntrenador.ClientID %>").value = estado;
-        document.getElementById("<%= hdnIdEntrenador.ClientID %>").value = id;
+    // Llenar el campo de descripción
+    document.getElementById("txtTipoEntrenador").value = tipoEntrenador;
 
-        document.getElementById("<%= btnGuardarEntrenador.ClientID %>").value = "Actualizar";
-        document.getElementById("modalCrearEntrenadorLabel").innerText = "Editar Entrenador";
-        document.getElementById("btnEliminarContainer").style.display = "block";
+    // Seleccionar estado
+    document.getElementById("ddlEstadoEntrenador").value = estado;
 
-        const modal = new bootstrap.Modal(document.getElementById("modalCrearEntrenador"));
-        modal.show();
-    }
+    // Cargar los IDs ocultos
+    document.getElementById("hdnIdEntrenador").value = id;
+    document.getElementById("hdnIdUsuario").value = idUsuario;
 
+    // Cambiar texto del botón y encabezado
+    document.getElementById("btnGuardarEntrenador").value = "Actualizar";
+    document.getElementById("modalCrearEntrenadorLabel").innerText = "Editar Entrenador";
 
+    // Mostrar botón eliminar
+    document.getElementById("btnEliminarContainer").style.display = "block";
 
+    // Mostrar el modal
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearEntrenador"));
+    modal.show();
+}
 
 
 
