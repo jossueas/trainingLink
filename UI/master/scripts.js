@@ -1044,6 +1044,75 @@ function eliminarUsuario(idUsuario) {
 
 
 
+//ENTRENADOR
+
+
+function prepararModalCrearEntrenador() {
+    document.getElementById("<%= txtNombreEntrendor.ClientID %>").value = "";
+    document.getElementById("<%= txtDescripcionEntrenador.ClientID %>").value = "";
+    document.getElementById("<%= ddlEstadoEntrenador.ClientID %>").value = "1";
+    document.getElementById("<%= hdnIdRol.ClientID %>").value = "";
+    document.getElementById("<%= btnGuardarEntrenador.ClientID %>").value = "Guardar";
+    document.getElementById("modalCrearEntrenadorLabel").innerText = "Agregar Nuevo Entrenador";
+    document.getElementById("btnEliminarContainer").style.display = "none";
+}
+
+
+function abrirModalEditarEntrenador(id, name, tipoEntrenador, estado) {
+    document.getElementById("<%= txtNombreEntrenador.ClientID %>").value = name;
+    document.getElementById("<%= txtTipoEntrenador.ClientID %>").value = tipoEntrenador;
+    document.getElementById("<%= ddlEstadoEntrenador.ClientID %>").value = status;
+    document.getElementById("<%= hdnIdEntrenador.ClientID %>").value = id;
+    document.getElementById("<%= btnGuardarEntrenador.ClientID %>").value = "Actualizar";
+    document.getElementById("modalCrearEntrenadorLabel").innerText = "Editar Entrenador";
+    document.getElementById("btnEliminarContainer").style.display = "block";
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearEntrenador"));
+    modal.show();
+}
+
+
+
+
+
+
+function mostrarToastExitoEntrenador() {
+    cerrarModal("modalCrearEntrenador");
+
+    document.getElementById("txtNombreEntrenador").value = "";
+    document.getElementById("txtTipoEntrenador").value = "";
+    document.getElementById("ddlEstadoEntrenador").selectedIndex = 0;
+
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        });
+    }
+
+
+
+
+    function abrirModalEditarEntrenador(id, name, tipoEntrenador, estado) {
+        document.getElementById("<%= txtNombreEntrenador.ClientID %>").value = name;
+        document.getElementById("<%= txtTipoEntrenador.ClientID %>").value = tipoEntrenador;
+        document.getElementById("<%= ddlEstadoEntrenador.ClientID %>").value = estado;
+        document.getElementById("<%= hdnIdEntrenador.ClientID %>").value = id;
+
+        document.getElementById("<%= btnGuardarEntrenador.ClientID %>").value = "Actualizar";
+        document.getElementById("modalCrearEntrenadorLabel").innerText = "Editar Entrenador";
+        document.getElementById("btnEliminarContainer").style.display = "block";
+
+        const modal = new bootstrap.Modal(document.getElementById("modalCrearEntrenador"));
+        modal.show();
+    }
+
+
+
+
+
 
 
 
@@ -1079,3 +1148,6 @@ window.prepararModalCrearPermiso = prepararModalCrearPermiso;
 window.abrirModalEditarPermiso = abrirModalEditarPermiso;
 window.mostrarToastEliminadoBusinessUnit = mostrarToastEliminadoBusinessUnit;
 
+
+window.prepararModalCrearEntrenador = prepararModalCrearEntrenador;
+window.abrirModalEditarEntrenador = abrirModalEditarEntrenador;

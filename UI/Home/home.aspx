@@ -56,6 +56,7 @@
         Mantenimientos
     </a>
     <div class="collapse ms-3" id="submenuMantenimientos">
+
      <a href="..\maintenance\maintenanceRol\rol.aspx" class="nav-link">Role</a>
         <a href="..\maintenance\maintenanceBusinessUnit\businessUnit.aspx" class="nav-link">Bussines Unit</a>
        
@@ -64,6 +65,7 @@
         <a href="..\maintenance\maintenanceArea\area.aspx" class="nav-link">Area</a>
           <a href="..\maintenance\maintenanceScrap\scrap.aspx" class="nav-link active">Scrap</a>
           <a href="..\maintenance\maintenanceOperaciones\operacion.aspx" class="nav-link">Operación</a>
+          <a href="../maintenance/maintenanceEntrenador\entrenador.aspx" class="nav-link">Entrenador</a>
    
     </div>
 
