@@ -114,13 +114,22 @@ namespace trainingLink.UI.master
         protected global::System.Web.UI.HtmlControls.HtmlAnchor linkOperacion;
 
         /// <summary>
-        /// linkSalir control.
+        /// linkEntrenadores control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor linkSalir;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor linkEntrenadores;
+
+        /// <summary>
+        /// btnSalir control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSalir;
 
         /// <summary>
         /// ScriptManager1 control.

@@ -22,39 +22,53 @@
  <header class="custom-header">
      <button type="button" class="toggle-btn" onclick="toggleSidebar()">☰</button>
      <img src="../../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
-     <div class="header-icons d-flex gap-3">
-         <a href="#" class="text-decoration-none text-dark"><i class="bi bi-person-circle fs-4"></i></a>
-         <a href="#" class="text-decoration-none text-dark"><i class="bi bi-gear-fill fs-4"></i></a>
-     </div>
+              <div class="header-icons d-flex gap-3">
+<a href="#" class="text-decoration-none text-dark"
+   data-bs-toggle="tooltip"
+   data-bs-placement="bottom"
+   title="<%= Session["FullName"] != null ? Session["FullName"].ToString() : "Usuario" %>">
+   <i class="bi bi-person-circle fs-4"></i>
+</a>
+
+
+        <a href="../maintenance/maintenanceAccess/access.aspx" class="text-decoration-none text-dark">
+            <i class="bi bi-gear-fill fs-4"></i>
+        </a>
+             </div>
  </header>
+
+
+
 
     
             <!-- Sidebar -->
-     <nav class="sidebar collapsed" id="sidebar">
+    <nav class="sidebar collapsed d-flex flex-column vh-100" id="sidebar">
+
 <a id="linkInicio" runat="server" href="../Home/home.aspx" class="nav-link">Inicio</a>
-<a id="linkAccesos" runat="server" href="../maintenance//maintenanceAccess/access.aspx" class="nav-link">Accesos</a>
-<a id="linkRegistroEntrenamiento" runat="server" href="../maintenance//registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
+<a id="linkAccesos" runat="server" href="../maintenance/maintenanceAccess/access.aspx" class="nav-link">Accesos</a>
+<a id="linkRegistroEntrenamiento" runat="server" href="../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
 <a href="#submenuMantenimientos" class="nav-link dropdown-toggle" data-bs-toggle="collapse">Mantenimientos</a>
     <div class="collapse ms-3" id="submenuMantenimientos">
     <a id="linkRol" runat="server" href="../maintenance/maintenanceRol/rol.aspx" class="nav-link">Role</a>
-    <a id="linkBusinessUnit" runat="server" href="../maintenance//maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
+    <a id="linkBusinessUnit" runat="server" href="../maintenance/maintenanceBusinessUnit/businessUnit.aspx" class="nav-link">Bussines Unit</a>
     <a id="linkTurno" runat="server" href="../maintenance/maintenanceTurno/turno.aspx" class="nav-link">Turno</a>
-    <a id="linkMuda" runat="server" href="../maintenance//maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
-    <a id="linkArea" runat="server" href="../maintenance//maintenanceArea/area.aspx" class="nav-link">Área</a>
-    <a id="linkScrap" runat="server" href="../maintenance//maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
-    <a id="linkOperacion" runat="server" href="../maintenance//maintenanceOperacion/operacion.aspx" class="nav-link">Operación</a>
+    <a id="linkMuda" runat="server" href="../maintenance/maintenanceMuda/muda.aspx" class="nav-link">Muda</a>
+    <a id="linkArea" runat="server" href="../maintenance/maintenanceArea/area.aspx" class="nav-link">Área</a>
+    <a id="linkScrap" runat="server" href="../maintenance/maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
+    <a id="linkOperacion" runat="server" href="../maintenance/maintenanceOperaciones/operacion.aspx" class="nav-link">Operación</a>
+    <a id="linkEntrenadores" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenadores</a> 
 
-    <%-- A futuro --%>
-    <%-- <a id="linkEntrenadores" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenadores</a> --%>
-    <%-- <a id="linkEntrenamientos" runat="server" href="../maintenanceEntrenamiento/entrenamiento.aspx" class="nav-link">Entrenamientos</a> --%>
-</div>
+        </div>
 
-<a id="linkSalir" runat="server" href="#" class="nav-link">Salir</a>
-
+            <!-- Botón Salir al fondo -->
+            <div class="mt-auto p-3">
+                <asp:Button ID="btnSalir" runat="server" CssClass="btn-plus-custom btn-sm w-100 d-flex align-items-center justify-content-center gap-2" Text="Salir" OnClick="btnSalir_Click" UseSubmitBehavior="false" />
+            </div>
         </nav>
     
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
-    <div class="main-content container py-5">
+ <div id="mainContent" class="main-content container py-5">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Registro de Entrenamientos</h2>
             <button type="button" class="btn btn-save-custom" data-bs-toggle="modal" data-bs-target="#modalRegistroEntrenamiento">
@@ -65,9 +79,8 @@
         <!-- Aquí iría el GridView o tabla de entrenamientos -->
 
           <!-- Main Content -->
-  <div class="main-content collapsed" id="mainContent">
 
-      <div class ="container py-5">
+   
 <div class="row mb-3">
     <div class="col-md-3"> 
         <label for="ddlFiltroEstado"  class="form-label label-turquesa">Estado</label>
@@ -105,7 +118,16 @@
 
 
       
-<asp:GridView ID="gvEntrenamientos" runat="server" AutoGenerateColumns="False" OnRowCommand="gvEntrenamientos_RowCommand" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info" >
+<asp:GridView ID="gvEntrenamientos" runat="server"
+    AllowPaging="true"
+    PageSize="25"
+    AutoGenerateColumns="False"
+    CssClass="table table-bordered text-center align-middle"
+    HeaderStyle-CssClass="table-info"
+    PagerStyle-CssClass="gridviewPager"
+    OnPageIndexChanging="gvEntrenamientos_PageIndexChanging"
+    OnRowCommand="gvEntrenamientos_RowCommand">
+
     <Columns>
         <asp:BoundField DataField="NombreColaborador" HeaderText="Colaborador" />
         <asp:BoundField DataField="NombreOperacion" HeaderText="Operación" />
@@ -128,15 +150,16 @@
 
 </asp:TemplateField>
 
-  <asp:TemplateField HeaderText="Acciones">
-  <ItemTemplate>
-    <asp:LinkButton ID="lnkVerSeguimiento" runat="server" CommandName="VerSeguimiento"
-      CommandArgument='<%# Eval("IdRegistro") %>' CssClass="btn btn-link">
-      <i class="bi bi-eye"></i>
-    </asp:LinkButton>
-  </ItemTemplate>
-</asp:TemplateField>
-
+        <asp:TemplateField HeaderText="Acciones">
+            <ItemTemplate>
+                <asp:LinkButton ID="lnkVerSeguimiento" runat="server"
+                    CommandName="VerSeguimiento"
+                    CommandArgument='<%# Eval("IdRegistro") %>'
+                    CssClass="btn btn-link">
+                    <i class="bi bi-eye"></i>
+                </asp:LinkButton>
+            </ItemTemplate>
+        </asp:TemplateField>
     </Columns>
 </asp:GridView>
 
@@ -161,6 +184,7 @@
 
 
 
+     <div style="height: 100px;"></div> <!-- Espaciador para corregir  que el footer tape contenido -->
 
               <!-- Footer -->
       <footer class="custom-footer">

@@ -10,6 +10,7 @@ namespace trainingLink.UI.Home
             // Aquí puedes escribir lógica 
 
 
+          
 
 
 
@@ -17,7 +18,7 @@ namespace trainingLink.UI.Home
 
 
 
-    }
+        }
 
 
         protected void btnSalir_Click(object sender, EventArgs e)

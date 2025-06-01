@@ -42,7 +42,7 @@ namespace trainingLink.UI.login
                     {
                         // ✅ GUARDAR EN SESIÓN
                         Session["Code1"] = reader["Code1"].ToString();
-                        Session["FullName"] = reader["FullName"].ToString(); // Opcional, si necesitas mostrar nombre
+                        Session["FullName"] = reader["FullName"].ToString(); // para mostrar nombre
 
                         lblResultado.Text = "Inicio de sesión exitoso. Redirigiendo...";
                         lblResultado.CssClass = "alert alert-success d-block";

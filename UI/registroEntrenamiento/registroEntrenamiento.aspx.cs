@@ -18,6 +18,19 @@ namespace trainingLink.UI.master
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+      
+            // validar sesión antes de hacer cualquier otra cosa
+            if (Session["Code1"] == null)
+            {
+                Response.Redirect("~/UI/Login/Login.aspx", true);
+                return;
+            }
+
+
+
+
+
             int idRegistroHidden;
             if (int.TryParse(hdnIdRegistroSeguimiento.Value, out idRegistroHidden))
             {
@@ -53,7 +66,6 @@ namespace trainingLink.UI.master
                 // linkEntrenadores.Visible = permisos.Contains("entrenadores");
                 // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
 
-               linkSalir.Visible = true; // Siempre visible
 
 
                 CargarColaboradores();
@@ -71,6 +83,12 @@ namespace trainingLink.UI.master
             }
           
         }
+        protected void gvEntrenamientos_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvEntrenamientos.PageIndex = e.NewPageIndex;
+            CargarEntrenamientos(); // Asegúrate de tener este método para cargar los datos aplicando filtros si es necesario
+        }
+
         private bool TienePermiso(string code1, string menuKey)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -289,7 +307,10 @@ namespace trainingLink.UI.master
                 cmd.ExecuteNonQuery();
             }
 
-            // Mostrar un mensaje de éxito (toast)
+            // Para limpiar el formulario después de guardar
+            LimpiarFormularioRegistroEntrenamiento();
+
+            //Par mostrar un mensaje de éxito (toast)
             ScriptManager.RegisterStartupScript(this, GetType(), "toastEntrenamiento", "mostrarToastExitoEntrenamiento();", true);
         }
 
@@ -520,29 +541,45 @@ namespace trainingLink.UI.master
         {
             phCurvaSeguimiento.Controls.Clear();
 
-            Dictionary<int, int> valoresGuardados = new Dictionary<int, int>();
+            // Nuevo: Diccionario con valor y fecha
+            Dictionary<int, (int Valor, DateTime? FechaRegistro)> valoresGuardados = new Dictionary<int, (int Valor, DateTime? FechaRegistro)>();
             int numberDays = 0;
 
-            if (idRegistro.HasValue)
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+            // Obtener IdRol del usuario actual
+            bool esUsuarioEditable = true;
+            string code1 = Session["Code1"]?.ToString();
 
-                    // Obtener NumberDays desde Operacion
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Obtener IdRol
+                using (SqlCommand cmdUser = new SqlCommand("SELECT IdRol FROM Usuario WHERE Code1 = @Code1", conn))
+                {
+                    cmdUser.Parameters.AddWithValue("@Code1", code1);
+                    object result = cmdUser.ExecuteScalar();
+                    esUsuarioEditable = (result != null && Convert.ToInt32(result) == 1); // Solo si IdRol = 1 puede editar
+                }
+
+                // Obtener NumberDays desde Operacion
+                if (idRegistro.HasValue)
+                {
                     using (SqlCommand cmd = new SqlCommand(@"
-                SELECT O.NumberDays 
-                FROM RegistroEntrenamiento R 
-                INNER JOIN Operacion O ON R.IdOperacion = O.IdOperation
-                WHERE R.IdRegistro = @IdRegistro", conn))
+            SELECT O.NumberDays 
+            FROM RegistroEntrenamiento R 
+            INNER JOIN Operacion O ON R.IdOperacion = O.IdOperation
+            WHERE R.IdRegistro = @IdRegistro", conn))
                     {
                         cmd.Parameters.AddWithValue("@IdRegistro", idRegistro.Value);
                         object result = cmd.ExecuteScalar();
                         numberDays = result != DBNull.Value ? Convert.ToInt32(result) : 0;
                     }
 
-                    // Cargar valores guardados para ese entrenamiento
-                    using (SqlCommand cmd = new SqlCommand("SELECT Dia, Valor FROM CurvaAprendizajeSeguimiento WHERE IdEntrenamiento = @IdEntrenamiento", conn))
+                    // Cargar valores guardados incluyendo FechaRegistro
+                    using (SqlCommand cmd = new SqlCommand(@"
+            SELECT Dia, Valor, FechaRegistro 
+            FROM CurvaAprendizajeSeguimiento 
+            WHERE IdEntrenamiento = @IdEntrenamiento", conn))
                     {
                         cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro.Value);
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -551,7 +588,8 @@ namespace trainingLink.UI.master
                             {
                                 int dia = Convert.ToInt32(reader["Dia"]);
                                 int valor = Convert.ToInt32(reader["Valor"]);
-                                valoresGuardados[dia] = valor;
+                                DateTime? fecha = reader["FechaRegistro"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["FechaRegistro"]);
+                                valoresGuardados[dia] = (valor, fecha);
                             }
                         }
                     }
@@ -564,17 +602,35 @@ namespace trainingLink.UI.master
                 Panel panel = new Panel { CssClass = "col-md-4 mb-3" };
 
                 Label lbl = new Label { Text = $"Día {i}:", CssClass = "form-label fw-bold d-block" };
+
+                // lógica para deshabilitar si no tiene permiso y fecha es pasada
+                bool disableInput = false;
+                string cssClass = "form-control";
+
+                if (!esUsuarioEditable && valoresGuardados.ContainsKey(i))
+                {
+                    var (valorDia, fechaRegistro) = valoresGuardados[i];
+                    if (fechaRegistro.HasValue && fechaRegistro.Value.Date < DateTime.Today)
+                    {
+                        disableInput = true;
+                        cssClass += " input-disabled"; // aplica clase gris
+                    }
+                }
+
+
                 TextBox txt = new TextBox
                 {
                     ID = $"inputSeguimientoDia{i}",
-                    CssClass = "form-control",
-                    Text = valoresGuardados.ContainsKey(i) ? valoresGuardados[i].ToString() : "0"
+                    CssClass = cssClass,
+                    Text = valoresGuardados.ContainsKey(i) ? valoresGuardados[i].Valor.ToString() : "0",
+                    Enabled = !disableInput
                 };
 
                 panel.Controls.Add(lbl);
                 panel.Controls.Add(txt);
                 phCurvaSeguimiento.Controls.Add(panel);
             }
+
         }
 
 
@@ -635,56 +691,60 @@ namespace trainingLink.UI.master
                 }
 
                 // 4. Insertar o actualizar curva
-                for (int i = 1; i <= totalDias; i++)
+                //Verificando si usuario tiene IdRol = 1 *
+                bool esEditable = true;
+                string code1 = Session["Code1"]?.ToString();
+                using (SqlCommand cmdRol = new SqlCommand("SELECT IdRol FROM Usuario WHERE Code1 = @Code1", conn))
                 {
-                    TextBox input = phCurvaSeguimiento.FindControl("inputSeguimientoDia" + i) as TextBox;
+                    cmdRol.Parameters.AddWithValue("@Code1", code1);
+                    object result = cmdRol.ExecuteScalar();
+                    esEditable = (result != null && Convert.ToInt32(result) == 1); // solo si IdRol = 1 puede editar todo
+                }
 
-                    if (input == null)
+                // === Obtener días que tienen fecha registrada menor a hoy ===
+                List<int> diasBloqueados = new List<int>();
+
+                if (!esEditable)
+                {
+                    using (SqlCommand cmd = new SqlCommand(@"
+        SELECT Dia FROM CurvaAprendizajeSeguimiento 
+        WHERE IdEntrenamiento = @IdEntrenamiento AND CAST(FechaRegistro AS DATE) < CAST(GETDATE() AS DATE)", conn))
                     {
-                        System.Diagnostics.Debug.WriteLine("No se encontró el input para Día " + i);
-                        continue;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(input.Text)) continue;
-
-                    decimal valor;
-                    if (!decimal.TryParse(input.Text, out valor)) valor = 0;
-
-                    string checkQuery = @"SELECT COUNT(*) FROM CurvaAprendizajeSeguimiento WHERE IdEntrenamiento = @IdEntrenamiento AND Dia = @Dia";
-                    using (SqlCommand check = new SqlCommand(checkQuery, conn))
-                    {
-                        check.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
-                        check.Parameters.AddWithValue("@Dia", i);
-                        int count = (int)check.ExecuteScalar();
-
-                        if (count > 0)
+                        cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            using (SqlCommand update = new SqlCommand(@"
-                        UPDATE CurvaAprendizajeSeguimiento 
-                        SET Valor = @Valor 
-                        WHERE IdEntrenamiento = @IdEntrenamiento AND Dia = @Dia", conn))
+                            while (reader.Read())
                             {
-                                update.Parameters.AddWithValue("@Valor", valor);
-                                update.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
-                                update.Parameters.AddWithValue("@Dia", i);
-                                update.ExecuteNonQuery();
-                            }
-                        }
-                        else
-                        {
-                            using (SqlCommand insert = new SqlCommand(@"
-                        INSERT INTO CurvaAprendizajeSeguimiento (IdEntrenamiento, IdOperation, Dia, Valor)
-                        VALUES (@IdEntrenamiento, @IdOperacion, @Dia, @Valor)", conn))
-                            {
-                                insert.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
-                                insert.Parameters.AddWithValue("@IdOperacion", idOperacion);
-                                insert.Parameters.AddWithValue("@Dia", i);
-                                insert.Parameters.AddWithValue("@Valor", valor);
-                                insert.ExecuteNonQuery();
+                                diasBloqueados.Add(Convert.ToInt32(reader["Dia"]));
                             }
                         }
                     }
                 }
+
+                for (int i = 1; i <= totalDias; i++)
+                {
+                    TextBox input = phCurvaSeguimiento.FindControl("inputSeguimientoDia" + i) as TextBox;
+                    if (input == null || string.IsNullOrWhiteSpace(input.Text)) continue;
+
+                    // Saltar si el usuario no es editable y el día está bloqueado
+                    if (!esEditable && diasBloqueados.Contains(i))
+                        continue;
+
+                    decimal valor;
+                    if (!decimal.TryParse(input.Text, out valor)) valor = 0;
+
+                    using (SqlCommand cmd = new SqlCommand("sp_UpsertCurvaAprendizajeSeguimiento", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
+                        cmd.Parameters.AddWithValue("@IdOperacion", idOperacion);
+                        cmd.Parameters.AddWithValue("@Dia", i);
+                        cmd.Parameters.AddWithValue("@Valor", valor);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+
 
                 // 5. Insertar o actualizar seguimiento
                 string fechaHoy = DateTime.Now.ToString("yyyy-MM-dd");
@@ -802,6 +862,21 @@ namespace trainingLink.UI.master
                 Real = real
             };
         }
+
+        private void LimpiarFormularioRegistroEntrenamiento()
+        {
+            ddlColaborador.SelectedIndex = 0;
+            ddlOperacion.SelectedIndex = 0;
+            ddlEntrenador.SelectedIndex = 0;
+            ddlTurno.SelectedIndex = 0;
+            ddlTipoEntrenamiento.SelectedIndex = 0;
+            ddlTipoEntrenador.SelectedIndex = 0;
+            ddlEstado.SelectedIndex = 0;
+            txtFechaInicio.Text = "";
+            txtFechaFinal.Text = "";
+        }
+
+
 
 
         protected void btnSalir_Click(object sender, EventArgs e)

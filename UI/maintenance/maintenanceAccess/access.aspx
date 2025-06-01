@@ -35,14 +35,24 @@
         <header class="custom-header">
             <button type="button" class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <img src="../../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
-            <div class="header-icons d-flex gap-3">
-                <a href="#" class="text-decoration-none text-dark"><i class="bi bi-person-circle fs-4"></i></a>
-                <a href="#" class="text-decoration-none text-dark"><i class="bi bi-gear-fill fs-4"></i></a>
-            </div>
+               <div class="header-icons d-flex gap-3">
+<a href="#" class="text-decoration-none text-dark"
+   data-bs-toggle="tooltip"
+   data-bs-placement="bottom"
+   title="<%= Session["FullName"] != null ? Session["FullName"].ToString() : "Usuario" %>">
+   <i class="bi bi-person-circle fs-4"></i>
+</a>
+
+
+        <a href="../maintenanceAccess/access.aspx" class="text-decoration-none text-dark">
+            <i class="bi bi-gear-fill fs-4"></i>
+        </a>
+             </div>
         </header>
 
         <!-- Sidebar -->
-        <nav class="sidebar d-flex flex-column vh-100" id="sidebar">
+<!-- Sidebar -->
+<nav class="sidebar collapsed d-flex flex-column vh-100" id="sidebar">
             <div>
                 <a id="linkInicio" runat="server" href="../../Home/home.aspx" class="nav-link">Inicio</a>
                 <a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Acesos</a>
@@ -66,7 +76,8 @@
         </nav>
 
         <!-- Main Content -->
-        <div class="main-content collapsed" id="mainContent">
+    <!-- Main Content -->
+<div class="main-content collapsed" id="mainContent">
             <div class="container py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0 tituloRol">Gestión de Accesos</h2>
