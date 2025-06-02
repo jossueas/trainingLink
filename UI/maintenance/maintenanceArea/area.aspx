@@ -31,7 +31,19 @@
         <header class="custom-header">
             <button type="button" class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <img src="../../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
-            <div class="header-icons d-flex gap-3">
+            <div cl               <div class="header-icons d-flex gap-3">
+<a href="#" class="text-decoration-none text-dark"
+   data-bs-toggle="tooltip"
+   data-bs-placement="bottom"
+   title="<%= Session["FullName"] != null ? Session["FullName"].ToString() : "Usuario" %>">
+   <i class="bi bi-person-circle fs-4"></i>
+</a>
+
+
+        <a href="../maintenanceAccess/access.aspx" class="text-decoration-none text-dark">
+            <i class="bi bi-gear-fill fs-4"></i>
+        </a>
+             </div>ass="header-icons d-flex gap-3">
                 <a href="#" class="text-decoration-none text-dark"><i class="bi bi-person-circle fs-4"></i></a>
                 <a href="#" class="text-decoration-none text-dark"><i class="bi bi-gear-fill fs-4"></i></a>
             </div>

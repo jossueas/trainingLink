@@ -32,14 +32,19 @@
         <header class="custom-header">
             <button type="button" class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <img src="../../../Files/images/logoPhilips.png" alt="Philips Logo" class="logo" />
-            <div class="header-icons d-flex gap-3">
-                <a href="#" class="text-decoration-none text-dark">
-                    <i class="bi bi-person-circle fs-4"></i>
-                </a>
-                <a href="#" class="text-decoration-none text-dark">
-                    <i class="bi bi-gear-fill fs-4"></i>
-                </a>
-            </div>
+                      <div class="header-icons d-flex gap-3">
+<a href="#" class="text-decoration-none text-dark"
+   data-bs-toggle="tooltip"
+   data-bs-placement="bottom"
+   title="<%= Session["FullName"] != null ? Session["FullName"].ToString() : "Usuario" %>">
+   <i class="bi bi-person-circle fs-4"></i>
+</a>
+
+
+        <a href="../maintenanceAccess/access.aspx" class="text-decoration-none text-dark">
+            <i class="bi bi-gear-fill fs-4"></i>
+        </a>
+             </div>
         </header>
         
 
@@ -191,9 +196,21 @@
                 </div>
             </div>
         </div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../../master/scripts.js"></script>
+<!-- Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Bootstrap JS (esto es lo que falta) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Tu script personalizado -->
+<script src="../../master/scripts.js"></script>
+
+
+
         <script>
             function prepararModalCrear() {
                 document.getElementById("<%= txtNombreRol.ClientID %>").value = "";
