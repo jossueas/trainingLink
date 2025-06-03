@@ -66,6 +66,8 @@
                     <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
                     <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
                     <a id="linkOperacion" runat="server" href="../maintenanceOperaciones/operacion.aspx" class="nav-link">Operación</a>
+                     <a id="linkEntrenador" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenador</a>
+
                 </div>
             </div>
 

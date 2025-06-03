@@ -35,7 +35,7 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
                 linkOperacion.Visible = permisos.Contains("operacion");
 
                 // Comentados pero listos
-                // linkEntrenadores.Visible = permisos.Contains("entrenadores");
+                linkEntrenador.Visible = permisos.Contains("entrenadores");
                 // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
 
                 btnSalir.Visible = true; // Siempre visible
