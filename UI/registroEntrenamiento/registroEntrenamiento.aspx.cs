@@ -63,7 +63,7 @@ namespace trainingLink.UI.master
                 linkOperacion.Visible = permisos.Contains("operacion");
 
                 // Comentados pero listos
-                // linkEntrenadores.Visible = permisos.Contains("entrenadores");
+                 linkEntrenadores.Visible = permisos.Contains("entrenadores");
                 // linkEntrenamientos.Visible = permisos.Contains("entrenamientos");
 
 
