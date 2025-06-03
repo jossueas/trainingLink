@@ -66,7 +66,7 @@
                     <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
                     <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
                     <a id="linkOperacion" runat="server" href="../maintenanceOperaciones/operacion.aspx" class="nav-link">Operación</a>
-                     <a id="linkEntrenador" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenador</a>
+                   <a id="linkEntrenador" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenador</a>
 
                 </div>
             </div>
@@ -166,10 +166,23 @@
         </div>
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="../../master/scripts.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="../../master/scripts.js"></script>
+
+<script>
+    $(function () {
+        $('#ddlCode1').select2({
+            dropdownParent: $('#modalPermiso'),
+            theme: 'bootstrap4',
+            width: '100%',
+            placeholder: 'Seleccione un usuario'
+        });
+    });
+</script>
+
+
     </form>
 </body>
 </html>

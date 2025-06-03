@@ -325,6 +325,26 @@ function mostrarToastExitoTurno() {
 
 
 
+function mostrarToastExitoAcceso() {
+    cerrarModal("modalPermiso");
+
+    // Limpiar campos del modal
+    document.getElementById("ddlCode1").selectedIndex = 0;
+    document.getElementById("ddlMenuKey").selectedIndex = 0;
+    document.getElementById("chkPuedeVer").checked = false;
+    document.getElementById("hdnIdPermiso").value = "";
+
+    // Mostrar toast de éxito
+    const toastEl = document.getElementById("toastSuccess");
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+
+        toastEl.addEventListener('shown.bs.toast', () => {
+            setTimeout(() => toast.hide(), 5000);
+        }, { once: true }); // evita múltiples registros del evento
+    }
+}
 
 
 

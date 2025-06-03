@@ -99,7 +99,7 @@ namespace trainingLink.UI.maintenance.maintenanceAccess
 
             // Registrar JS para cerrar el modal visualmente
 
-            ScriptManager.RegisterStartupScript(this, GetType(), "toastActualizado", "mostrarToastExito('Permiso actualizado exitosamente'); cerrarModalPermiso();", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "toastActualizado", "mostrarToastExitoAcceso('Permiso actualizado exitosamente'); cerrarModalPermiso();", true);
 
         }
 
