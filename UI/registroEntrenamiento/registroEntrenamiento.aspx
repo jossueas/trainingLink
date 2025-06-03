@@ -271,62 +271,72 @@
 
         <asp:HiddenField ID="hdnIdRegistroSeguimiento" runat="server" />
 
-        <div class="row">
-          <div class="col-md-6">
-            <label class="form-label label-turquesa">Colaborador:</label>
-            <asp:TextBox ID="txtColaboradorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
-          </div>
-          <div class="col-md-6">
-            <label class="form-label label-turquesa">Operación:</label>
-            <asp:TextBox ID="txtOperacionSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
-          </div>
-        </div>
-
-        <div class="row mt-2">
-          <div class="col-md-4">
-            <label class="form-label label-turquesa">Turno:</label>
-            <asp:TextBox ID="txtTurnoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label label-turquesa">Entrenador:</label>
-            <asp:TextBox ID="txtEntrenadorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label label-turquesa">Tipo de Entrenamiento:</label>
-            <asp:TextBox ID="txtTipoEntrenamientoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <label class="form-label label-turquesa">Días de Entrenamiento:</label>
-            <asp:TextBox ID="txtDiasEntrenamiento" runat="server" CssClass="form-control" ReadOnly="true" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label label-turquesa">Horas Efectivas:</label>
-            <asp:TextBox ID="txtHorasEfectivas" runat="server" CssClass="form-control" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label label-turquesa">Muda:</label>
-            <asp:DropDownList ID="ddlMuda" runat="server" CssClass="form-control" />
-          </div>
-
-
-
-               <div class="col-md-4">
-      <label class="form-label">Estado</label>
-      <asp:DropDownList ID="DropDownList1Seguimiento" runat="server" CssClass="form-select">
-           <asp:ListItem Text="Inactivo" Value="0" />
-          <asp:ListItem Text="Activo" Value="1" />
-          <asp:ListItem Text="Completo" Value="2" />
-          <asp:ListItem Text="Incompleto" Value="3" />
-      </asp:DropDownList>
+<!-- Fila 1: Colaborador - Operación -->
+<div class="row">
+  <div class="col-md-6">
+    <label class="form-label label-turquesa">Colaborador:</label>
+    <asp:TextBox ID="txtColaboradorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
   </div>
+  <div class="col-md-6">
+    <label class="form-label label-turquesa">Operación:</label>
+    <asp:TextBox ID="txtOperacionSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+  </div>
+</div>
 
+<!-- Fila 2: Turno - Entrenador - Tipo de Entrenamiento -->
+<div class="row mt-3">
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Turno:</label>
+    <asp:TextBox ID="txtTurnoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Entrenador:</label>
+    <asp:TextBox ID="txtEntrenadorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Tipo de Entrenamiento:</label>
+    <asp:TextBox ID="txtTipoEntrenamientoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+  </div>
+</div>
 
+<!-- Fila 3: Días - Horas Efectivas - Muda -->
+<div class="row mt-3">
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Días de Entrenamiento:</label>
+    <asp:TextBox ID="txtDiasEntrenamiento" runat="server" CssClass="form-control" ReadOnly="true" />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Horas Efectivas:</label>
+    <asp:TextBox ID="txtHorasEfectivas" runat="server" CssClass="form-control" />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Muda:</label>
+    <asp:DropDownList ID="ddlMuda" runat="server" CssClass="form-control" />
+  </div>
+</div>
 
+<!-- Fila 4: Fecha Inicio - Fecha Final - Estado -->
+<div class="row mt-3">
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Fecha Inicio:</label>
+    <asp:TextBox ID="txtFechaInicioSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Fecha Final:</label>
+    <asp:TextBox ID="txtFechaFinalSeguimiento" runat="server" CssClass="form-control" TextMode="Date" />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label label-turquesa">Estado:</label>
+    <asp:DropDownList ID="DropDownList1Seguimiento" runat="server" CssClass="form-select">
+      <asp:ListItem Text="Inactivo" Value="0" />
+      <asp:ListItem Text="Activo" Value="1" />
+      <asp:ListItem Text="Completo" Value="2" />
+      <asp:ListItem Text="Incompleto" Value="3" />
+    </asp:DropDownList>
+  </div>
+</div>
 
-        </div>
+        
 
         <!-- Campos condicionales -->
         <div class="row mt-3" runat="server" id="grupoIGTD">

@@ -484,6 +484,10 @@ namespace trainingLink.UI.master
                             dias = ((fin - inicio).Days + 1); // ✅ calculamos los días aquí
                             txtDiasEntrenamiento.Text = dias.ToString();
 
+                            txtFechaInicioSeguimiento.Text = inicio.ToString("yyyy-MM-dd");
+                            txtFechaFinalSeguimiento.Text = fin.ToString("yyyy-MM-dd");
+
+
                             // Seteo estado
                             string estadoSeguimiento = reader["Estado"]?.ToString();
                             if (DropDownList1Seguimiento.Items.FindByValue(estadoSeguimiento) != null)
@@ -643,6 +647,18 @@ namespace trainingLink.UI.master
             {
                 conn.Open();
 
+                // Actualizar FechaFinal
+                DateTime fechaFinal;
+                if (DateTime.TryParse(txtFechaFinalSeguimiento.Text, out fechaFinal))
+                {
+                    using (SqlCommand cmdFechaFinal = new SqlCommand("UPDATE RegistroEntrenamiento SET FechaFinal = @FechaFinal WHERE IdRegistro = @Id", conn))
+                    {
+                        cmdFechaFinal.Parameters.AddWithValue("@FechaFinal", fechaFinal);
+                        cmdFechaFinal.Parameters.AddWithValue("@Id", idRegistro);
+                        cmdFechaFinal.ExecuteNonQuery();
+                    }
+                }
+
                 // 1. Obtener cantidad de días desde Operacion
                 int totalDias = 0;
                 using (SqlCommand cmdDias = new SqlCommand(@"
@@ -801,10 +817,13 @@ namespace trainingLink.UI.master
                 ScriptManager.RegisterStartupScript(this, GetType(), "cerrarModal", "const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento')); modal.hide();", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "toastSeguimiento", "mostrarToastExitoEntrenamiento();", true);
             }
+
+
+
         }
 
 
-
+ 
 
 
 
