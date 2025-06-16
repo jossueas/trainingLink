@@ -114,6 +114,15 @@ namespace trainingLink.UI.maintenance.maintenanceArea
         protected global::System.Web.UI.HtmlControls.HtmlAnchor linkOperacion;
 
         /// <summary>
+        /// linkEntrenadores control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor linkEntrenadores;
+
+        /// <summary>
         /// btnSalir control.
         /// </summary>
         /// <remarks>

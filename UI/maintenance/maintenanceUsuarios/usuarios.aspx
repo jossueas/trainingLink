@@ -36,7 +36,7 @@
 
         <!-- Sidebar -->
         <nav class="sidebar d-flex flex-column vh-100" id="sidebar">
-            <div>
+                        <div>
                 <a id="linkInicio" runat="server" href="../../Home/home.aspx" class="nav-link">Inicio</a>
                 <a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Acesos</a>
                 <a id="linkRegistroEntrenamiento" runat="server" href="../../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
@@ -49,8 +49,12 @@
                     <a id="linkArea" runat="server" href="../maintenanceArea/area.aspx" class="nav-link">Área</a>
                     <a id="linkScrap" runat="server" href="../maintenanceScrap/scrap.aspx" class="nav-link">Scrap</a>
                     <a id="linkOperacion" runat="server" href="../maintenanceOperaciones/operacion.aspx" class="nav-link">Operación</a>
+                     <a id="linkEntrenadores" runat="server" href="../maintenanceEntrenador/entrenador.aspx" class="nav-link">Entrenadores</a> 
+
                 </div>
             </div>
+
+            <!-- Botón Salir al fondo -->
             <div class="mt-auto p-3">
                 <asp:Button ID="btnSalir" runat="server" CssClass="btn-plus-custom btn-sm w-100 d-flex align-items-center justify-content-center gap-2" Text="Salir" OnClick="btnSalir_Click" UseSubmitBehavior="false" />
             </div>

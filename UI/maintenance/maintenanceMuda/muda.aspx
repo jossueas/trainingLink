@@ -49,7 +49,7 @@
 
         <!-- Sidebar -->
         <nav class="sidebar d-flex flex-column vh-100" id="sidebar">
-            <div>
+                        <div>
                 <a id="linkInicio" runat="server" href="../../Home/home.aspx" class="nav-link">Inicio</a>
                 <a id="linkAccesos" runat="server" href="../maintenanceAccess/access.aspx" class="nav-link">Acesos</a>
                 <a id="linkRegistroEntrenamiento" runat="server" href="../../registroEntrenamiento/registroEntrenamiento.aspx" class="nav-link">Registro Entrenamiento</a>
@@ -72,7 +72,6 @@
                 <asp:Button ID="btnSalir" runat="server" CssClass="btn-plus-custom btn-sm w-100 d-flex align-items-center justify-content-center gap-2" Text="Salir" OnClick="btnSalir_Click" UseSubmitBehavior="false" />
             </div>
         </nav>
-
 
          <!-- Main Content -->
 
