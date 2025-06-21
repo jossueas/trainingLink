@@ -460,7 +460,7 @@ namespace trainingLink.UI.master
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         // Carga Mudas
-                        CargarMudas();
+                       /* CargarMudas();*/
                         if (reader.Read())
                         {
                             txtColaboradorSeguimiento.Text = reader["NombreColaborador"].ToString();
@@ -470,14 +470,14 @@ namespace trainingLink.UI.master
                             txtTipoEntrenamientoSeguimiento.Text = reader["TipoEntrenamiento"].ToString();
                             txtHorasEfectivas.Text = reader["HorasEfectivas"]?.ToString();
 
-
+                            /*
                             string idMuda = reader["IdMuda"]?.ToString();
                             if (ddlMuda.Items.FindByValue(idMuda) != null)
                             {
                                 ddlMuda.SelectedValue = idMuda;
                             }
 
-
+                            */
 
                             DateTime inicio = Convert.ToDateTime(reader["FechaInicio"]);
                             DateTime fin = Convert.ToDateTime(reader["FechaFinal"]);
@@ -522,7 +522,7 @@ namespace trainingLink.UI.master
         }
 
 
-
+        /*
         private void CargarMudas()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -540,6 +540,12 @@ namespace trainingLink.UI.master
                 }
             }
         }
+        */
+
+
+
+
+
 
         private void GenerarInputsCurva(int? idRegistro = null)
         {
@@ -786,7 +792,7 @@ namespace trainingLink.UI.master
                             update.Parameters.AddWithValue("@Buenas", string.IsNullOrWhiteSpace(txtBuenasIGTD.Text) ? (object)DBNull.Value : txtBuenasIGTD.Text);
                             update.Parameters.AddWithValue("@Malas", string.IsNullOrWhiteSpace(txtMalasIGTD.Text) ? (object)DBNull.Value : txtMalasIGTD.Text);
                             update.Parameters.AddWithValue("@Stage", ddlStageSRC.SelectedValue ?? (object)DBNull.Value);
-                            update.Parameters.AddWithValue("@IdMuda", ddlMuda.SelectedValue);
+                            //update.Parameters.AddWithValue("@IdMuda", ddlMuda.SelectedValue);
                             update.Parameters.AddWithValue("@Objetivo", objetivo);
                             update.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
                             update.Parameters.AddWithValue("@Fecha", DateTime.Today);
@@ -805,7 +811,7 @@ namespace trainingLink.UI.master
                             insert.Parameters.AddWithValue("@Stage", ddlStageSRC.SelectedValue ?? (object)DBNull.Value);
                             insert.Parameters.AddWithValue("@Fecha", DateTime.Today);
                             insert.Parameters.AddWithValue("@Dia", 1);
-                            insert.Parameters.AddWithValue("@IdMuda", ddlMuda.SelectedValue);
+                           // insert.Parameters.AddWithValue("@IdMuda", ddlMuda.SelectedValue);
                             insert.Parameters.AddWithValue("@Objetivo", objetivo);
                             insert.ExecuteNonQuery();
                         }
@@ -881,6 +887,49 @@ namespace trainingLink.UI.master
                 Real = real
             };
         }
+
+
+/****************/
+        //Muda
+
+        [System.Web.Services.WebMethod]
+        public static List<MudaItem> ObtenerMudasDesdeSP()
+        {
+            var mudas = new List<MudaItem>();
+            string connectionString = ConfigurationManager.ConnectionStrings["TrainingLinkConnection"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("sp_GetMudasActivas", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        mudas.Add(new MudaItem
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1)
+                        });
+                    }
+                }
+            }
+
+            return mudas;
+        }
+
+        public class MudaItem
+        {
+            public int Id { get; set; }
+            public string Nombre { get; set; }
+        }
+
+
+
+        //Fin mudas
+
 
         private void LimpiarFormularioRegistroEntrenamiento()
         {

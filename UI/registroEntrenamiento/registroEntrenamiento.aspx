@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="registroEntrenamiento.aspx.cs"
-         Inherits="trainingLink.UI.master.registroEntrenamiento" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="registroEntrenamiento.aspx.cs" Inherits="trainingLink.UI.master.registroEntrenamiento" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -309,10 +308,14 @@
     <label class="form-label label-turquesa">Horas Efectivas:</label>
     <asp:TextBox ID="txtHorasEfectivas" runat="server" CssClass="form-control" />
   </div>
-  <div class="col-md-4">
-    <label class="form-label label-turquesa">Muda:</label>
-    <asp:DropDownList ID="ddlMuda" runat="server" CssClass="form-control" />
-  </div>
+<div class="col-md-12 mt-3">
+    <label class="form-label label-turquesa">Agregar Muda</label>
+    <button type="button" class="btn btn-sm btn-primary ms-2" onclick="agregarMuda()">
+        <i class="bi bi-plus-square"></i>
+    </button>
+    <div id="contenedorMudas" class="mt-3"></div>
+</div>
+
 </div>
 
 <!-- Fila 4: Fecha Inicio - Fecha Final - Estado -->

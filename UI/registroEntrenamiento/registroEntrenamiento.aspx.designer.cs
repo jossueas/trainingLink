@@ -348,15 +348,6 @@ namespace trainingLink.UI.master
         protected global::System.Web.UI.WebControls.TextBox txtHorasEfectivas;
 
         /// <summary>
-        /// ddlMuda control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMuda;
-
-        /// <summary>
         /// txtFechaInicioSeguimiento control.
         /// </summary>
         /// <remarks>

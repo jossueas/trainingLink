@@ -350,6 +350,7 @@ function mostrarToastExitoAcceso() {
 
 //MUDA
 
+
 // Función para mostrar el toast de éxito para MUDA
 function mostrarToastExitoMuda() {
     cerrarModal("modalCrearMuda");
@@ -650,6 +651,69 @@ function cargarCurva(idOperacion) {
             contenedor.appendChild(div);
         });
     });
+}
+/************************* */
+///Muda
+let contadorMudas = 0;
+let listaMudas = [];
+
+function cargarMudas(callback) {
+    if (listaMudas.length > 0) {
+        callback();
+        return;
+    }
+
+    PageMethods.ObtenerMudasDesdeSP(
+        function (data) {
+            listaMudas = data;
+            callback();
+        },
+        function (error) {
+            console.error("Error al cargar mudas:", error);
+        }
+    );
+}
+
+function agregarMuda(idSeleccionado = "", textoTipo = "Tiempo en minutos") {
+    cargarMudas(function () {
+        contadorMudas++;
+
+        const div = document.createElement("div");
+        div.className = "row align-items-center mb-2";
+        div.id = `mudaRow${contadorMudas}`;
+
+        let optionsMuda = '<option value="">Seleccione Muda</option>';
+        listaMudas.forEach(m => {
+            const selected = m.Id == idSeleccionado ? "selected" : "";
+            optionsMuda += `<option value="${m.Id}" ${selected}>${m.Nombre}</option>`;
+        });
+
+        div.innerHTML = `
+            <div class="col-md-5">
+                <select name="ddlMuda_${contadorMudas}" class="form-select">
+                    ${optionsMuda}
+                </select>
+            </div>
+           <div class="col-md-5">
+    <input type="text" name="ddlTipoMuda_${contadorMudas}" class="form-control" placeholder="${textoTipo}" />
+</div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger" onclick="eliminarMuda('mudaRow${contadorMudas}')">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        `;
+
+        document.getElementById("contenedorMudas").appendChild(div);
+    });
+}
+
+function eliminarMuda(idMudaRow) {
+    const element = document.getElementById(idMudaRow);
+    if (element) {
+        element.remove();
+    }
 }
 
 function validarOperacionAntesDeGuardar() {
