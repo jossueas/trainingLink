@@ -446,7 +446,7 @@ namespace trainingLink.UI.master
                 int idRegistro = Convert.ToInt32(e.CommandArgument);
                 hdnIdRegistroSeguimiento.Value = idRegistro.ToString();
 
-                int dias = 0; // declaramos aquí para usarla fuera del reader
+                int dias = 0;
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -456,11 +456,8 @@ namespace trainingLink.UI.master
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@IdRegistro", idRegistro);
 
-
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        // Carga Mudas
-                       /* CargarMudas();*/
                         if (reader.Read())
                         {
                             txtColaboradorSeguimiento.Text = reader["NombreColaborador"].ToString();
@@ -470,25 +467,14 @@ namespace trainingLink.UI.master
                             txtTipoEntrenamientoSeguimiento.Text = reader["TipoEntrenamiento"].ToString();
                             txtHorasEfectivas.Text = reader["HorasEfectivas"]?.ToString();
 
-                            /*
-                            string idMuda = reader["IdMuda"]?.ToString();
-                            if (ddlMuda.Items.FindByValue(idMuda) != null)
-                            {
-                                ddlMuda.SelectedValue = idMuda;
-                            }
-
-                            */
-
                             DateTime inicio = Convert.ToDateTime(reader["FechaInicio"]);
                             DateTime fin = Convert.ToDateTime(reader["FechaFinal"]);
-                            dias = ((fin - inicio).Days + 1); // ✅ calculamos los días aquí
+                            dias = ((fin - inicio).Days + 1);
                             txtDiasEntrenamiento.Text = dias.ToString();
 
                             txtFechaInicioSeguimiento.Text = inicio.ToString("yyyy-MM-dd");
                             txtFechaFinalSeguimiento.Text = fin.ToString("yyyy-MM-dd");
 
-
-                            // Seteo estado
                             string estadoSeguimiento = reader["Estado"]?.ToString();
                             if (DropDownList1Seguimiento.Items.FindByValue(estadoSeguimiento) != null)
                             {
@@ -500,24 +486,42 @@ namespace trainingLink.UI.master
                             grupoSRC.Style["display"] = unidadNegocio == "SRC" ? "flex" : "none";
                         }
                     }
+                    //********************************
+                    //Agrega las mudas guardadas
+                    //********************************
+                    // Agrega todas las mudas guardadas (incluso duplicadas)
+                    using (SqlCommand cmdMudas = new SqlCommand("sp_GetMudasSeguimientoPorRegistro", conn))
+                    {
+                        cmdMudas.CommandType = CommandType.StoredProcedure;
+                        cmdMudas.Parameters.AddWithValue("@IdRegistro", idRegistro);
+
+                        using (SqlDataReader reader = cmdMudas.ExecuteReader())
+                        {
+                            int contador = 0;
+                            while (reader.Read())
+                            {
+                                int idMuda = (int)reader["IdMuda"];
+                                string tiempo = reader["Tiempo"].ToString();
+
+                                ScriptManager.RegisterStartupScript(this, GetType(), $"addMuda_{contador}",
+                                    $"console.log('Agregando muda ID:', {idMuda}, 'Tiempo:', '{tiempo}'); agregarMuda({idMuda}, '{tiempo}');", true);
+
+                                contador++;
+                            }
+                        }
+                    }
+
                 }
 
-               
-
-                //  curva dinámica con los días y el idRegistro
+                // curva dinámica
                 GenerarInputsCurva(idRegistro);
 
-                // Mostrar el modal con JS
                 ScriptManager.RegisterStartupScript(this, GetType(), "abrirModalSeguimiento", @"
-  const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento'));
-  modal.show();      console.log(""Abrir modal"");", true);
+        const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento'));
+        modal.show();", true);
 
-
-                //  Cargar gráfico justo después de abrir el modal
                 ScriptManager.RegisterStartupScript(this, GetType(), "graficoCurva",
                     $"cargarGraficoCurva({idRegistro});", true);
-
-
             }
         }
 
@@ -702,6 +706,12 @@ namespace trainingLink.UI.master
                     cmdEstado.ExecuteNonQuery();
                 }
 
+
+
+
+
+
+
                 // 3. Obtener IdOperacion
                 int idOperacion = 0;
                 using (SqlCommand cmd = new SqlCommand("SELECT IdOperacion FROM RegistroEntrenamiento WHERE IdRegistro = @Id", conn))
@@ -766,6 +776,48 @@ namespace trainingLink.UI.master
                     }
                 }
 
+                //************************************************//
+                // Guardar mudas dinámicas
+                foreach (string key in Request.Form.AllKeys)
+                {
+                    if (key.StartsWith("ddlMuda_"))
+                    {
+                        string index = key.Split('_')[1];
+                        string mudaId = Request.Form[$"ddlMuda_{index}"];
+                        string tiempo = Request.Form[$"ddlTipoMuda_{index}"];
+
+                        if (int.TryParse(mudaId, out int idMuda) && int.TryParse(tiempo, out int tiempoInt))
+                        {
+                            using (SqlCommand cmdMuda = new SqlCommand("sp_UpsertMudaSeguimiento", conn))
+                            {
+                                cmdMuda.CommandType = CommandType.StoredProcedure;
+                                cmdMuda.Parameters.AddWithValue("@IdRegistro", idRegistro);
+                                cmdMuda.Parameters.AddWithValue("@IdMuda", idMuda);
+                                cmdMuda.Parameters.AddWithValue("@Tiempo", tiempoInt);
+                                cmdMuda.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+
+
+                /*
+
+                // Llamar al SP para insertar/actualizar/eliminar en una sola operación
+                using (SqlCommand cmd = new SqlCommand("sp_UpsertMudaSeguimientoCompleto", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdRegistro", idRegistro);
+
+                    SqlParameter tvpParam = cmd.Parameters.AddWithValue("@Mudas", mudasTable);
+                    tvpParam.SqlDbType = SqlDbType.Structured;
+                    tvpParam.TypeName = "dbo.MudaSeguimientoTableType";
+
+                    cmd.ExecuteNonQuery();
+                }
+
+
+                */
 
 
                 // 5. Insertar o actualizar seguimiento
@@ -785,9 +837,8 @@ namespace trainingLink.UI.master
                     if (existe)
                     {
                         using (SqlCommand update = new SqlCommand(@"
-                    UPDATE Seguimiento SET Buenas = @Buenas, Malas = @Malas, Stage = @Stage, 
-                        IdMuda = @IdMuda, CantObjetivoDiaEntrenamiento = @Objetivo
-                    WHERE IdEntrenamiento = @IdEntrenamiento AND DiaEntrenamiento = 1 AND CONVERT(date, Fecha) = @Fecha", conn))
+                    UPDATE Seguimiento SET Buenas = @Buenas, Malas = @Malas, Stage = @Stage, CantObjetivoDiaEntrenamiento = @Objetivo
+                     WHERE IdEntrenamiento = @IdEntrenamiento AND DiaEntrenamiento = 1 AND CONVERT(date, Fecha) = @Fecha", conn))
                         {
                             update.Parameters.AddWithValue("@Buenas", string.IsNullOrWhiteSpace(txtBuenasIGTD.Text) ? (object)DBNull.Value : txtBuenasIGTD.Text);
                             update.Parameters.AddWithValue("@Malas", string.IsNullOrWhiteSpace(txtMalasIGTD.Text) ? (object)DBNull.Value : txtMalasIGTD.Text);
@@ -802,8 +853,8 @@ namespace trainingLink.UI.master
                     else
                     {
                         using (SqlCommand insert = new SqlCommand(@"
-                    INSERT INTO Seguimiento (IdEntrenamiento, Buenas, Malas, Stage, Fecha, DiaEntrenamiento, IdMuda, CantObjetivoDiaEntrenamiento)
-                    VALUES (@IdEntrenamiento, @Buenas, @Malas, @Stage, @Fecha, @Dia, @IdMuda, @Objetivo)", conn))
+                    INSERT INTO Seguimiento (IdEntrenamiento, Buenas, Malas, Stage, Fecha, DiaEntrenamiento,CantObjetivoDiaEntrenamiento)
+                    VALUES (@IdEntrenamiento, @Buenas, @Malas, @Stage, @Fecha, @Dia, @Objetivo)", conn))
                         {
                             insert.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
                             insert.Parameters.AddWithValue("@Buenas", string.IsNullOrWhiteSpace(txtBuenasIGTD.Text) ? (object)DBNull.Value : txtBuenasIGTD.Text);
