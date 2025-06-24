@@ -224,8 +224,8 @@ namespace trainingLink.UI.master
         }
         private void CargarTiposEntrenamiento()
         {
-            ddlTipoEntrenamiento.Items.Add(new ListItem("Teórico", "1"));   // IdTypeOfTraining = 1
-            ddlTipoEntrenamiento.Items.Add(new ListItem("Práctico", "2"));  // IdTypeOfTraining = 2
+            ddlTipoEntrenamiento.Items.Add(new ListItem("Standar", "1"));   // IdTypeOfTraining = 1
+            ddlTipoEntrenamiento.Items.Add(new ListItem("Critico", "2"));  // IdTypeOfTraining = 2
         }
 
 
@@ -264,6 +264,7 @@ namespace trainingLink.UI.master
             int idOperacion = int.Parse(ddlOperacion.SelectedValue);
             int idEntrenador = int.Parse(ddlEntrenador.SelectedValue);
             int idTurno = int.Parse(ddlTurno.SelectedValue);
+            string Condicion = ddlCondicion.SelectedValue;
             string tipoEntrenamiento = ddlTipoEntrenamiento.SelectedValue;
             string tipoEntrenador = ddlTipoEntrenador.SelectedValue;
 
@@ -286,6 +287,7 @@ namespace trainingLink.UI.master
 
 
             // Inserción en la base de datos
+            // Inserción en la base de datos
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand("sp_InsertEntrenamiento", conn))
             {
@@ -294,11 +296,13 @@ namespace trainingLink.UI.master
                 cmd.Parameters.AddWithValue("@IdOperacion", idOperacion);
                 cmd.Parameters.AddWithValue("@IdEntrenador", idEntrenador);
                 cmd.Parameters.AddWithValue("@IdTurno", idTurno);
+                cmd.Parameters.AddWithValue("@Condicion", Condicion);
 
                 int idTipoEntrenamiento = int.Parse(ddlTipoEntrenamiento.SelectedValue);
                 cmd.Parameters.AddWithValue("@IdTipoEntrenamiento", idTipoEntrenamiento);
 
-                cmd.Parameters.AddWithValue("@TipoEntrenador", tipoEntrenador);
+                // cmd.Parameters.AddWithValue("@TipoEntrenador", tipoEntrenador); ❌ ELIMINADO
+
                 cmd.Parameters.AddWithValue("@Estado", estado);
                 cmd.Parameters.AddWithValue("@FechaInicio", fechaInicio);
                 cmd.Parameters.AddWithValue("@FechaFinal", fechaFinal);
@@ -306,6 +310,7 @@ namespace trainingLink.UI.master
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+
 
             // Para limpiar el formulario después de guardar
             LimpiarFormularioRegistroEntrenamiento();
@@ -369,6 +374,7 @@ namespace trainingLink.UI.master
                         string operacion = row["NombreOperacion"].ToString().Replace("'", "\\'");
                         string entrenador = row["NombreEntrenador"].ToString().Replace("'", "\\'");
                         string turno = row["NombreTurno"].ToString().Replace("'", "\\'");
+                        string condicion = row["Condicion"].ToString();
                         string tipoEntrenamiento = row["TipoEntrenamiento"].ToString();
                         string tipoEntrenador = row["TipoEntrenador"].ToString();
                         string estadoVal = row["Estado"].ToString();
@@ -464,6 +470,13 @@ namespace trainingLink.UI.master
                             txtOperacionSeguimiento.Text = reader["NombreOperacion"].ToString();
                             txtEntrenadorSeguimiento.Text = reader["NombreEntrenador"].ToString();
                             txtTurnoSeguimiento.Text = reader["NombreTurno"].ToString();
+
+                            string Condicion = reader["Condicion"]?.ToString();
+                            if (DropDownListCondicion.Items.FindByValue(Condicion) != null)
+                            {
+                                DropDownListCondicion.SelectedValue = Condicion;
+                            }
+
                             txtTipoEntrenamientoSeguimiento.Text = reader["TipoEntrenamiento"].ToString();
                             txtHorasEfectivas.Text = reader["HorasEfectivas"]?.ToString();
 

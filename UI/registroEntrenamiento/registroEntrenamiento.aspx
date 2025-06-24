@@ -218,6 +218,17 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label label-turquesa">Turno</label>
 <asp:DropDownList ID="ddlTurno" runat="server" CssClass="form-select" />                            </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Condicion</label>
+            <asp:DropDownList ID="ddlCondicion" runat="server" CssClass="form-select">
+                 <asp:ListItem Text="Nuevo Ingreso" Value="Nuevo Ingreso" />
+                <asp:ListItem Text="Flexibilidad" Value="Flexibilidad" />
+         
+            </asp:DropDownList>
+        </div>
+
+
                             <div class="col-md-6 mb-3">
                                 <label class="form-label label-turquesa">Fecha Inicio</label>
                                 <asp:TextBox ID="txtFechaInicio" runat="server" CssClass="form-control" TextMode="Date" />
@@ -281,6 +292,15 @@
     <asp:TextBox ID="txtOperacionSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
   </div>
 </div>
+    <div class="col-md-6">
+    <label class="form-label label-turquesa">Condicion:</label>
+    <asp:DropDownList ID="DropDownListCondicion" runat="server" CssClass="form-select">
+      <asp:ListItem Text="Nuevo Ingreso" Value="Nuevo Ingreso" />
+      <asp:ListItem Text="Flexibilidad" Value="Flexibilidad" />
+    </asp:DropDownList>
+  </div>
+
+
 
 <!-- Fila 2: Turno - Entrenador - Tipo de Entrenamiento -->
 <div class="row mt-3">
@@ -288,6 +308,11 @@
     <label class="form-label label-turquesa">Turno:</label>
     <asp:TextBox ID="txtTurnoSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />
   </div>
+
+
+
+
+
   <div class="col-md-4">
     <label class="form-label label-turquesa">Entrenador:</label>
     <asp:TextBox ID="txtEntrenadorSeguimiento" runat="server" CssClass="form-control" ReadOnly="true" />

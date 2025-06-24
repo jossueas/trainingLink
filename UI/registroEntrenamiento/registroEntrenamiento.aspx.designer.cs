@@ -222,6 +222,15 @@ namespace trainingLink.UI.master
         protected global::System.Web.UI.WebControls.DropDownList ddlTurno;
 
         /// <summary>
+        /// ddlCondicion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCondicion;
+
+        /// <summary>
         /// txtFechaInicio control.
         /// </summary>
         /// <remarks>
@@ -301,6 +310,15 @@ namespace trainingLink.UI.master
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtOperacionSeguimiento;
+
+        /// <summary>
+        /// DropDownListCondicion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListCondicion;
 
         /// <summary>
         /// txtTurnoSeguimiento control.
