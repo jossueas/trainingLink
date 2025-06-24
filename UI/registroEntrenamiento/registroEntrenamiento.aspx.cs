@@ -502,12 +502,12 @@ namespace trainingLink.UI.master
                             {
                                 int idMuda = (int)reader["IdMuda"];
                                 string tiempo = reader["Tiempo"].ToString();
+                                int idMudaSeguimiento = (int)reader["IdMudaSeguimiento"];
 
-                                ScriptManager.RegisterStartupScript(this, GetType(), $"addMuda_{contador}",
-                                    $"console.log('Agregando muda ID:', {idMuda}, 'Tiempo:', '{tiempo}'); agregarMuda({idMuda}, '{tiempo}');", true);
-
-                                contador++;
+                                ScriptManager.RegisterStartupScript(this, GetType(), $"muda{idMudaSeguimiento}",
+                                    $"agregarMuda({idMuda}, '{tiempo}', {idMudaSeguimiento});", true);
                             }
+
                         }
                     }
 
@@ -649,6 +649,8 @@ namespace trainingLink.UI.master
 
 
 
+
+
         protected void btnGuardarSeguimiento_Click(object sender, EventArgs e)
         {
             int idRegistro = int.Parse(hdnIdRegistroSeguimiento.Value);
@@ -785,20 +787,44 @@ namespace trainingLink.UI.master
                         string index = key.Split('_')[1];
                         string mudaId = Request.Form[$"ddlMuda_{index}"];
                         string tiempo = Request.Form[$"ddlTipoMuda_{index}"];
+                        string mudaSeguimiento = Request.Form[$"ddlMudaSeguimiento_{index}"]; // Nuevo campo oculto
 
                         if (int.TryParse(mudaId, out int idMuda) && int.TryParse(tiempo, out int tiempoInt))
                         {
-                            using (SqlCommand cmdMuda = new SqlCommand("sp_UpsertMudaSeguimiento", conn))
+                            // Si es nuevo, insertamos
+                            if (string.IsNullOrEmpty(mudaSeguimiento))
                             {
-                                cmdMuda.CommandType = CommandType.StoredProcedure;
-                                cmdMuda.Parameters.AddWithValue("@IdRegistro", idRegistro);
-                                cmdMuda.Parameters.AddWithValue("@IdMuda", idMuda);
-                                cmdMuda.Parameters.AddWithValue("@Tiempo", tiempoInt);
-                                cmdMuda.ExecuteNonQuery();
+                                using (SqlCommand cmdMuda = new SqlCommand("sp_UpsertMudaSeguimiento", conn))
+                                {
+                                    cmdMuda.CommandType = CommandType.StoredProcedure;
+                                    cmdMuda.Parameters.AddWithValue("@IdRegistro", idRegistro);
+                                    cmdMuda.Parameters.AddWithValue("@IdMuda", idMuda);
+                                    cmdMuda.Parameters.AddWithValue("@Tiempo", tiempoInt);
+                                    cmdMuda.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // Validar si hay cambio en tiempo antes de hacer update
+                                using (SqlCommand check = new SqlCommand("SELECT Tiempo FROM MudaSeguimiento WHERE IdMudaSeguimiento = @Id", conn))
+                                {
+                                    check.Parameters.AddWithValue("@Id", mudaSeguimiento);
+                                    object currentTiempo = check.ExecuteScalar();
+                                    if (currentTiempo != null && Convert.ToInt32(currentTiempo) != tiempoInt)
+                                    {
+                                        using (SqlCommand update = new SqlCommand("UPDATE MudaSeguimiento SET Tiempo = @Tiempo WHERE IdMudaSeguimiento = @Id", conn))
+                                        {
+                                            update.Parameters.AddWithValue("@Tiempo", tiempoInt);
+                                            update.Parameters.AddWithValue("@Id", mudaSeguimiento);
+                                            update.ExecuteNonQuery();
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
 
 
                 /*
@@ -818,6 +844,13 @@ namespace trainingLink.UI.master
 
 
                 */
+
+
+
+
+
+
+
 
 
                 // 5. Insertar o actualizar seguimiento
@@ -879,8 +912,24 @@ namespace trainingLink.UI.master
 
         }
 
+        //*Elimnar muda cuando precionamos x
 
- 
+        [System.Web.Services.WebMethod]
+        public static bool EliminarMudaSeguimiento(int idMudaSeguimiento)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["TrainingLinkConnection"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("sp_DeleteMudaSeguimiento", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@IdMudaSeguimiento", idMudaSeguimiento);
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+                return rows > 0;
+            }
+        }
+
 
 
 

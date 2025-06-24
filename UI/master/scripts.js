@@ -673,7 +673,7 @@ function cargarMudas(callback) {
         }
     );
 }
-
+/*
 function agregarMuda(idSeleccionado = "", textoTipo = "Tiempo en minutos") {
     cargarMudas(function () {
         contadorMudas++;
@@ -709,12 +709,127 @@ function agregarMuda(idSeleccionado = "", textoTipo = "Tiempo en minutos") {
     });
 }
 
-function eliminarMuda(idMudaRow) {
-    const element = document.getElementById(idMudaRow);
-    if (element) {
-        element.remove();
+
+}*/
+
+function agregarMuda(idSeleccionado = "", textoTipo = "Tiempo en minutos", idMudaSeguimiento = "") {
+    cargarMudas(function () {
+        contadorMudas++;
+
+        const div = document.createElement("div");
+        div.className = "row align-items-center mb-2";
+        div.id = `mudaRow${contadorMudas}`;
+
+        let optionsMuda = '<option value="">Seleccione Muda</option>';
+        listaMudas.forEach(m => {
+            const selected = m.Id == idSeleccionado ? "selected" : "";
+            optionsMuda += `<option value="${m.Id}" ${selected}>${m.Nombre}</option>`;
+        });
+
+        div.innerHTML = `
+            <div class="col-md-5">
+                <select name="ddlMuda_${contadorMudas}" class="form-select">
+                    ${optionsMuda}
+                </select>
+            </div>
+            <div class="col-md-5">
+                <input type="text" name="ddlTipoMuda_${contadorMudas}" class="form-control" placeholder="${textoTipo}" value="${textoTipo}" />
+                <input type="hidden" name="ddlMudaSeguimiento_${contadorMudas}" value="${idMudaSeguimiento}" />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger" onclick="eliminarMuda(this, ${idMudaSeguimiento || 0})">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        `;
+
+        document.getElementById("contenedorMudas").appendChild(div);
+    });
+}
+
+
+
+//Muda eliminar
+
+
+function eliminarMuda(btn, idMudaSeguimiento) {
+    const row = btn.closest(".row");
+
+    if (idMudaSeguimiento && idMudaSeguimiento !== 0) {
+        if (!confirm("¿Está seguro que desea eliminar esta muda registrada?")) return;
+
+        $.ajax({
+            type: "POST",
+            url: "registroEntrenamiento.aspx/EliminarMudaSeguimiento",
+            data: JSON.stringify({ idMudaSeguimiento: idMudaSeguimiento }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response.d) {
+                    row.remove();
+                } else {
+                    alert("No se pudo eliminar la muda.");
+                }
+            },
+            error: function () {
+                alert("Error al intentar eliminar la muda.");
+            }
+        });
+    } else {
+        row.remove(); // Solo eliminar de la vista si no está en DB
     }
 }
+
+
+
+$(document).on("click", ".btnEliminarMuda", function () {
+    const btn = $(this);
+    const idMudaSeguimiento = btn.data("idmudaseguimiento");
+
+    if (idMudaSeguimiento) {
+        if (!confirm("¿Deseas eliminar esta muda definitivamente?")) return;
+
+        $.ajax({
+            type: "POST",
+            url: "registroEntrenamiento.aspx/EliminarMudaSeguimiento",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ idMudaSeguimiento }),
+            dataType: "json",
+            success: function (response) {
+                if (response.d) {
+                    btn.closest(".row").remove();
+                } else {
+                    alert("No se pudo eliminar la muda.");
+                }
+            },
+            error: function () {
+                alert("Error al eliminar la muda.");
+            }
+        });
+    } else {
+        // Si no tiene ID, solo se eliminó del frontend
+        btn.closest(".row").remove();
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function validarOperacionAntesDeGuardar() {
     const campos = [
@@ -1234,4 +1349,8 @@ window.mostrarToastEliminadoBusinessUnit = mostrarToastEliminadoBusinessUnit;
 
 
 window.prepararModalCrearEntrenador = prepararModalCrearEntrenador;
-window.abrirModalEditarEntrenador = abrirModalEditarEntrenador;
+    window.abrirModalEditarEntrenador = abrirModalEditarEntrenador;
+    window.agregarMuda = agregarMuda;
+window.eliminarMuda = eliminarMuda;
+
+
