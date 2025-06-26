@@ -35,7 +35,33 @@ namespace trainingLink.UI.maintenance.maintenanceTurno
 
                 btnSalir.Visible = true; // Siempre visible
                 CargarAreas();
+                CargarUnidadesDeNegocio();
                 CargarTurnos();
+
+            }
+        }
+        private void CargarUnidadesDeNegocio()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT IdBusinessUnit, Name FROM BusinessUnit WHERE Status = 1";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        ddlUnidadNegocio.DataSource = reader;
+                        ddlUnidadNegocio.DataTextField = "Name"; // Lo que se muestra
+                        ddlUnidadNegocio.DataValueField = "IdBusinessUnit"; // Lo que se guarda
+                        ddlUnidadNegocio.DataBind();
+                    }
+
+                    ddlUnidadNegocio.Items.Insert(0, new ListItem("-- Seleccione --", ""));
+                }
             }
         }
 
@@ -91,13 +117,18 @@ namespace trainingLink.UI.maintenance.maintenanceTurno
                 gvTurno.DataBind();
             }
         }
-
         protected void btnGuardarTurno_ServerClick(object sender, EventArgs e)
         {
             string nombre = txtNombreTurno.Text.Trim();
             bool status = ddlEstadoTurno.SelectedValue == "1";
             int.TryParse(ddlArea.SelectedValue, out int idArea);
             string idTurno = hdnIdTurno.Value;
+
+            // NUEVOS CAMPOS SOLICITADOS
+            TimeSpan.TryParse(txtHoraInicio.Text, out TimeSpan horaInicio);
+            TimeSpan.TryParse(txtHoraFin.Text, out TimeSpan horaFin);
+            int.TryParse(txtHorasLaboradas.Text, out int horasLaboradas);
+            int.TryParse(ddlUnidadNegocio.SelectedValue, out int idBusinessUnit);
 
             string connStr = ConfigurationManager.ConnectionStrings["trainingLinkConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -114,10 +145,16 @@ namespace trainingLink.UI.maintenance.maintenanceTurno
                     cmd = new SqlCommand("sp_InsertTurno", conn);
                 }
 
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Name", nombre);
                 cmd.Parameters.AddWithValue("@IdArea", idArea);
                 cmd.Parameters.AddWithValue("@Status", status);
-                cmd.CommandType = CommandType.StoredProcedure;
+
+                // NUEVOS PARÁMETROS
+                cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
+                cmd.Parameters.AddWithValue("@horaFin", horaFin);
+                cmd.Parameters.AddWithValue("@horaLaboradas", horasLaboradas);
+                cmd.Parameters.AddWithValue("@idBusinessUnit", idBusinessUnit);
 
                 try
                 {
@@ -133,6 +170,7 @@ namespace trainingLink.UI.maintenance.maintenanceTurno
                 }
             }
         }
+
 
         protected void btnEliminarTurno_ServerClick(object sender, EventArgs e)
         {

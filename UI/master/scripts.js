@@ -303,20 +303,26 @@ function validarAreaAntesDeGuardar(idDropDown) {
     }
     return true;
 }
-
 function mostrarToastExitoTurno() {
-    cerrarModal("modalCrearTurno");
+    cerrarModal("modalEditarTurno");
 
+    // Limpiar campos del formulario
     document.getElementById("txtNombreTurno").value = "";
-    document.getElementById("ddlEstadoTurno").selectedIndex = 0;
     document.getElementById("ddlArea").selectedIndex = 0;
+    document.getElementById("ddlEstadoTurno").selectedIndex = 0;
+    document.getElementById("txtHoraInicio").value = "";
+    document.getElementById("txtHoraFin").value = "";
+    document.getElementById("txtHorasLaboradas").value = "";
+    document.getElementById("ddlUnidadNegocio").selectedIndex = 0;
     document.getElementById("hdnIdTurno").value = "";
 
+    // Mostrar el toast
     const toastEl = document.getElementById("toastSuccess");
     if (toastEl) {
         const toast = new bootstrap.Toast(toastEl);
         toast.show();
 
+        // Ocultar después de 5 segundos
         toastEl.addEventListener('shown.bs.toast', () => {
             setTimeout(() => toast.hide(), 5000);
         });
@@ -1311,7 +1317,54 @@ function abrirModalEditarEntrenador(id, nombre, tipoEntrenador, estado, idUsuari
     modal.show();
 }
 
+//TURNO
+function abrirModalEditarTurno_(id, nombre, idArea, status, horaInicio, horaFin, horaLaboradas, idBusinessUnit) {
+    // Asignar valores a los campos del modal
+    document.getElementById("hdnIdTurno").value = id || "";
+    document.getElementById("txtNombreTurno").value = nombre || "";
+    document.getElementById("ddlArea").value = idArea || "";
+    document.getElementById("ddlEstadoTurno").value = status || "1";
 
+    // Convertir horaInicio y horaFin a formato HH:mm si viene como datetime o string largo
+    document.getElementById("txtHoraInicio").value = horaInicio?.substring(0, 5) || "";
+    document.getElementById("txtHoraFin").value = horaFin?.substring(0, 5) || "";
+
+    document.getElementById("txtHorasLaboradas").value = horaLaboradas || "";
+    document.getElementById("ddlUnidadNegocio").value = idBusinessUnit || "";
+
+    // Cambiar etiquetas del modal
+    document.getElementById("btnGuardarTurno").value = "Actualizar";
+    document.getElementById("modalCrearTurnoLabel").innerText = "Editar Turno";
+
+    // Mostrar modal
+    const modal = new bootstrap.Modal(document.getElementById("modalCrearTurno"));
+    modal.show();
+}
+
+function validarFormularioTurno() {
+    const nombre = document.getElementById("txtNombreTurno").value.trim();
+    const area = document.getElementById("ddlArea").value;
+    const estado = document.getElementById("ddlEstadoTurno").value;
+    const horaInicio = document.getElementById("txtHoraInicio").value;
+    const horaFin = document.getElementById("txtHoraFin").value;
+    const horasLaboradas = document.getElementById("txtHorasLaboradas").value;
+    const unidadNegocio = document.getElementById("ddlUnidadNegocio").value;
+
+    if (
+        nombre === "" ||
+        area === "0" ||
+        estado === "" ||
+        horaInicio === "" ||
+        horaFin === "" ||
+        horasLaboradas === "" ||
+        unidadNegocio === "0"
+    ) {
+        alert("Por favor complete todos los campos antes de guardar.");
+        return false;
+    }
+
+    return true;
+}
 
 
 
@@ -1352,5 +1405,5 @@ window.prepararModalCrearEntrenador = prepararModalCrearEntrenador;
     window.abrirModalEditarEntrenador = abrirModalEditarEntrenador;
     window.agregarMuda = agregarMuda;
 window.eliminarMuda = eliminarMuda;
-
+window.abrirModalEditarTurno;
 

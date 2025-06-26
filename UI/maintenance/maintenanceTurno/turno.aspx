@@ -108,24 +108,41 @@
                 </div>
             </div>
 
-            <asp:GridView ID="gvTurno" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info">
-                <Columns>
-                    <asp:BoundField DataField="Name" HeaderText="Nombre" SortExpression="Name" />
-                    <asp:BoundField DataField="NombreArea" HeaderText="Área" SortExpression="NombreArea" />
-                    <asp:TemplateField HeaderText="Estado">
-                        <ItemTemplate>
-                            <%# Convert.ToBoolean(Eval("Status")) ? "Activo" : "Inactivo" %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Acciones">
-                        <ItemTemplate>
-                            <a href="javascript:void(0);" onclick='abrirModalEditarTurno("<%# Eval("IdTurno") %>", "<%# Eval("Name") %>", "<%# Eval("IdArea") %>", "<%# Convert.ToBoolean(Eval("Status")) ? "1" : "0" %>")'>
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
+ <asp:GridView ID="gvTurno" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-center align-middle" HeaderStyle-CssClass="table-info">
+    <Columns>
+        <asp:BoundField DataField="Name" HeaderText="Nombre" SortExpression="Name" />
+        <asp:BoundField DataField="NombreArea" HeaderText="Área" SortExpression="NombreArea" />
+<asp:BoundField DataField="horaInicio" HeaderText="Hora Inicio" />
+<asp:BoundField DataField="horaFin" HeaderText="Hora Fin" />
+
+        <asp:BoundField DataField="horaLaboradas" HeaderText="Horas Laboradas" />
+        <asp:BoundField DataField="NombreUnidadNegocio" HeaderText="Unidad de Negocio" />
+
+        <asp:TemplateField HeaderText="Estado">
+            <ItemTemplate>
+                <%# Convert.ToBoolean(Eval("Status")) ? "Activo" : "Inactivo" %>
+            </ItemTemplate>
+        </asp:TemplateField>
+
+        <asp:TemplateField HeaderText="Acciones">
+            <ItemTemplate>
+                <a href="javascript:void(0);" onclick='abrirModalEditarTurno(
+    "<%# Eval("IdTurno") %>",
+    "<%# Eval("Name") %>",
+    "<%# Eval("IdArea") %>",
+    "<%# Convert.ToBoolean(Eval("Status")) ? "1" : "0" %>",
+    "<%# Eval("horaInicio", "{0:hh\\:mm}") %>",
+    "<%# Eval("horaFin", "{0:hh\\:mm}") %>",
+    "<%# Eval("horaLaboradas") %>",
+    "<%# Eval("idBusinessUnit") %>")'>
+    <i class="bi bi-pencil-square"></i>
+</a>
+
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
+</asp:GridView>
+
                     <!-- Toast -->
         <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
             <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -147,34 +164,71 @@
 </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="modalCrearTurno" tabindex="-1" aria-labelledby="modalCrearTurnoLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalCrearTurnoLabel">Agregar Turno</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <asp:HiddenField ID="hdnIdTurno" runat="server" />
+           <div class="modal fade" id="modalCrearTurno" tabindex="-1" aria-labelledby="modalCrearTurnoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearTurnoLabel">Agregar Turno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <asp:HiddenField ID="hdnIdTurno" runat="server" />
 
-                            <div class="mb-3">
-                                <label for="txtNombreTurno" class="form-label">Nombre</label>
-                                <asp:TextBox ID="txtNombreTurno" runat="server" CssClass="form-control" ClientIDMode="Static" />
-                            </div>
+                <!-- Nombre del Turno -->
+                <div class="mb-3">
+                    <label for="txtNombreTurno" class="form-label">Nombre</label>
+                    <asp:TextBox ID="txtNombreTurno" runat="server" CssClass="form-control" ClientIDMode="Static" />
+                </div>
 
-                            <div class="mb-3">
-                                <label for="ddlArea" class="form-label">Área</label>
-                                <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-select" ClientIDMode="Static" />
-                            </div>
+                <!-- Área -->
+                <div class="mb-3">
+                    <label for="ddlArea" class="form-label">Área</label>
+                    <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-select" ClientIDMode="Static" />
+                </div>
 
-                            <div class="mb-3">
-                                <label for="ddlEstadoTurno" class="form-label">Estado</label>
-                                <asp:DropDownList ID="ddlEstadoTurno" runat="server" CssClass="form-select" ClientIDMode="Static">
-                                    <asp:ListItem Text="Activo" Value="1" />
-                                    <asp:ListItem Text="Inactivo" Value="0" />
-                                </asp:DropDownList>
-                            </div>
-                        </div>
+                <!-- Estado -->
+                <div class="mb-3">
+                    <label for="ddlEstadoTurno" class="form-label">Estado</label>
+                    <asp:DropDownList ID="ddlEstadoTurno" runat="server" CssClass="form-select" ClientIDMode="Static">
+                        <asp:ListItem Text="Activo" Value="1" />
+                        <asp:ListItem Text="Inactivo" Value="0" />
+                    </asp:DropDownList>
+                </div>
+
+      <!-- Hora de Inicio -->
+<div class="mb-3">
+    <label for="txtHoraInicio" class="form-label">Hora de Inicio</label>
+    <asp:TextBox ID="txtHoraInicio" runat="server" CssClass="form-control" TextMode="Time" ClientIDMode="Static" />
+</div>
+
+<!-- Hora de Fin -->
+<div class="mb-3">
+    <label for="txtHoraFin" class="form-label">Hora de Fin</label>
+    <asp:TextBox ID="txtHoraFin" runat="server" CssClass="form-control" TextMode="Time" ClientIDMode="Static" />
+</div>
+
+
+                <!-- Horas Laboradas -->
+                <div class="mb-3">
+                    <label for="txtHorasLaboradas" class="form-label">Horas Laboradas</label>
+                    <asp:TextBox ID="txtHorasLaboradas" runat="server" CssClass="form-control" TextMode="Number" ClientIDMode="Static" />
+                </div>
+
+                <!-- Unidad de Negocio -->
+                <div class="mb-3">
+                    <label for="ddlUnidadNegocio" class="form-label">Unidad de Negocio</label>
+                    <asp:DropDownList ID="ddlUnidadNegocio" runat="server" CssClass="form-select" ClientIDMode="Static" />
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <asp:Button ID="Button1" runat="server" CssClass="btn btn-primary" Text="Guardar" OnClick="btnGuardarTurno_ServerClick" />
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                           <div class="modal-footer">
       <div id="btnEliminarContainerTurno" class="me-auto" style="display:none">
 <asp:Button ID="btnEliminarTurno" runat="server"
@@ -187,14 +241,13 @@
 <asp:Button ID="btnGuardarTurno" runat="server"
     CssClass="btn btn-save-custom"
     Text="Guardar"
-    OnClientClick="return validarAreaAntesDeGuardar('ddlArea');"
+    OnClientClick="return validarFormularioTurno();"
     OnClick="btnGuardarTurno_ServerClick"
     ClientIDMode="Static" />
 
+
                         </div>
-                    </div>
-                </div>
-            </div>
+           
           <!-- Scripts -->
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
