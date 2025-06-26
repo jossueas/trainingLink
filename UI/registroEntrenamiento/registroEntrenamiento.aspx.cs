@@ -658,7 +658,18 @@ namespace trainingLink.UI.master
                 phCurvaSeguimiento.Controls.Add(panel);
             }
 
-
+            int indiceExtra = 1;
+            foreach (var kvp in valoresGuardados)
+            {
+                int dia = kvp.Key;
+                if (dia >= 1000)
+                {
+                    int valor = kvp.Value.Valor;
+                    ScriptManager.RegisterStartupScript(this, GetType(), $"extra{dia}",
+                        $"agregarDiaExtra({valor}, {indiceExtra});", true);
+                    indiceExtra++;
+                }
+            }
         }
 
 

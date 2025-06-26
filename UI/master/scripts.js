@@ -1370,14 +1370,20 @@ function validarFormularioTurno() {
 
 let contadorDiasExtra = 0;
 
-function agregarDiaExtra(valor = 0) {
-    contadorDiasExtra++;
+
+function agregarDiaExtra(valor = 0, indiceForzado = null) {
+    if (indiceForzado !== null) {
+        contadorDiasExtra = indiceForzado;
+    } else {
+        contadorDiasExtra++;
+    }
 
     const contenedor = document.getElementById("contenedorDiasExtra");
 
     const div = document.createElement("div");
     div.className = "col-md-4 mb-3 dia-extra-item";
     div.dataset.index = contadorDiasExtra;
+    div.id = `diaExtra${contadorDiasExtra}`;
 
     const label = document.createElement("label");
     label.className = "form-label fw-bold";
@@ -1417,6 +1423,7 @@ function agregarDiaExtra(valor = 0) {
 
     reindexarDiasExtra();
 }
+
 function reindexarDiasExtra() {
     const items = document.querySelectorAll("#contenedorDiasExtra .dia-extra-item");
     items.forEach((item, index) => {
