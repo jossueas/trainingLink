@@ -536,6 +536,11 @@ namespace trainingLink.UI.master
                 ScriptManager.RegisterStartupScript(this, GetType(), "graficoCurva",
                     $"cargarGraficoCurva({idRegistro});", true);
             }
+
+
+
+
+
         }
 
 
@@ -568,11 +573,9 @@ namespace trainingLink.UI.master
         {
             phCurvaSeguimiento.Controls.Clear();
 
-            // Nuevo: Diccionario con valor y fecha
             Dictionary<int, (int Valor, DateTime? FechaRegistro)> valoresGuardados = new Dictionary<int, (int Valor, DateTime? FechaRegistro)>();
             int numberDays = 0;
 
-            // Obtener IdRol del usuario actual
             bool esUsuarioEditable = true;
             string code1 = Session["Code1"]?.ToString();
 
@@ -580,33 +583,30 @@ namespace trainingLink.UI.master
             {
                 conn.Open();
 
-                // Obtener IdRol
                 using (SqlCommand cmdUser = new SqlCommand("SELECT IdRol FROM Usuario WHERE Code1 = @Code1", conn))
                 {
                     cmdUser.Parameters.AddWithValue("@Code1", code1);
                     object result = cmdUser.ExecuteScalar();
-                    esUsuarioEditable = (result != null && Convert.ToInt32(result) == 1); // Solo si IdRol = 1 puede editar
+                    esUsuarioEditable = (result != null && Convert.ToInt32(result) == 1);
                 }
 
-                // Obtener NumberDays desde Operacion
                 if (idRegistro.HasValue)
                 {
                     using (SqlCommand cmd = new SqlCommand(@"
-            SELECT O.NumberDays 
-            FROM RegistroEntrenamiento R 
-            INNER JOIN Operacion O ON R.IdOperacion = O.IdOperation
-            WHERE R.IdRegistro = @IdRegistro", conn))
+                SELECT O.NumberDays 
+                FROM RegistroEntrenamiento R 
+                INNER JOIN Operacion O ON R.IdOperacion = O.IdOperation
+                WHERE R.IdRegistro = @IdRegistro", conn))
                     {
                         cmd.Parameters.AddWithValue("@IdRegistro", idRegistro.Value);
                         object result = cmd.ExecuteScalar();
                         numberDays = result != DBNull.Value ? Convert.ToInt32(result) : 0;
                     }
 
-                    // Cargar valores guardados incluyendo FechaRegistro
                     using (SqlCommand cmd = new SqlCommand(@"
-            SELECT Dia, Valor, FechaRegistro 
-            FROM CurvaAprendizajeSeguimiento 
-            WHERE IdEntrenamiento = @IdEntrenamiento", conn))
+                SELECT Dia, Valor, FechaRegistro 
+                FROM CurvaAprendizajeSeguimiento 
+                WHERE IdEntrenamiento = @IdEntrenamiento", conn))
                     {
                         cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro.Value);
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -623,6 +623,7 @@ namespace trainingLink.UI.master
                 }
             }
 
+            // Renderizar inputs de días normales
             // Renderizar inputs en filas de 3 columnas
             for (int i = 1; i <= numberDays; i++)
             {
@@ -644,7 +645,6 @@ namespace trainingLink.UI.master
                     }
                 }
 
-
                 TextBox txt = new TextBox
                 {
                     ID = $"inputSeguimientoDia{i}",
@@ -658,9 +658,8 @@ namespace trainingLink.UI.master
                 phCurvaSeguimiento.Controls.Add(panel);
             }
 
+
         }
-
-
 
 
 
@@ -784,12 +783,38 @@ namespace trainingLink.UI.master
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
-                        cmd.Parameters.AddWithValue("@IdOperacion", idOperacion);
+                        cmd.Parameters.AddWithValue("@IdOperation", idOperacion); // revisado
                         cmd.Parameters.AddWithValue("@Dia", i);
                         cmd.Parameters.AddWithValue("@Valor", valor);
                         cmd.ExecuteNonQuery();
                     }
+
                 }
+                // 4b. Guardar días extra
+                foreach (string key in Request.Form.AllKeys)
+                {
+                    if (key.StartsWith("inputDiaExtra"))
+                    {
+                        string diaStr = key.Replace("inputDiaExtra", "");
+                        if (int.TryParse(diaStr, out int diaExtra))
+                        {
+                            string valorTexto = Request.Form[key];
+                            if (decimal.TryParse(valorTexto, out decimal valor) && valor > 0)
+                            {
+                                using (SqlCommand cmd = new SqlCommand("sp_UpsertCurvaAprendizajeSeguimiento", conn))
+                                {
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.Parameters.AddWithValue("@IdEntrenamiento", idRegistro);
+                                    cmd.Parameters.AddWithValue("@IdOperation", idOperacion); // aquí también
+                                    cmd.Parameters.AddWithValue("@Dia", 1000 + diaExtra); // offset para distinguir días extra
+                                    cmd.Parameters.AddWithValue("@Valor", valor);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                    }
+                }
+
 
                 //************************************************//
                 // Guardar mudas dinámicas

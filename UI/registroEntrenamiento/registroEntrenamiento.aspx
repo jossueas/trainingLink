@@ -398,6 +398,16 @@
            <div class="row" runat="server">
     <asp:PlaceHolder ID="phCurvaSeguimiento" runat="server" />
 </div>
+              <hr />
+<div class="mt-3">
+    <label class="form-label fw-bold" style="color: #FFA500;">Días Extra de Curva de Aprendizaje</label>
+    <div class="row" id="contenedorDiasExtra"></div>
+    <button type="button" class="btn btn-outline-warning btn-sm mt-2" onclick="agregarDiaExtra()">
+        <i class="bi bi-plus-circle"></i> Agregar Día Extra
+    </button>
+</div>
+
+
 
           </div>
         </div>

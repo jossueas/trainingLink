@@ -1366,6 +1366,75 @@ function validarFormularioTurno() {
     return true;
 }
 
+//DIAS EXTRA
+
+let contadorDiasExtra = 0;
+
+function agregarDiaExtra(valor = 0) {
+    contadorDiasExtra++;
+
+    const contenedor = document.getElementById("contenedorDiasExtra");
+
+    const div = document.createElement("div");
+    div.className = "col-md-4 mb-3 dia-extra-item";
+    div.dataset.index = contadorDiasExtra;
+
+    const label = document.createElement("label");
+    label.className = "form-label fw-bold";
+    label.style.color = "#FFA500";
+    label.innerText = `Día extra ${contadorDiasExtra}:`;
+
+    const inputGroup = document.createElement("div");
+    inputGroup.className = "input-group";
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.className = "form-control";
+    input.name = `inputDiaExtra${contadorDiasExtra}`;
+    input.id = `inputDiaExtra${contadorDiasExtra}`;
+    input.value = valor;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn btn-outline-danger";
+    button.innerHTML = "<i class='bi bi-x'></i>";
+    button.onclick = function () {
+        contenedor.removeChild(div);
+        reindexarDiasExtra();
+    };
+
+    const btnWrapper = document.createElement("div");
+    btnWrapper.className = "input-group-append";
+    btnWrapper.appendChild(button);
+
+    inputGroup.appendChild(input);
+    inputGroup.appendChild(btnWrapper);
+
+    div.appendChild(label);
+    div.appendChild(inputGroup);
+
+    contenedor.appendChild(div);
+
+    reindexarDiasExtra();
+}
+function reindexarDiasExtra() {
+    const items = document.querySelectorAll("#contenedorDiasExtra .dia-extra-item");
+    items.forEach((item, index) => {
+        const nuevoIndice = index + 1;
+        item.dataset.index = nuevoIndice;
+
+        // Actualizar label
+        const label = item.querySelector("label");
+        if (label) label.innerText = `Día extra ${nuevoIndice}:`;
+
+        // Actualizar input ID y NAME
+        const input = item.querySelector("input");
+        if (input) {
+            input.name = `inputDiaExtra${nuevoIndice}`;
+            input.id = `inputDiaExtra${nuevoIndice}`;
+        }
+    });
+}
 
 
 
@@ -1405,5 +1474,5 @@ window.prepararModalCrearEntrenador = prepararModalCrearEntrenador;
     window.abrirModalEditarEntrenador = abrirModalEditarEntrenador;
     window.agregarMuda = agregarMuda;
 window.eliminarMuda = eliminarMuda;
-window.abrirModalEditarTurno;
-
+window.abrirModalEditarTurno= abrirModalEditarArea;
+window.agregarDiaExtra = agregarDiaExtra;
