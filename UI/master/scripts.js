@@ -1367,28 +1367,25 @@ function validarFormularioTurno() {
 }
 
 //DIAS EXTRA
-
 let contadorDiasExtra = 0;
 
-
 function agregarDiaExtra(valor = 0, indiceForzado = null) {
-    if (indiceForzado !== null) {
-        contadorDiasExtra = indiceForzado;
-    } else {
-        contadorDiasExtra++;
-    }
+    let indice = indiceForzado !== null ? indiceForzado : ++contadorDiasExtra;
+
+    // Asegurar que el contador siempre sea el mayor para evitar duplicados
+    contadorDiasExtra = Math.max(contadorDiasExtra, indice);
 
     const contenedor = document.getElementById("contenedorDiasExtra");
 
     const div = document.createElement("div");
     div.className = "col-md-4 mb-3 dia-extra-item";
-    div.dataset.index = contadorDiasExtra;
-    div.id = `diaExtra${contadorDiasExtra}`;
+    div.dataset.index = indice;
+    div.id = `diaExtra${indice}`;
 
     const label = document.createElement("label");
     label.className = "form-label fw-bold";
     label.style.color = "#FFA500";
-    label.innerText = `Día extra ${contadorDiasExtra}:`;
+    label.innerText = `Día extra ${indice}:`;
 
     const inputGroup = document.createElement("div");
     inputGroup.className = "input-group";
@@ -1396,8 +1393,8 @@ function agregarDiaExtra(valor = 0, indiceForzado = null) {
     const input = document.createElement("input");
     input.type = "number";
     input.className = "form-control";
-    input.name = `inputDiaExtra${contadorDiasExtra}`;
-    input.id = `inputDiaExtra${contadorDiasExtra}`;
+    input.name = `inputDiaExtra${indice}`;
+    input.id = `inputDiaExtra${indice}`;
     input.value = valor;
 
     const button = document.createElement("button");
@@ -1420,15 +1417,19 @@ function agregarDiaExtra(valor = 0, indiceForzado = null) {
     div.appendChild(inputGroup);
 
     contenedor.appendChild(div);
-
-    reindexarDiasExtra();
 }
+
 
 function reindexarDiasExtra() {
     const items = document.querySelectorAll("#contenedorDiasExtra .dia-extra-item");
+    contadorDiasExtra = 0;
+
     items.forEach((item, index) => {
         const nuevoIndice = index + 1;
+        contadorDiasExtra = nuevoIndice;
+
         item.dataset.index = nuevoIndice;
+        item.id = `diaExtra${nuevoIndice}`;
 
         // Actualizar label
         const label = item.querySelector("label");
@@ -1442,6 +1443,62 @@ function reindexarDiasExtra() {
         }
     });
 }
+
+function limpiarFormularioSeguimiento() {
+    // Limpiar inputs de días normales
+    for (let i = 1; i <= 1000; i++) {
+        const input = document.getElementById(`inputSeguimientoDia${i}`);
+        if (input) input.value = "0";
+    }
+
+    // Limpiar días extra (eliminarlos)
+    const contenedor = document.getElementById("contenedorDiasExtra");
+    if (contenedor) contenedor.innerHTML = "";
+
+    // Limpiar campos adicionales del modal
+    document.getElementById("txtHorasEfectivas").value = "";
+    document.getElementById("txtBuenasIGTD").value = "";
+    document.getElementById("txtMalasIGTD").value = "";
+
+    // Restaurar dropdowns y campos según lógica de negocio si aplica
+    document.getElementById("DropDownList1Seguimiento").selectedIndex = 0;
+    document.getElementById("ddlStageSRC").selectedIndex = 0;
+}
+function limpiarDiasExtra() {
+    const contenedor = document.getElementById("contenedorDiasExtra");
+    contenedor.innerHTML = "";
+    contadorDiasExtra = 0;
+
+    // ✅ Agregamos toast visual
+    const toast = document.createElement("div");
+    toast.className = "toast align-items-center text-bg-warning border-0 show position-fixed bottom-0 end-0 m-3";
+    toast.style.zIndex = "9999";
+    toast.setAttribute("role", "alert");
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                Días extra limpiados correctamente.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+if (typeof (Sys) !== "undefined" && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+        window.limpiarDiasExtra = limpiarDiasExtra;
+    });
+}
+
+
+
 
 
 
@@ -1483,3 +1540,4 @@ window.prepararModalCrearEntrenador = prepararModalCrearEntrenador;
 window.eliminarMuda = eliminarMuda;
 window.abrirModalEditarTurno= abrirModalEditarArea;
 window.agregarDiaExtra = agregarDiaExtra;
+window.limpiarDiasExtra = limpiarDiasExtra;

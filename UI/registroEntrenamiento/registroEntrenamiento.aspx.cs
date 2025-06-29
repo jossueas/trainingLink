@@ -28,6 +28,10 @@ namespace trainingLink.UI.master
             }
 
 
+            if (!IsPostBack && Request.QueryString["toast"] == "seguimiento")
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "toastExito", "mostrarToastExitoEntrenamiento();", true);
+            }
 
 
 
@@ -572,7 +576,7 @@ namespace trainingLink.UI.master
         private void GenerarInputsCurva(int? idRegistro = null)
         {
             phCurvaSeguimiento.Controls.Clear();
-
+            
             Dictionary<int, (int Valor, DateTime? FechaRegistro)> valoresGuardados = new Dictionary<int, (int Valor, DateTime? FechaRegistro)>();
             int numberDays = 0;
 
@@ -658,6 +662,11 @@ namespace trainingLink.UI.master
                 phCurvaSeguimiento.Controls.Add(panel);
             }
 
+            //
+            // Limpia visualmente antes de regenerar
+            var scriptBuilder = new System.Text.StringBuilder();
+            scriptBuilder.Append("setTimeout(() => limpiarDiasExtra(), 0);");
+
             int indiceExtra = 1;
             foreach (var kvp in valoresGuardados)
             {
@@ -665,11 +674,17 @@ namespace trainingLink.UI.master
                 if (dia >= 1000)
                 {
                     int valor = kvp.Value.Valor;
-                    ScriptManager.RegisterStartupScript(this, GetType(), $"extra{dia}",
-                        $"agregarDiaExtra({valor}, {indiceExtra});", true);
+                    scriptBuilder.AppendFormat("setTimeout(() => agregarDiaExtra({0}, {1}), 10);", valor, indiceExtra);
                     indiceExtra++;
                 }
             }
+
+            // Ejecutar todo el bloque JS en un solo script para evitar interferencias
+            ScriptManager.RegisterStartupScript(this, GetType(), "scriptDiasExtra", scriptBuilder.ToString(), true);
+
+
+
+
         }
 
 
@@ -951,10 +966,12 @@ namespace trainingLink.UI.master
                     }
                 }
 
-                // 6. Feedback visual
-                CargarEntrenamientos();
-                ScriptManager.RegisterStartupScript(this, GetType(), "cerrarModal", "const modal = new bootstrap.Modal(document.getElementById('modalSeguimientoEntrenamiento')); modal.hide();", true);
-                ScriptManager.RegisterStartupScript(this, GetType(), "toastSeguimiento", "mostrarToastExitoEntrenamiento();", true);
+
+                // 6. Feedback final: recarga completa
+                Response.Redirect("registroEntrenamiento.aspx?toast=seguimiento", false);
+
+
+
             }
 
 
