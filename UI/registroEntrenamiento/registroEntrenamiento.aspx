@@ -201,7 +201,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalRegistroEntrenamientoLabel">Registrar Entrenamiento</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        <button type="button" class="btn-close" 
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCerrarModalSeguimiento"></button>data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -436,8 +437,7 @@
 
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <asp:Button ID="btnGuardarSeguimiento" runat="server" CssClass="btn btn-save-custom" Text="Guardar Seguimiento" OnClick="btnGuardarSeguimiento_Click" />
+<button id="btnCancelarSeguimiento" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>        <asp:Button ID="btnGuardarSeguimiento" runat="server" CssClass="btn btn-save-custom" Text="Guardar Seguimiento" OnClick="btnGuardarSeguimiento_Click" />
       </div>
     </div>
   </div>

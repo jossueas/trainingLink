@@ -1497,6 +1497,24 @@ if (typeof (Sys) !== "undefined" && Sys.WebForms && Sys.WebForms.PageRequestMana
     });
 }
 
+//
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnCancelar = document.getElementById("btnCancelarSeguimiento");
+    const btnCerrar = document.getElementById("btnCerrarModalSeguimiento");
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener("click", function () {
+            location.reload();
+        });
+    }
+
+    if (btnCerrar) {
+        btnCerrar.addEventListener("click", function () {
+            location.reload();
+        });
+    }
+});
 
 
 
